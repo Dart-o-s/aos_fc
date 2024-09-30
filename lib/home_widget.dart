@@ -1,6 +1,6 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-
+import 'add_flashcard_page.dart';
 import '../ques_ans.dart';
 import 'flash_card.dart';
 
@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
+
         appBar: AppBar(
             centerTitle: true,
             title: Text("Flashcards Learning App", style: TextStyle(fontSize: 25)),
@@ -43,7 +44,9 @@ class _HomePageState extends State<HomePage> {
             elevation: 5,
             shadowColor: Colors.green[700],
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20))),
+                borderRadius: BorderRadius.circular(20))
+        ),
+
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +60,11 @@ class _HomePageState extends State<HomePage> {
                       front: FlashCard(
                           text: qaList[_curIndexNum].question),
                       back: FlashCard(
-                          text: qaList[_curIndexNum].answer))),
+                          text: qaList[_curIndexNum].answer)
+                          )
+              ),
+
+
               Text("Tap to view Answer", style: TextStyle(fontSize: 15)),
               
               Row(
@@ -90,39 +97,29 @@ class _HomePageState extends State<HomePage> {
                                 )
                   ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child:Column(
-                      children: [
-                        TextField(
-                          controller: _questionController,
-                          decoration: InputDecoration(
-                            labelText: 'Enter Question',
-                          ),
-                        ),
-                        TextField(
-                          controller: _answerController,
-                          decoration: InputDecoration(
-                            labelText: 'Enter Answer',
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[700],
-                              shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                            ),
-                            onPressed: _addFlashcard,
-                            child: Text("Add Flashcard",
-                                      style: TextStyle(fontSize: 10, letterSpacing: 1.0,fontWeight: FontWeight.bold, color: Colors.black), textAlign: TextAlign.center,
-                                        ),
-                          ),
+                  SizedBox(height: 15),
+                  ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context)=> AddFlashcardPage())
+                        );
+                    },
 
-                    ],)
+                    child: Text("Add FlashCard",style: TextStyle(fontSize: 10, letterSpacing: 1.0,fontWeight: FontWeight.bold, color: Colors.black), textAlign: TextAlign.center,) ,
+
+                    style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green[700],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: EdgeInsets.only(
+                                right: 20, left: 25, top: 15, bottom: 15))
                     
-                  )
-            ])));
+                    ),
+            ]
+          )
+        )
+      );
   }
 
 
@@ -142,3 +139,37 @@ class _HomePageState extends State<HomePage> {
     });
   }
 }
+
+// Padding(//   THIS IS THE CODE TO HAVE THE QUESTION ANSWER TEXTFIELD ON SAME PAGE
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child:Column(
+                  //     children: [
+                  //       TextField(
+                  //         controller: _questionController,
+                  //         decoration: InputDecoration(
+                  //           labelText: 'Enter Question',
+                  //         ),
+                  //       ),
+                  //       TextField(
+                  //         controller: _answerController,
+                  //         decoration: InputDecoration(
+                  //           labelText: 'Enter Answer',
+                  //         ),
+                  //       ),
+                  //       SizedBox(height: 10),
+                  //         ElevatedButton(
+                  //           style: ElevatedButton.styleFrom(
+                  //             backgroundColor: Colors.green[700],
+                  //             shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(5)),
+                  //           ),
+                  //           onPressed: _addFlashcard,
+                  //           child: Text("Add Flashcard",
+                  //                     style: TextStyle(fontSize: 10, letterSpacing: 1.0,fontWeight: FontWeight.bold, color: Colors.black), textAlign: TextAlign.center,
+                  //                       ),
+                  //         ),
+
+                  //   ],
+                  //   )
+                    
+                  // )
