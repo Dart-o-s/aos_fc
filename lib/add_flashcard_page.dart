@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'ques_ans.dart';
+import 'AbsFileSystem.dart';
+import 'flash_card.dart';
 
 class AddFlashcardPage extends StatefulWidget {
   @override
@@ -18,6 +19,10 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
           question: _questionController.text,
           answer: _answerController.text,
         ));
+
+        AbsFileSystem fs = AbsFileSystem.forThisPlatform();
+        fs.save("aos-thai", qaList, (String doNothing) { } );
+
       });
 
       _questionController.clear();
@@ -63,7 +68,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
 
 //  THIS IS THE CODE WHEN TEXTFIELD FOR QnA ARE ON HOMEPAGE
 // import 'package:flutter/material.dart';
-// import 'ques_ans.dart' ;
+// import 'flash_card.dart' ;
 
 // class AddFlashcardPage extends StatefulWidget {
 //   const AddFlashcardPage({super.key});

@@ -1,7 +1,14 @@
 import '../home_widget.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+import 'package:aos_fc/AbsFileSystem.dart';
+import 'package:aos_fc/flash_card.dart';
+
+void main() {
+  AbsFileSystem fs = AbsFileSystem.forThisPlatform();
+  qaList = fs.load("aos-thai");
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
