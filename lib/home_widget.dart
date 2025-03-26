@@ -47,18 +47,19 @@ class _HomePageState extends State<HomePage> {
         ),
         */
         body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+               // mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
               SizedBox(
                   width: 300,
-                  height: 300,
+                  height: 575,
                   child: FlipCard(
                       direction: FlipDirection.HORIZONTAL,
-                      front: FlashCardWidget(text: qaList[_curIndexNum].question),
-                      back: FlashCardWidget(text: qaList[_curIndexNum].answer))),
-
-              // Text("Tap to view Answer", style: TextStyle(fontSize: 15)),
-
+                      front: FlashCardWidget(
+                          side: CardSide.FRONT,
+                          text: qaList[_curIndexNum].question),
+                      back: FlashCardWidget(
+                          side: CardSide.BACK,
+                          text: qaList[_curIndexNum].answer))),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

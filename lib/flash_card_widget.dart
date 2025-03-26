@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flip_card/flip_card.dart';
 
 class FlashCardWidget extends StatelessWidget {
-  FlashCardWidget({required this.text});
+  FlashCardWidget({required this.text, required this.side});
   final String text;
+  final CardSide side;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,8 @@ class FlashCardWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child:
-                Text(text, style: TextStyle(fontSize: 30, letterSpacing: 1.0,fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                // at the moment focus is Thai, as Thai fonts are so super small, we make back side bigger
+                Text(text, style: TextStyle(fontSize: side == CardSide.BACK ? 40 : 30, letterSpacing: 1.0,fontWeight: FontWeight.bold), textAlign: TextAlign.center),
           ),
         ),
       ),

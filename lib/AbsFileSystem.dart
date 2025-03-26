@@ -43,15 +43,22 @@ abstract class AbsFileSystem {
   List<Flashcard> load(String fileName) {
     String fullName = getFullPath(fileName);
 
-    File inf = File(fullName);
-    var text = inf.readAsLinesSync();
-
     List<Flashcard> store = <Flashcard>[];
-    for (int i = 0; (i+1) < text.length; i+=2) {
-      var front = text[i];
-      var back = text[i+1];
-      store.add(Flashcard(question:front, answer:back));
+    File inf = File(fullName);
+
+    try {
+      var text = inf.readAsLinesSync();
+
+      for (int i = 0; (i + 1) < text.length; i += 2) {
+        var front = text[i];
+        var back = text[i + 1];
+        store.add(Flashcard(question: front, answer: back));
+      }
+    } on Exception catch (x) {
+      // do nothing for now
+      // we know store is empty, we handle it below
     }
+    if (store.length == 0) store.add(Flashcard(question: "Error loading File", answer: "true"));
     return store;
   }
 
