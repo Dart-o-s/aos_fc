@@ -5,8 +5,12 @@
 ## normal backlog
     [] OPEN add boxes for short and long term memory
         - delete moves behind "$ Deleted"
-        - << previous chapter - or beginning if there is none
-        - >> next chapter - or end if there is none
+        - DONE 2025-03-28 02:12 << previous chapter - or beginning if there is none
+        - DONE 2025-03-28 02:12 >> next chapter - or end if there is none
+
+    [ ] DONE after refactoring, creating a new Card does not directly move to it
+        - for that comming back to the previous screen needs to make it repaint
+            that is tricky and out of scope for today/tonight: just move to the next manually
 
     [x] DONE 2025-03-28 00:42 add chapters - which are behind the boxes?
         [x] DONE 2025-03-28 00:42 Special Chapter "$ Deleted" for deleted Cards

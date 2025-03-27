@@ -27,7 +27,7 @@ extension on List<Flashcard> {
   void fixMissingMetaCards() {
     if (findCardContaining("\$ Deleted") == -1)
       this.add(Flashcard(question: "\$ Deleted", answer: "This box contains deleted cards. For later retrievel or perma death."));
-    // TODO more meta cards to follow
+    // TODO more meta cards to follow -> "$ End-Marker"
   }
 }
 

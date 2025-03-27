@@ -21,8 +21,10 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
         );
         if (pos == qaList.length - 1) {
           qaList.add(flashcard);
+          Flashcard.curIndexNum = qaList.length - 1;
         } else {
           qaList.insert(pos, flashcard);
+          Flashcard.curIndexNum++;
         }
 
         _questionController.clear();

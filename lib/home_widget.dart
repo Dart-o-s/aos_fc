@@ -194,13 +194,54 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showPreviousBox() {
-
+    setState( () {
+      qaList.findPreviousBox();
+    });
   }
 
   void showNextBox() {
+    setState( () {
+      qaList.findNextBox();
+    });
+  }
+}
 
+extension on List<Flashcard> {
+  int findPreviousBox() {
+    // worst edge case: we are *at the beginning already* then we just jump to the first card
+    if (Flashcard.curIndexNum == 0) {
+      Flashcard.curIndexNum = length - 1;
+      return Flashcard.curIndexNum;
+    }
+    // not at begin, we can decrease by one (in case we are on a "Chapter" we do not want to stick here)
+    Flashcard.curIndexNum--;
+    while (Flashcard.curIndexNum >= 0) {
+      var fc = this[Flashcard.curIndexNum];
+      if (fc.question.startsWith("#") || fc.question.startsWith("\$"))
+        return Flashcard.curIndexNum;
+
+      --Flashcard.curIndexNum;
+    }
+    return Flashcard.curIndexNum = 0;
   }
 
+  int findNextBox() {
+    // worst edge case: we are *at the end already* then we just jump to the first card
+    if (Flashcard.curIndexNum == length - 1) {
+      Flashcard.curIndexNum = 0;
+      return Flashcard.curIndexNum;
+    }
+    // not at end, we can increase by one (in case we are on a "Chapter" we do not want to stick here)
+    ++Flashcard.curIndexNum;
+    while (Flashcard.curIndexNum <= this.length-1) {
+      var fc = this[Flashcard.curIndexNum];
+      if (fc.question.startsWith("#") || fc.question.startsWith("\$"))
+        return Flashcard.curIndexNum;
+
+      ++Flashcard.curIndexNum;
+    }
+    return Flashcard.curIndexNum = this.length - 1;
+  }
 }
 
 // Padding(//   THIS IS THE CODE TO HAVE THE QUESTION ANSWER TEXTFIELD ON SAME PAGE
