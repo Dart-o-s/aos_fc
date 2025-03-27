@@ -14,11 +14,19 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
   void _addFlashcard() {
     if (_questionController.text.isNotEmpty && _answerController.text.isNotEmpty) {
       setState(() {
-   
-        qaList.add(Flashcard(
+        int pos = Flashcard.curIndexNum + 1; // add behind current
+        var flashcard = Flashcard(
           question: _questionController.text,
           answer: _answerController.text,
-        ));
+        );
+        if (pos == qaList.length - 1) {
+          qaList.add(flashcard);
+        } else {
+          qaList.insert(pos, flashcard);
+        }
+
+        _questionController.clear();
+        _answerController.clear();
 
         AbsFileSystem fs = AbsFileSystem.forThisPlatform();
         fs.save("aos-thai", qaList, (String doNothing) { } );

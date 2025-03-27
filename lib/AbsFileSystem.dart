@@ -93,7 +93,8 @@ abstract class AbsFileSystem {
     }
     if (store.length == 0) {
       store.createInitialStack();
-    } else {
+      store.fixMissingMetaCards();
+    } else { // stack successfully loaded, but it might miss boxes or new chapters
       store.fixMissingMetaCards();
     }
     return store;

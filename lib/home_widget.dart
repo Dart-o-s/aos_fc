@@ -19,23 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _curIndexNum = 0;
   bool handlerIsUp = false;
-
-  final _questionController = TextEditingController();
-  final _answerController   = TextEditingController();
-
-  // Function to add a new flashcard
-  void _addFlashcard() {
-    setState(() {
-      qaList.add(Flashcard(
-        question: _questionController.text,
-        answer: _answerController.text,
-      ));
-      _questionController.clear();
-      _answerController.clear();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +49,10 @@ class _HomePageState extends State<HomePage> {
                       direction: FlipDirection.HORIZONTAL,
                       front: FlashCardWidget(
                           side: CardSide.FRONT,
-                          text: qaList[_curIndexNum].question),
+                          text: qaList[Flashcard.curIndexNum].question),
                       back: FlashCardWidget(
                           side: CardSide.BACK,
-                          text: qaList[_curIndexNum].answer))),
+                          text: qaList[Flashcard.curIndexNum].answer))),
             ]),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -176,14 +160,14 @@ class _HomePageState extends State<HomePage> {
 
   void showNextCard() {
     setState(() {
-      _curIndexNum = (_curIndexNum + 1 < qaList.length) ? _curIndexNum + 1 : 0;
+      Flashcard.curIndexNum = (Flashcard.curIndexNum + 1 < qaList.length) ? Flashcard.curIndexNum + 1 : 0;
     });
   }
 
   void showPreviousCard() {
     setState(() {
-      _curIndexNum =
-          (_curIndexNum - 1 >= 0) ? _curIndexNum - 1 : qaList.length - 1;
+      Flashcard.curIndexNum =
+          (Flashcard.curIndexNum - 1 >= 0) ? Flashcard.curIndexNum - 1 : qaList.length - 1;
     });
   }
 
