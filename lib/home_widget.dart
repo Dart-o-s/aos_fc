@@ -55,11 +55,11 @@ class _HomePageState extends State<HomePage> {
         ),
 
         body: Column(
-               // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
+              SizedBox (
                   // padding: EdgeInsets.only(top:15),
-                  width: 300,
+                  // width: 300,
                   height: 565,
                   child: FlipCard(
                       direction: FlipDirection.HORIZONTAL,
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                     showPreviousCard();
                   },
                 ),
-                IconButton(
+                /* IconButton(
                   tooltip: "New File",
                   icon: const Icon(Icons.file_copy_outlined),
                   onPressed: () {
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                       // _newFile(context);
                     });
                   },
-                ),
+                ),*/
                 buildQuickMenu(context),
                 IconButton(
                   tooltip: "search ...",
@@ -160,6 +160,8 @@ class _HomePageState extends State<HomePage> {
                       ;
                     case 3:
                       ;
+                    case 4:
+                      ;
                   }
                 },
                 itemBuilder:
@@ -167,6 +169,7 @@ class _HomePageState extends State<HomePage> {
                   const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
                   const PopupMenuItem(value: 2, child: Text('(delete)'), height: 24),
                   const PopupMenuItem(value: 3, child: Text('(edit)'), height: 24),
+                  const PopupMenuItem(value: 4, child: Text('(new file ...)'), height: 24),
                 ],
               );
   }

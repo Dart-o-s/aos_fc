@@ -10,6 +10,25 @@ extension on List<Flashcard> {
   void createInitialStack() {
     add(Flashcard(question: "Tab to flip Card. Do it now for short help.", answer: "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
   }
+
+  // for now this is a simple "contains test"
+  // we check both back and front
+  // TODO consider to switch to regexp
+  // TODO make individual searches possible
+  int findCardContaining(String pattern) {
+    for (int res = 0; res < this.length; res++) {
+      final fc = this[res];
+      if (fc.question.contains(pattern)) return res;
+      if (fc.answer.contains(pattern)) return res;
+    }
+    return -1;
+  }
+
+  void fixMissingMetaCards() {
+    if (findCardContaining("\$ Deleted") == -1)
+      this.add(Flashcard(question: "\$ Deleted", answer: "This box contains deleted cards. For later retrievel or perma death."));
+    // TODO more meta cards to follow
+  }
 }
 
 abstract class AbsFileSystem {
@@ -72,7 +91,11 @@ abstract class AbsFileSystem {
       // do nothing for now
       // we know store is empty, we handle it below
     }
-    if (store.length == 0) store.createInitialStack();
+    if (store.length == 0) {
+      store.createInitialStack();
+    } else {
+      store.fixMissingMetaCards();
+    }
     return store;
   }
 

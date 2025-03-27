@@ -4,7 +4,12 @@
 
 ## normal backlog
     [] OPEN add boxes for short and long term memory
-    [] OPEN add chapters - which are behind the boxes?
+        - delete moves behind "$ Deleted"
+        - << previous chapter
+        - >> next chapter
+
+    [x] OPEN add chapters - which are behind the boxes?
+        [x] DONE Special Chapter "$ Deleted" for deleted Cards
 
     [] change the add option to "insert" at current position
         - treat "# box" and "* chapter" special
