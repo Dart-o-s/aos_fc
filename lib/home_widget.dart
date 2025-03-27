@@ -1,9 +1,15 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_window_close/flutter_window_close.dart';
+
+import 'dart:io';
+
 import 'add_flashcard_page.dart';
 import '../flash_card.dart';
 import 'flash_card_widget.dart';
 import 'package:aos_fc/AbsFileSystem.dart';
+
+// https://pub.dev/packages/simple_gesture_detector/example
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,9 +20,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _curIndexNum = 0;
+  bool handlerIsUp = false;
 
   final _questionController = TextEditingController();
-  final _answerController = TextEditingController();
+  final _answerController   = TextEditingController();
 
   // Function to add a new flashcard
   void _addFlashcard() {
@@ -32,26 +39,28 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    initCloseHandler(context);
+
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
-        /*
         appBar: AppBar(
-            centerTitle: true,
-            title: Text("Flashcards Learning App", style: TextStyle(fontSize: 25)),
-            backgroundColor: Colors.green[700],
-            toolbarHeight: 70,
+            centerTitle: false,
+            title: Text("AoS FC", style: TextStyle(fontSize: 25)),
+            backgroundColor: Colors.lightGreen[900],
+            toolbarHeight: 40,
             elevation: 5,
             shadowColor: Colors.green[700],
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20))
+                borderRadius: BorderRadius.circular(10))
         ),
-        */
+
         body: Column(
                // mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+            children: <Widget>[
               SizedBox(
+                  // padding: EdgeInsets.only(top:15),
                   width: 300,
-                  height: 575,
+                  height: 565,
                   child: FlipCard(
                       direction: FlipDirection.HORIZONTAL,
                       front: FlashCardWidget(
@@ -60,67 +69,106 @@ class _HomePageState extends State<HomePage> {
                       back: FlashCardWidget(
                           side: CardSide.BACK,
                           text: qaList[_curIndexNum].answer))),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  ElevatedButton.icon(
-                      onPressed: () {
-                        showPreviousCard();
-                      },
-                      icon: Icon(
-                        Icons.arrow_left,
-                        size: 30,
-                        color: Color(0xFFE4E4E4),
-                      ),
-                      label: Text(""),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.only(
-                              right: 20, left: 25, top: 15, bottom: 15))),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddFlashcardPage()));
-                      },
-                      child: Text(
-                        "Add",
-                        style: TextStyle(
-                            fontSize: 10,
-                            letterSpacing: 1.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                        textAlign: TextAlign.center,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.only(
-                              right: 20, left: 25, top: 15, bottom: 15))),
-                  ElevatedButton.icon(
-                      //
-                      onPressed: () {
-                        showNextCard();
-                      },
-                      icon: Icon(
-                        Icons.arrow_right,
-                        size: 30,
-                        color: Color(0xFFE4E4E4),
-                      ),
-                      label: Text(""),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.only(
-                              right: 20, left: 25, top: 15, bottom: 15)))
+            ]),
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 5.0,
+          clipBehavior: Clip.antiAlias,
+          height: kBottomNavigationBarHeight / 2 + 8,
+          padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
+          child: SizedBox(
+            // TODO find a good size
+            height: kBottomNavigationBarHeight * 0.75,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                IconButton(
+                  tooltip: "prev Box/Chapter",
+                  icon: const Icon(Icons.keyboard_double_arrow_left),
+                  onPressed: () {
+                    showPreviousBox();
+                  },
+                ),
+                IconButton(
+                  // this button is there only during development
+                  // to run some "testing code" quickly.
+                  tooltip: "prev Card",
+                  icon: const Icon(Icons.chevron_left_outlined),
+                  onPressed: () {
+                    showPreviousCard();
+                  },
+                ),
+                IconButton(
+                  tooltip: "New File",
+                  icon: const Icon(Icons.file_copy_outlined),
+                  onPressed: () {
+                    setState(() {
+                      // _newFile(context);
+                    });
+                  },
+                ),
+                buildQuickMenu(context),
+                IconButton(
+                  tooltip: "search ...",
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      // search(context);
+                    });
+                  },
+                ),
+                IconButton(
+                  tooltip: "next Card",
+                  icon: const Icon(Icons.chevron_right_outlined),
+                  onPressed: () {
+                    setState(() {
+                      showNextCard();
+                    });
+                  },
+                ),
+                IconButton(
+                  tooltip: "next Box/Chapter",
+                  icon: const Icon(Icons.keyboard_double_arrow_right),
+                  onPressed: () {
+                    setState(() {
+                      showNextBox();
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        )
+    );
+  }
+
+  PopupMenuButton<dynamic> buildQuickMenu(BuildContext context) {
+    return PopupMenuButton(
+                initialValue: 1,
+                onSelected: (item) {
+                  switch (item) {
+                    case 1:
+                      setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddFlashcardPage())
+                          );
+                      });
+                    case 2:
+                      ;
+                    case 3:
+                      ;
+                  }
+                },
+                itemBuilder:
+                    (BuildContext context) => <PopupMenuEntry>[
+                  const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
+                  const PopupMenuItem(value: 2, child: Text('(delete)'), height: 24),
+                  const PopupMenuItem(value: 3, child: Text('(edit)'), height: 24),
                 ],
-              ),
-            ]));
+              );
   }
 
   void showNextCard() {
@@ -135,6 +183,37 @@ class _HomePageState extends State<HomePage> {
           (_curIndexNum - 1 >= 0) ? _curIndexNum - 1 : qaList.length - 1;
     });
   }
+
+  void initCloseHandler(BuildContext context) {
+    if (!handlerIsUp && Platform.isWindows) {
+      handlerIsUp = true;
+      FlutterWindowClose.setWindowShouldCloseHandler(() async {
+        return await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                  title: const Text('Do you really want to quit?'),
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('Yes')),
+                    ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('No')),
+                  ]);
+            });
+      });
+    }
+  }
+
+  void showPreviousBox() {
+
+  }
+
+  void showNextBox() {
+
+  }
+
 }
 
 // Padding(//   THIS IS THE CODE TO HAVE THE QUESTION ANSWER TEXTFIELD ON SAME PAGE

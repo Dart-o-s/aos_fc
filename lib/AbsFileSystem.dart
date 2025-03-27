@@ -6,6 +6,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:aos_fc/flash_card.dart';
 
+extension on List<Flashcard> {
+  void createInitialStack() {
+    add(Flashcard(question: "Tab to flip Card. Do it now for short help.", answer: "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
+  }
+}
+
 abstract class AbsFileSystem {
   String getBaseDirectory();
   // we can not make a default here, because of path separators
@@ -45,7 +51,14 @@ abstract class AbsFileSystem {
 
     List<Flashcard> store = <Flashcard>[];
     File inf = File(fullName);
+/*
+    var ex1 = File("/storage").existsSync();
+    var ex2 = File("/storage/emulated").existsSync();
+    var ex3 = File("/storage/emulated/0").existsSync();
+    var ex4 = File("/storage/emulated/0/Download").existsSync();
 
+    print("so far so good ...");
+*/
     try {
       var text = inf.readAsLinesSync();
 
@@ -55,10 +68,11 @@ abstract class AbsFileSystem {
         store.add(Flashcard(question: front, answer: back));
       }
     } on Exception catch (x) {
+      print("autsch!"+x.toString());
       // do nothing for now
       // we know store is empty, we handle it below
     }
-    if (store.length == 0) store.add(Flashcard(question: "Error loading File", answer: "true"));
+    if (store.length == 0) store.createInitialStack();
     return store;
   }
 

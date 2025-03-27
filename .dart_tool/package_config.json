@@ -68,6 +68,18 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///C:/Users/angel/flutter/flutter_windows_3.27.1-stable/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "flutter_window_close",
+      "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_window_close-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "leak_tracker",
       "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.7",
       "packageUri": "lib/",
@@ -176,7 +188,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2025-03-25T16:23:17.866185Z",
+  "generated": "2025-03-27T09:23:01.332977Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///C:/Users/angel/flutter/flutter_windows_3.27.1-stable/flutter",
