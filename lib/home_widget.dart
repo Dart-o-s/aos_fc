@@ -130,16 +130,17 @@ class _HomePageState extends State<HomePage> {
   PopupMenuButton<dynamic> buildQuickMenu(BuildContext context) {
     return PopupMenuButton(
                 initialValue: 1,
-                onSelected: (item) {
+                onSelected: (item) async  {
+                  // that was tricky ... we have to smuggle a setState() behind the call ...
                   switch (item) {
                     case 1:
-                      setState(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddFlashcardPage())
-                          );
-                      });
+                    final value = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddFlashcardPage()),
+                    );
+                    setState(() {
+                    });
                     case 2:
                       ;
                     case 3:
