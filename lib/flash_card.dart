@@ -1,5 +1,5 @@
-class Flashcard {
 
+class Flashcard {
   // TODO sorry, refactoring relict. Was in home_widget
   // TODO we need a "storage" instead of the global qaList
   static int curIndexNum = 0;

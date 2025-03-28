@@ -2,6 +2,9 @@
 
 ## high prio items
     [X] DONE 2025-03-28 15:07 LOGO!
+    [ ] OPEN do the learnign thing
+        - for now an FWB for "ok" is likely enough
+        - add swipes later
 
 ## probably usable in Storybook
 
@@ -9,10 +12,18 @@ https://medium.com/flutter-community/flutter-flip-card-animation-eb25c403f371
 https://stackoverflow.com/questions/43928702/how-to-change-the-application-launcher-icon-on-flutter
 
 ## normal backlog
-    [] OPEN add boxes for short and long term memory
+    [w] OPEN add boxes for short and long term memory
         - delete moves behind "$ Deleted"
         - DONE 2025-03-28 02:12 << previous chapter - or beginning if there is none
         - DONE 2025-03-28 02:12 >> next chapter - or end if there is none
+        OPEN _undelete_ move current card to position 1
+        OPEN perma delete by removing from the list
+
+    [ ] OPEN put on "New Flash Card" a google translate widget
+
+    [_] OPEN script to copy the windows data file into Assets of the project. So it is in Git.
+        - and can be distributed together with the App
+        - the App should unpack the Asset to ~/Download
 
     [X] DONE 2025-03-28 15:26 after refactoring, creating a new Card does not directly move to it
         HINT: use await for Navigator.push() and put a setState() behind it.
@@ -27,8 +38,8 @@ https://stackoverflow.com/questions/43928702/how-to-change-the-application-launc
     [x] DONE 2025-03-28 00:42 change the add option to "insert" at current position
     
     [ ] OPEN when inserting treat "# box" and "* chapter" special
-        - means, put "$ Chapters" automatically at the end.
         - I think for now, "# Chapters" could be just placed before "$ Deleted"
+        - "$ Chapters" just where the user puts them
 
     [] make sure added cards contain no \n or \r
         perhaps in load and store, just replace?
@@ -39,9 +50,12 @@ https://stackoverflow.com/questions/43928702/how-to-change-the-application-launc
     [x] DONE 2025-03-27 15:54 change size of window on Windows
         DONE 2025-03-27 22:08 change width of center widget, see below
 
-    [w] OPEN figure why on Android the Flip Cart is to far on top
+    [X] DONE 2025-03-29 00:41 figure why on Android the Flip Cart is to far on top
         - we figured if "width: property" is ommited, it resiszes horizontally quite nicely
             but the same does not work for "height:"
+        = used an Expandable instead of a SizeBox. On the tablet perhaps to big.
+    
+    [ ] OPEN change the background colour on the eInk tablet
 
 ## unplanned items 
     - stuff we made without thinking

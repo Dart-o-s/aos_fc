@@ -5,9 +5,10 @@ import 'package:flutter_window_close/flutter_window_close.dart';
 import 'dart:io';
 
 import 'add_flashcard_page.dart';
-import '../flash_card.dart';
+import 'flash_card.dart';
 import 'flash_card_widget.dart';
 import 'package:aos_fc/AbsFileSystem.dart';
+import 'flash_card_extension.dart';
 
 // https://pub.dev/packages/simple_gesture_detector/example
 
@@ -39,12 +40,10 @@ class _HomePageState extends State<HomePage> {
         ),
 
         body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: /* MainAxisAlignment.start */ MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              SizedBox (
-                  // padding: EdgeInsets.only(top:15),
-                  // width: 300,
-                  height: 565,
+              Expanded (
                   child: FlipCard(
                       direction: FlipDirection.HORIZONTAL,
                       front: FlashCardWidget(
@@ -52,7 +51,9 @@ class _HomePageState extends State<HomePage> {
                           text: qaList[Flashcard.curIndexNum].question),
                       back: FlashCardWidget(
                           side: CardSide.BACK,
-                          text: qaList[Flashcard.curIndexNum].answer))),
+                          text: qaList[Flashcard.curIndexNum].answer)
+                  ),
+              )
             ]),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -142,8 +143,10 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                     });
                     case 2:
+                      deleteCurrentCard();
                       ;
                     case 3:
+                      deleteCardForever();
                       ;
                     case 4:
                       ;
@@ -152,9 +155,10 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder:
                     (BuildContext context) => <PopupMenuEntry>[
                   const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
-                  const PopupMenuItem(value: 2, child: Text('(delete)'), height: 24),
-                  const PopupMenuItem(value: 3, child: Text('(edit)'), height: 24),
-                  const PopupMenuItem(value: 4, child: Text('(new file ...)'), height: 24),
+                  const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
+                  const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
+                  const PopupMenuItem(value: 4, child: Text('(edit)'), height: 24),
+                  const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
                 ],
               );
   }
@@ -205,9 +209,48 @@ class _HomePageState extends State<HomePage> {
       qaList.findNextBox();
     });
   }
+
+  void deleteCurrentCard() {
+    setState( () {
+      qaList.deleteCurrentCard();
+    });
+  }
+
+  void deleteCardForever() {
+    setState( () {
+        qaList.removeCurrent();
+    });
+  }
 }
 
 extension on List<Flashcard> {
+  void createInitialStack() {
+    add(Flashcard(question: "Tab to flip Card. Do it now for short help.", answer: "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
+  }
+
+  // for now this is a simple "contains test"
+  // we check both back and front
+  // TODO consider to switch to regexp
+  // TODO make individual searches possible
+  int findCardContaining(String pattern) {
+    for (int res = 0; res < this.length; res++) {
+      final fc = this[res];
+      if (fc.question.contains(pattern)) return res;
+      if (fc.answer.contains(pattern)) return res;
+    }
+    return -1;
+  }
+
+  void fixMissingMetaCards() {
+    if (findCardContaining("\$ Deleted") == -1)
+      addDeletedMarker();
+    // TODO more meta cards to follow -> "$ End-Marker"
+  }
+
+  void addDeletedMarker() {
+    this.add(Flashcard(question: "\$ Deleted", answer: "This box contains deleted cards. For later retrieval or perma death."));
+  }
+
   int findPreviousBox() {
     // worst edge case: we are *at the beginning already* then we just jump to the first card
     if (Flashcard.curIndexNum == 0) {
@@ -243,38 +286,34 @@ extension on List<Flashcard> {
     }
     return Flashcard.curIndexNum = this.length - 1;
   }
+
+  // remove permanently
+  // TODO check if it is behind "$ Deleted"
+  void removeCurrent() {
+    if (length == 1) return; // do not delete the last card
+    var fc = this[Flashcard.curIndexNum];
+    remove(fc);
+    if (Flashcard.curIndexNum > length - 1) Flashcard.curIndexNum = length -1;
+    quickSave();
+  }
+
+  // move the current card behind the "$ Deleted" marker card
+  void deleteCurrentCard() {
+    var del = findCardContaining("\$ Delete");
+    var fc = this[Flashcard.curIndexNum];
+    if (del == -1) {
+      remove(fc);
+      addDeletedMarker();
+      add(fc);
+    } else {
+      remove(fc);
+      insert(del, fc); // del is the old position of the del marker
+    }
+    quickSave();
+  }
 }
 
-// Padding(//   THIS IS THE CODE TO HAVE THE QUESTION ANSWER TEXTFIELD ON SAME PAGE
-//   padding: const EdgeInsets.all(8.0),
-//   child:Column(
-//     children: [
-//       TextField(
-//         controller: _questionController,
-//         decoration: InputDecoration(
-//           labelText: 'Enter Question',
-//         ),
-//       ),
-//       TextField(
-//         controller: _answerController,
-//         decoration: InputDecoration(
-//           labelText: 'Enter Answer',
-//         ),
-//       ),
-//       SizedBox(height: 10),
-//         ElevatedButton(
-//           style: ElevatedButton.styleFrom(
-//             backgroundColor: Colors.green[700],
-//             shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(5)),
-//           ),
-//           onPressed: _addFlashcard,
-//           child: Text("Add Flashcard",
-//                     style: TextStyle(fontSize: 10, letterSpacing: 1.0,fontWeight: FontWeight.bold, color: Colors.black), textAlign: TextAlign.center,
-//                       ),
-//         ),
-
-//   ],
-//   )
-
-// )
+void quickSave() {
+  AbsFileSystem fs = AbsFileSystem.forThisPlatform();
+  fs.save("aos-thai", qaList, (String doNothing) { } );
+}
