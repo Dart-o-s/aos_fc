@@ -157,6 +157,14 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
+  Future<void> figureModel() async {
+    if (!Platform.isAndroid) return;
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Running on ${androidInfo.model}');
+    _isMyTablet = "Q101" == androidInfo.model;
+  }
+
   PopupMenuButton<dynamic> buildQuickMenu(BuildContext context) {
     return PopupMenuButton(
       initialValue: 1,
