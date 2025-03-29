@@ -2,27 +2,37 @@
 
 ## high prio items
     [X] DONE 2025-03-28 15:07 LOGO!
-    [ ] OPEN do the learnign thing
-        - for now an FWB for "ok" is likely enough
-        - add swipes later
-    [ ] OPEN if Stack is empty, the first cards get added behind "$ Deleted", that is odd!!
+    [✔] DONE 2025-03-29 18:17 do the learning thing
+    [✔] DONE 2025-03-29 18:18 add swipes later
 
-    [ ] OPEN import the basic english word list
-        - use the categories as starting blocks for new Ontologies
-        - 
+    [ ] OPEN if Stack is empty, the first cards get added behind "$ Deleted", that is odd!!
+    [ ] OPEN known cards are not moved to higher boxes yet
+
+    [ ] Memory like game based on this cards
+        - place a set of cards double with opposing sides 
+
 ## probably usable in Storybook
 https://github.com/ChristopherA/iambic-mnemonic/blob/master/word-lists/README.md
 https://medium.com/flutter-community/flutter-flip-card-animation-eb25c403f371
 https://stackoverflow.com/questions/43928702/how-to-change-the-application-launcher-icon-on-flutter
 https://pub.dev/packages/graphviz/versions/0.0.10
 
+## Interesting:
+https://pub.dev/documentation/gesture_x_detector/latest/
+
 ## normal backlog
+    [ ] Floating notification icon (up and down).
+    [ ] OPEN make a simple text field as for pasting in text and use it as import screen
+    [ ] OPEN import the basic english word list
+        - use the categories as starting blocks for new Ontologies
+        - make other simple lsits (German etc.)
     [w] OPEN add boxes for short and long term memory
         - delete moves behind "$ Deleted"
         - DONE 2025-03-28 02:12 << previous chapter - or beginning if there is none
         - DONE 2025-03-28 02:12 >> next chapter - or end if there is none
         OPEN _undelete_ move current card to position 1
         OPEN perma delete by removing from the list
+
 
     [1] OPEN make a small frame around flip pane
         [✓] Tablet

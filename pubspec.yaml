@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flip_card: ^0.7.0
   external_path: ^2.2.0
+  simple_gesture_detector: ^0.2.1
 
 dev_dependencies:
   flutter_test:

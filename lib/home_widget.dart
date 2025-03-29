@@ -1,6 +1,7 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'dart:io';
 
@@ -21,6 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool handlerIsUp = false;
+  double _touchX = 0.0, _touchY = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +45,34 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Expanded(
-                  child: Container(
-                padding: const EdgeInsets.all(8.0),
-                child: FlipCard(
-                    direction: FlipDirection.HORIZONTAL,
-                    front: FlashCardWidget(
-                        side: CardSide.FRONT,
-                        text: qaList[Flashcard.curIndexNum].question),
-                    back: FlashCardWidget(
-                        side: CardSide.BACK,
-                        text: qaList[Flashcard.curIndexNum].answer)),
-              ))
+                  child: GestureDetector(
+                      onTapDown: _onTapTest,
+                      //  <-- check simple GestureDetector
+                      onLongPress: () {
+                        _onLongPress(context);
+                      },
+                      onHorizontalDragEnd: _onSwipeLeftOrRight,
+                      onVerticalDragEnd: _onSwipeUpOrDown,
+                      /* old SimpleGD
+                   onVerticalSwipe: _onSwipeUpOrDown,
+                   onHorizontalSwipe: _onSwipeLeftOrRight,
+                   swipeConfig: SimpleSwipeConfig(
+                     verticalThreshold: 40.0,
+                     horizontalThreshold: 40.0,
+                     swipeDetectionBehavior: SwipeDetectionBehavior.continuousDistinct,
+                   ),
+                    */
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlipCard(
+                            direction: FlipDirection.HORIZONTAL,
+                            front: FlashCardWidget(
+                                side: CardSide.FRONT,
+                                text: qaList[Flashcard.curIndexNum].question),
+                            back: FlashCardWidget(
+                                side: CardSide.BACK,
+                                text: qaList[Flashcard.curIndexNum].answer)),
+                      )))
             ]),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -221,6 +240,83 @@ class _HomePageState extends State<HomePage> {
       qaList.removeCurrent();
     });
   }
+
+  /* secret tap corners --
+  void _getTapPosition(TapDownDetails tapPosition) {
+  setState(() {
+    _tapPosition = tapPosition.globalPosition;
+  });
+  print(_tapPosition); // Debugging purposes
+  }
+   */
+  void _onLongPress(BuildContext context) async {
+    final RenderObject? overlay =
+        Overlay.of(context).context.findRenderObject();
+    final result = await showMenu(
+        context: context,
+        position: RelativeRect.fromRect(
+          Rect.fromLTWH(_touchX, _touchY, 100, 100),
+          Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
+              overlay.paintBounds.size.height),
+        ),
+        // position: RelativeRect.fromLTRB(10, 10, 40, 40),
+        items: [
+          const PopupMenuItem(value: "title", child: Text('Just Demo!')),
+          const PopupMenuItem(value: "close", child: Text('(Import File ...)')),
+          const PopupMenuItem(
+              value: "close", child: Text('(Blame Developer ...)')),
+        ]);
+
+    // setState(() { isPressed = false; }); // Handle menu item selection
+
+    switch (result) {
+      case 'fav':
+        print("Added to favorites");
+        break;
+      case 'close':
+        print('Closed');
+        break;
+    }
+    print(" ... long ... ");
+  }
+
+  void _onSwipeUpOrDown(DragEndDetails direction) {
+    double? where = direction.primaryVelocity ?? 0.0;
+    if (direction.primaryVelocity != null) {
+
+      if ((where < 0.0))
+        _didKnow();
+
+      if (where > 0.0)
+        _didNotKnow();
+    }
+  }
+
+  void _onSwipeLeftOrRight(DragEndDetails direction) {
+    double? where = direction.primaryVelocity ?? 0.0;
+    if (direction.primaryVelocity != null) {
+      if (where < 0.0) print(" left ?");
+      if (where > 0.0) print(" right ?");
+    }
+  }
+
+  void _onTapTest(TapDownDetails details) {
+    _touchX = details.globalPosition.dx;
+    _touchY = details.globalPosition.dy;
+    print(" Touch on: $_touchX, $_touchY");
+  }
+
+  void _didKnow() {
+    showNextCard();
+      setState(() {
+    });
+
+    print ('surprise, he knew!');
+  }
+
+  void _didNotKnow() {
+    qaList.moveCurrentToFront();
+  }
 }
 
 extension on List<Flashcard> {
@@ -315,6 +411,13 @@ extension on List<Flashcard> {
       insert(del, fc); // del is the old position of the del marker
     }
     quickSave();
+  }
+
+  void moveCurrentToFront() {
+    var fc = this[Flashcard.curIndexNum];
+    remove(fc); // loser did not know this
+    insert(1,fc); // move to front, behind first card
+    print (" moved card to front");
   }
 }
 
