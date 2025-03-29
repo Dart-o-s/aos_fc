@@ -11,16 +11,10 @@ void main(List<String> arguments) async {
   // This example uses the Google Books API to search for books about http.
   // https://developers.google.com/books/docs/overview
   var url =
-  Uri.https('libretranslate.com', '/translate');
+  Uri.http('localhost:5000', '/translate');
 
   var body = """
-{
-    q: "Hello",
-    source: "en",
-    target: "it",
-    format: "text",
-    alternatives: 3,
-  }
+{"q":"spicey","source":"en","target":"th","format":"text","alternatives":3}
   """;
   var headers = <String,String>{"Content-Type" : "application/json"};
 
@@ -34,7 +28,7 @@ void main(List<String> arguments) async {
     print('Alternatives: $itemCount.');
 
     var translation = jsonResponse['translatedText'];
-    print('TranslatedText: $translatedText.');
+    print('TranslatedText: $translation.');
 
   } else {
     print('Request failed with status: ${response.statusCode}.');
