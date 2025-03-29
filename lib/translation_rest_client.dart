@@ -3,98 +3,40 @@
   https://github.com/LibreTranslate/LibreTranslate?tab=readme-ov-file
  */
 
-import 'package:rest_api_client/rest_api_client.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  //This must be called once per application lifetime
-  await RestApiClient.initFlutter();
+import 'package:http/http.dart' as http;
 
-  RestApiClient restApiClient = RestApiClientImpl(
-    options: RestApiClientOptions(
-      //Defines your base API url eg. https://mybestrestapi.com
-      baseUrl: 'https://libretranslate.com/',
+void main(List<String> arguments) async {
+  // This example uses the Google Books API to search for books about http.
+  // https://developers.google.com/books/docs/overview
+  var url =
+  Uri.https('libretranslate.com', '/translate');
 
-      //Enable caching of response data
-      cacheEnabled: true,
-    ),
-    loggingOptions: LoggingOptions(
-      //Toggle logging of your requests and responses
-      //to the console while debugging
-      logNetworkTraffic: true,
-    ),
-    exceptionOptions: ExceptionOptions(
-      resolveValidationErrorsMap: (response) {
-        if (response != null &&
-            response.data != null &&
-            response.data['code'] != null) {
-          return {
-            'ERROR': [response.data['code']],
-          };
-        }
-
-        return {};
-      },
-    ),
-    cacheOptions: CacheOptions(
-      useAuthorization: true,
-      cacheLifetimeDuration: const Duration(days: 10),
-      resetOnRestart: false,
-    ),
-    interceptors: [
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          print('Logging before request');
-
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          print('Logging on response');
-
-          return handler.next(response);
-        },
-        onError: (DioException e, handler) {
-          print('Logging on error');
-
-          return handler.next(e);
-        },
-      ),
-    ],
-  );
-
-  //init must be called, preferably right after the instantiation
-  await restApiClient.init();
-
-  //Use restApiClient from this point on
-
-  //If you are using authentication in you app
-  //probably it would look like this
-
-  Map<String, dynamic> headers =  <String, dynamic>{"Content-Type": "application/json"};
-  RestApiClientRequestOptions options = RestApiClientRequestOptions(headers:headers, contentType: "application/json");
-
-  final response = await restApiClient.post(
-    'translate',
-    data:
-    """ 
+  var body = """
 {
-    q: "Hello!",
+    q: "Hello",
     source: "en",
-    target: "es",
-}    
-""",
-  options: options,
-  );
+    target: "it",
+    format: "text",
+    alternatives: 3,
+  }
+  """;
+  var headers = <String,String>{"Content-Type" : "application/json"};
 
-  //Extract the values from response
-  var jwt = response.data['jwt'];
-  var refreshToken = response.data['refreshToken'];
+  // Await the http get response, then decode the json-formatted response.
+  var response = await http.post(url, headers: headers, body: body);
 
-  //Let's asume that somehow we got jwt and refresh token
-  //Probably pinged our api Authentication endpoint to get these two values
-  jwt =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZmx1dHRlciI6IkZsdXR0ZXIgaXMgYXdlc29tZSIsImNoYWxsZW5nZSI6IllvdSBtYWRlIGl0LCB5b3UgY3JhY2tlZCB0aGUgY29kZS4gWW91J3JlIGF3ZXNvbWUgdG9vLiIsImlhdCI6MTUxNjIzOTAyMn0.5QJz8hhxYsHxShS4hWKdHzcFH_IsQQZAnWSEcHJkspE';
-  refreshToken = 'c91c03ea6c46a86cbc019be3d71d0a1a';
+  if (response.statusCode == 200) {
+    var jsonResponse =
+    convert.jsonDecode(response.body) as Map<String, dynamic>;
+    var itemCount = jsonResponse['alternatives'];
+    print('Alternatives: $itemCount.');
 
+    var translation = jsonResponse['translatedText'];
+    print('TranslatedText: $translatedText.');
+
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
 }

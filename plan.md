@@ -33,7 +33,6 @@ https://pub.dev/documentation/gesture_x_detector/latest/
         OPEN _undelete_ move current card to position 1
         OPEN perma delete by removing from the list
 
-
     [1] OPEN make a small frame around flip pane
         [✓] Tablet
         [✓] Windows
