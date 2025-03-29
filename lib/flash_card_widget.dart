@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 
 class FlashCardWidget extends StatelessWidget {
-  FlashCardWidget({required this.text, required this.side});
+  FlashCardWidget({required this.text, required this.side, required this.lightBC});
   final String text;
   final CardSide side;
+  final bool lightBC;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class FlashCardWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
         elevation: 17,
         shadowColor: Color.fromARGB(255, 2, 75, 6),
-        color: Colors.green[700],
+        color: lightBC ? Colors.green[50] : Colors.green[700],
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(

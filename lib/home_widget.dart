@@ -13,6 +13,8 @@ import 'flash_card_extension.dart';
 
 // https://pub.dev/packages/simple_gesture_detector/example
 
+import 'package:device_info_plus/device_info_plus.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -23,6 +25,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool handlerIsUp = false;
   double _touchX = 0.0, _touchY = 0.0;
+  bool _isMyTablet = false;
+
+  _HomePageState () {
+    figureModel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +75,14 @@ class _HomePageState extends State<HomePage> {
                             direction: FlipDirection.HORIZONTAL,
                             front: FlashCardWidget(
                                 side: CardSide.FRONT,
-                                text: qaList[Flashcard.curIndexNum].question),
+                                text: qaList[Flashcard.curIndexNum].question,
+                                lightBC: _isMyTablet
+                            ),
                             back: FlashCardWidget(
                                 side: CardSide.BACK,
-                                text: qaList[Flashcard.curIndexNum].answer)),
+                                text: qaList[Flashcard.curIndexNum].answer,
+                                lightBC: _isMyTablet)
+                            ),
                       )))
             ]),
         bottomNavigationBar: BottomAppBar(
@@ -308,7 +319,7 @@ class _HomePageState extends State<HomePage> {
 
   void _didKnow() {
     showNextCard();
-      setState(() {
+    setState(() {
     });
 
     print ('surprise, he knew!');
@@ -316,6 +327,8 @@ class _HomePageState extends State<HomePage> {
 
   void _didNotKnow() {
     qaList.moveCurrentToFront();
+    setState(() {
+    });
   }
 }
 
