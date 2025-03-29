@@ -36,24 +36,24 @@ class _HomePageState extends State<HomePage> {
             elevation: 5,
             shadowColor: Colors.green[700],
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))
-        ),
-
+                borderRadius: BorderRadius.circular(10))),
         body: Column(
-            mainAxisAlignment: /* MainAxisAlignment.start */ MainAxisAlignment.center,
+            mainAxisAlignment: /* MainAxisAlignment.start */
+                MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Expanded (
-                  child: FlipCard(
-                      direction: FlipDirection.HORIZONTAL,
-                      front: FlashCardWidget(
-                          side: CardSide.FRONT,
-                          text: qaList[Flashcard.curIndexNum].question),
-                      back: FlashCardWidget(
-                          side: CardSide.BACK,
-                          text: qaList[Flashcard.curIndexNum].answer)
-                  ),
-              )
+              Expanded(
+                  child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: FlipCard(
+                    direction: FlipDirection.HORIZONTAL,
+                    front: FlashCardWidget(
+                        side: CardSide.FRONT,
+                        text: qaList[Flashcard.curIndexNum].question),
+                    back: FlashCardWidget(
+                        side: CardSide.BACK,
+                        text: qaList[Flashcard.curIndexNum].answer)),
+              ))
             ]),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -124,55 +124,55 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   PopupMenuButton<dynamic> buildQuickMenu(BuildContext context) {
     return PopupMenuButton(
-                initialValue: 1,
-                onSelected: (item) async  {
-                  // that was tricky ... we have to smuggle a setState() behind the call ...
-                  switch (item) {
-                    case 1:
-                    final value = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddFlashcardPage()),
-                    );
-                    setState(() {
-                    });
-                    case 2:
-                      deleteCurrentCard();
-                      ;
-                    case 3:
-                      deleteCardForever();
-                      ;
-                    case 4:
-                      ;
-                  }
-                },
-                itemBuilder:
-                    (BuildContext context) => <PopupMenuEntry>[
-                  const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
-                  const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
-                  const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
-                  const PopupMenuItem(value: 4, child: Text('(edit)'), height: 24),
-                  const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
-                ],
-              );
+      initialValue: 1,
+      onSelected: (item) async {
+        // that was tricky ... we have to smuggle a setState() behind the call ...
+        switch (item) {
+          case 1:
+            final value = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddFlashcardPage()),
+            );
+            setState(() {});
+          case 2:
+            deleteCurrentCard();
+            ;
+          case 3:
+            deleteCardForever();
+            ;
+          case 4:
+            ;
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
+        const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
+        const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
+        const PopupMenuItem(value: 4, child: Text('(edit)'), height: 24),
+        const PopupMenuItem(
+            value: 5, child: Text('(new file ...)'), height: 24),
+      ],
+    );
   }
 
   void showNextCard() {
     setState(() {
-      Flashcard.curIndexNum = (Flashcard.curIndexNum + 1 < qaList.length) ? Flashcard.curIndexNum + 1 : 0;
+      Flashcard.curIndexNum = (Flashcard.curIndexNum + 1 < qaList.length)
+          ? Flashcard.curIndexNum + 1
+          : 0;
     });
   }
 
   void showPreviousCard() {
     setState(() {
-      Flashcard.curIndexNum =
-          (Flashcard.curIndexNum - 1 >= 0) ? Flashcard.curIndexNum - 1 : qaList.length - 1;
+      Flashcard.curIndexNum = (Flashcard.curIndexNum - 1 >= 0)
+          ? Flashcard.curIndexNum - 1
+          : qaList.length - 1;
     });
   }
 
@@ -199,33 +199,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showPreviousBox() {
-    setState( () {
+    setState(() {
       qaList.findPreviousBox();
     });
   }
 
   void showNextBox() {
-    setState( () {
+    setState(() {
       qaList.findNextBox();
     });
   }
 
   void deleteCurrentCard() {
-    setState( () {
+    setState(() {
       qaList.deleteCurrentCard();
     });
   }
 
   void deleteCardForever() {
-    setState( () {
-        qaList.removeCurrent();
+    setState(() {
+      qaList.removeCurrent();
     });
   }
 }
 
 extension on List<Flashcard> {
   void createInitialStack() {
-    add(Flashcard(question: "Tab to flip Card. Do it now for short help.", answer: "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
+    add(Flashcard(
+        question: "Tab to flip Card. Do it now for short help.",
+        answer:
+            "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
   }
 
   // for now this is a simple "contains test"
@@ -242,13 +245,15 @@ extension on List<Flashcard> {
   }
 
   void fixMissingMetaCards() {
-    if (findCardContaining("\$ Deleted") == -1)
-      addDeletedMarker();
+    if (findCardContaining("\$ Deleted") == -1) addDeletedMarker();
     // TODO more meta cards to follow -> "$ End-Marker"
   }
 
   void addDeletedMarker() {
-    this.add(Flashcard(question: "\$ Deleted", answer: "This box contains deleted cards. For later retrieval or perma death."));
+    this.add(Flashcard(
+        question: "\$ Deleted",
+        answer:
+            "This box contains deleted cards. For later retrieval or perma death."));
   }
 
   int findPreviousBox() {
@@ -277,7 +282,7 @@ extension on List<Flashcard> {
     }
     // not at end, we can increase by one (in case we are on a "Chapter" we do not want to stick here)
     ++Flashcard.curIndexNum;
-    while (Flashcard.curIndexNum <= this.length-1) {
+    while (Flashcard.curIndexNum <= this.length - 1) {
       var fc = this[Flashcard.curIndexNum];
       if (fc.question.startsWith("#") || fc.question.startsWith("\$"))
         return Flashcard.curIndexNum;
@@ -293,7 +298,7 @@ extension on List<Flashcard> {
     if (length == 1) return; // do not delete the last card
     var fc = this[Flashcard.curIndexNum];
     remove(fc);
-    if (Flashcard.curIndexNum > length - 1) Flashcard.curIndexNum = length -1;
+    if (Flashcard.curIndexNum > length - 1) Flashcard.curIndexNum = length - 1;
     quickSave();
   }
 
@@ -315,5 +320,5 @@ extension on List<Flashcard> {
 
 void quickSave() {
   AbsFileSystem fs = AbsFileSystem.forThisPlatform();
-  fs.save("aos-thai", qaList, (String doNothing) { } );
+  fs.save("aos-thai", qaList, (String doNothing) {});
 }

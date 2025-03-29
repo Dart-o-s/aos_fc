@@ -5,11 +5,16 @@
     [ ] OPEN do the learnign thing
         - for now an FWB for "ok" is likely enough
         - add swipes later
+    [ ] OPEN if Stack is empty, the first cards get added behind "$ Deleted", that is odd!!
 
+    [ ] OPEN import the basic english word list
+        - use the categories as starting blocks for new Ontologies
+        - 
 ## probably usable in Storybook
-
+https://github.com/ChristopherA/iambic-mnemonic/blob/master/word-lists/README.md
 https://medium.com/flutter-community/flutter-flip-card-animation-eb25c403f371
 https://stackoverflow.com/questions/43928702/how-to-change-the-application-launcher-icon-on-flutter
+https://pub.dev/packages/graphviz/versions/0.0.10
 
 ## normal backlog
     [w] OPEN add boxes for short and long term memory
@@ -19,9 +24,25 @@ https://stackoverflow.com/questions/43928702/how-to-change-the-application-launc
         OPEN _undelete_ move current card to position 1
         OPEN perma delete by removing from the list
 
+    [1] OPEN make a small frame around flip pane
+        [✓] Tablet
+        [✓] Windows
+        [✅] Phone ✅ ✔ ✓ 🗹
+        [1] change colour on Tablet - probably based on device name?
     [ ] OPEN put on "New Flash Card" a google translate widget
 
-    [_] OPEN script to copy the windows data file into Assets of the project. So it is in Git.
+## after first release
+    [ ] OPEN figure how the files view on the tablet worjs, as orgro uses it as "save" dialog!
+    [ ] OPEN share button via mail
+    [ ] OPEN import
+        - without merge
+        - with merge
+    [ ] mini MD parser - for settings
+        # header
+        [] checkbox
+        - ignore rest
+
+    [_] OPEN script to copy/merge the windows data file into Assets of the project. So it is in Git.
         - and can be distributed together with the App
         - the App should unpack the Asset to ~/Download
 
