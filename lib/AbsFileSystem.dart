@@ -195,6 +195,9 @@ extension on List<Flashcard> {
     return Flashcard.curIndexNum = 0;
   }
 
+  //// TODO
+  /// TODO hod did this end up in AbsFileSystem
+  // TODO
   int findNextBox() {
     // worst edge case: we are *at the end already* then we just jump to the first card
     if (Flashcard.curIndexNum == length - 1) {
@@ -224,3 +227,16 @@ extension on List<Flashcard> {
 
   }
 }
+
+/*
+import 'package:path_provider/path_provider.dart';
+  // ···
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  https://docs.flutter.dev/cookbook/persistence/reading-writing-files
+
+ */

@@ -1,6 +1,10 @@
 # we have a plan
 
 ## high prio items
+    [ ] BUG Some methods got moved into AbsFileSystem, but they belong to "the App"
+        [?] I think I duplicated it to there, because the import did not work
+    [ ] OPEN "move to front" menu item
+    [ ] OPEN Flavicon for Windows
     [X] DONE 2025-03-28 15:07 LOGO!
     [✔] DONE 2025-03-29 18:17 do the learning thing
     [✔] DONE 2025-03-29 18:18 add swipes later
@@ -21,17 +25,19 @@ https://pub.dev/packages/graphviz/versions/0.0.10
 https://pub.dev/documentation/gesture_x_detector/latest/
 
 ## normal backlog
+    [ ] Check for scrollable Bottom Action Bar
     [ ] Floating notification icon (up and down).
     [ ] OPEN make a simple text field as for pasting in text and use it as import screen
     [ ] OPEN import the basic english word list
         - use the categories as starting blocks for new Ontologies
         - make other simple lsits (German etc.)
+        - upgrade the translator to do that - have the words marked ($, #, 
     [w] OPEN add boxes for short and long term memory
         - delete moves behind "$ Deleted"
         - DONE 2025-03-28 02:12 << previous chapter - or beginning if there is none
         - DONE 2025-03-28 02:12 >> next chapter - or end if there is none
-        OPEN _undelete_ move current card to position 1
-        OPEN perma delete by removing from the list
+        [check next CI] OPEN _undelete_ move current card to position 1
+        [check next CI] OPEN perma delete by removing from the list
 
     [1] OPEN make a small frame around flip pane
         [✓] Tablet

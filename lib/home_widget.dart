@@ -192,8 +192,7 @@ class _HomePageState extends State<HomePage> {
         const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
         const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
         const PopupMenuItem(value: 4, child: Text('(edit)'), height: 24),
-        const PopupMenuItem(
-            value: 5, child: Text('(new file ...)'), height: 24),
+        const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
       ],
     );
   }
