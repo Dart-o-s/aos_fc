@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:external_path/external_path.dart';
 
 import '../home_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +17,21 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // getPath_1();
-    // getPath_2();
+    getPath_1();
+    getPath_2();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flashcards Learning App',
+        title: "Aos' Flashcard App",
         home: HomePage());
   }
 }
 
-/*
-# fooling around
 
-# requires package
-import 'package:external_path/external_path.dart';
+// # fooling around
 
-# does not run on windows ... I had assumed it lists ~/Documents and ~/Downloads
+// # requires package
+
+// does not run on windows ... I had assumed it lists ~/Documents and ~/Downloads
 // Get storage directory paths
 Future<void> getPath_1() async {
   var path = await ExternalPath.getExternalStorageDirectories();
@@ -54,4 +54,3 @@ void listDir(String base) {
     print(entity.path);
   }
 }
- */
