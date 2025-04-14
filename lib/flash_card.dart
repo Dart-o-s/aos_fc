@@ -4,10 +4,12 @@ class Flashcard {
   // TODO we need a "storage" instead of the global qaList
   static int curIndexNum = 0;
 
-  final String question;
-  final String answer;
+  String question;
+  String answer;
 
   Flashcard({required this.question, required this.answer});
+
+  static Flashcard getCurrent() => qaList.elementAt(Flashcard.curIndexNum);
 }
 
 List<Flashcard> qaList = [

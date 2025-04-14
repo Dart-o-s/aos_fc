@@ -3,13 +3,24 @@
 ## high prio items
     [ ] BUG Some methods got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
-    [ ] OPEN "move to front" menu item
+
+    [ ] OPEN ask for FileSystem permissions
+        [ ] OPEN select files from filesystem
+
+    [ ] OPEN PWA / Web Storage
+
+    [X] DONE 2025-04-14 17:27 "move to front" menu item
+        Solved: use "thumb down" for that
+
     [ ] OPEN Flavicon for Windows
     [X] DONE 2025-03-28 15:07 LOGO!
     [✔] DONE 2025-03-29 18:17 do the learning thing
     [✔] DONE 2025-03-29 18:18 add swipes later
 
-    [ ] OPEN if Stack is empty, the first cards get added behind "$ Deleted", that is odd!!
+    [X] DONE 2025-04-14 17:28 if Stack is empty, the first cards get added behind "$ Deleted", that is odd!!
+        Not that odd: the bug happened when the "second last card" was selected/shown
+
+    [ ] OPEN 
     [ ] OPEN known cards are not moved to higher boxes yet
 
     [ ] Memory like game based on this cards
@@ -25,20 +36,23 @@ https://pub.dev/packages/graphviz/versions/0.0.10
 https://pub.dev/documentation/gesture_x_detector/latest/
 
 ## normal backlog
-    [ ] find "com.example.sample" and replace it with "priv.aos.flashcard"
+    [X] DONE 2025-04-14 17:44 find "com.example.sample" and replace it with "priv.aos.aos_fc"
     [ ] Check for scrollable Bottom Action Bar
+        - Is a custom bar, probably not worth it ATM for this app 
+
     [ ] Floating notification icon (up and down)
     [ ] OPEN make a simple text field as for pasting in text and use it as import screen
     [ ] OPEN import the basic english word list
         - use the categories as starting blocks for new Ontologies
         - make other simple lists (German etc.)
-        - upgrade the translator to do that - have the words marked ($, #, 
-    [w] OPEN add boxes for short and long term memory
+        - upgrade the translator to do that - have the words marked ($, #)
+
+    [X] DONE 2025-04-14 17:47 add boxes for short and long term memory
         - delete moves behind "$ Deleted"
         - DONE 2025-03-28 02:12 << previous chapter - or beginning if there is none
         - DONE 2025-03-28 02:12 >> next chapter - or end if there is none
-        [check next CI] OPEN _undelete_ move current card to position 1
-        [check next CI] OPEN perma delete by removing from the list
+        - DONE 2025-04-14 17:45 _undelete_ move current card to position 1
+        - DONE 2025-04-14 17:46 perma delete by removing from the list
 
     [1] OPEN make a small frame around flip pane
         [✓] Tablet
@@ -48,12 +62,12 @@ https://pub.dev/documentation/gesture_x_detector/latest/
     [ ] OPEN put on "New Flash Card" a google translate widget
 
 ## after first release
-    [ ] OPEN figure how the files view on the tablet worjs, as orgro uses it as "save" dialog!
+    [ ] OPEN figure how the files view on the tablet works, as orgro uses it as "save" dialog!
     [ ] OPEN share button via mail
     [ ] OPEN import
         - without merge
         - with merge
-    [ ] mini MD parser - for settings
+    [ ] mini MD parser - for settings / resp. use "Properties class" 
         # header
         [] checkbox
         - ignore rest
@@ -74,15 +88,18 @@ https://pub.dev/documentation/gesture_x_detector/latest/
 
     [x] DONE 2025-03-28 00:42 change the add option to "insert" at current position
     
-    [ ] OPEN when inserting treat "# box" and "* chapter" special
+    [X] DONE 2025-04-14 17:26 when inserting treat "# box" and "* chapter" special
         - I think for now, "# Chapters" could be just placed before "$ Deleted"
         - "$ Chapters" just where the user puts them
+        Solved: we just put them where the user is browsing
 
     [] make sure added cards contain no \n or \r
         perhaps in load and store, just replace?
 
     [x] DONE 2025-03-27 22:08 add arrows to browse from box to box 
-    [] OPEN add menu? "longpress?" for "ok" "not ok", "delete" and "edit"
+    [o] OPEN add menu? "longpress?" for "ok" "not ok", "delete" and
+        ok/not ok is not good for longpress, duration is to long
+    [ ] OPEN "edit" is in the bottom menu
 
     [x] DONE 2025-03-27 15:54 change size of window on Windows
         DONE 2025-03-27 22:08 change width of center widget, see below
@@ -92,7 +109,19 @@ https://pub.dev/documentation/gesture_x_detector/latest/
             but the same does not work for "height:"
         = used an Expandable instead of a SizeBox. On the tablet perhaps to big.
     
-    [ ] OPEN change the background colour on the eInk tablet
+    [X] DONE 2025-04-14 14:14 / long ago ... change the background colour on the eInk tablet
+    
+    [X] DONE 2025-04-14 17:18 set up a "snackbar" for short messages
+        - ugly and floats to long, I think ...
+
+    [ ] OPEN Search in Appbar
+        https://pub.dev/packages/app_bar_with_search_switch
+
+    [-] OPEN Copy to clipboard button as tap is used for flip
+        [ ] delayed - we can go to "edit", copy there and abort
+    
+## knowledge
+https://walnutistanbul.medium.com/creating-a-scrollable-bottom-navigation-bar-in-flutter-f11845cfa3d5
 
 ## unplanned items 
     - stuff we made without thinking

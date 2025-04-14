@@ -3,50 +3,63 @@ import 'AbsFileSystem.dart';
 import 'flash_card.dart';
 
 class AddFlashcardPage extends StatefulWidget {
+  late bool edit;
   @override
-  _AddFlashcardPageState createState() => _AddFlashcardPageState();
+  _AddFlashcardPageState createState() => _AddFlashcardPageState(edit);
+  AddFlashcardPage({super.key, bool edit = false}) {
+    this.edit = edit;
+  }
 }
 
 class _AddFlashcardPageState extends State<AddFlashcardPage> {
   final _questionController = TextEditingController();
-  final _answerController = TextEditingController();
+  final _answerController   = TextEditingController();
+  final bool edit;
+
+  _AddFlashcardPageState(this.edit);
 
   void _addFlashcard() {
-    if (_questionController.text.isNotEmpty && _answerController.text.isNotEmpty) {
+    if (edit) {
+      var fc = qaList.elementAt(Flashcard.curIndexNum);
+      fc.question = _questionController.text;
+      fc.answer = _answerController.text;
+    } else if (_questionController.text.isNotEmpty && _answerController.text.isNotEmpty) {
       setState(() {
         int pos = Flashcard.curIndexNum + 1; // add behind current
         var flashcard = Flashcard(
           question: _questionController.text,
           answer: _answerController.text,
         );
-        if (pos == qaList.length - 1) {
+        if (pos == qaList.length) {
           qaList.add(flashcard);
           Flashcard.curIndexNum = qaList.length - 1;
         } else {
           qaList.insert(pos, flashcard);
           Flashcard.curIndexNum++;
         }
-
-        _questionController.clear();
-        _answerController.clear();
-
-        AbsFileSystem fs = AbsFileSystem.forThisPlatform();
-        fs.save("aos-thai", qaList, (String doNothing) { } );
-
       });
+    }
 
-      _questionController.clear();
-      _answerController.clear();
+    _questionController.clear();
+    _answerController.clear();
 
-      Navigator.pop(context);
-    } 
+    AbsFileSystem fs = AbsFileSystem.forThisPlatform();
+    fs.save("aos-thai", qaList, (String doNothing) { } );
+
+    Navigator.pop(context);
+
   }
 
   @override
   Widget build(BuildContext context) {
+    if (edit) {
+      var fc = Flashcard.getCurrent();
+      _questionController.text = fc.question;
+      _answerController.text = fc.answer;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Enter the Question and Answer of your choice"),
+        title: edit ? Text ("Edit the Question or Answer") : Text("Enter the Question and Answer of your choice"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -67,7 +80,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _addFlashcard, 
-              child: Text("Add Flashcard"),
+              child: edit ? Text("Edit Flashcard") : Text("Add Flashcard"),
             ),
           ],
         ),

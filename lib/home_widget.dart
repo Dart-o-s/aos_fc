@@ -1,24 +1,24 @@
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
 
 import 'dart:io';
-import 'package:external_path/external_path.dart';
 
 import 'add_flashcard_page.dart';
 import 'flash_card.dart';
 import 'flash_card_widget.dart';
-import 'package:aos_fc/AbsFileSystem.dart';
-// import 'flash_card_extension.dart';
+import 'AbsFileSystem.dart';
+import 'global.dart';
 
+// import 'flash_card_extension.dart';
 // https://pub.dev/packages/simple_gesture_detector/example
 
 import 'package:device_info_plus/device_info_plus.dart';
 
-
 // # fooling around
-
 // # requires package
+import 'package:external_path/external_path.dart';
 
 // does not run on windows ... I had assumed it lists ~/Documents and ~/Downloads
 // Get storage directory paths
@@ -46,7 +46,6 @@ void listDir(String base) {
     print(entity.path);
   }
 }
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -78,7 +77,10 @@ class _HomePageState extends State<HomePage> {
             elevation: 5,
             shadowColor: Colors.green[700],
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))),
+                borderRadius: BorderRadius.circular(10)
+            )
+        ),
+        floatingActionButton: _createFAB(context),
         body: Column(
             mainAxisAlignment: /* MainAxisAlignment.start */
                 MainAxisAlignment.center,
@@ -200,14 +202,10 @@ class _HomePageState extends State<HomePage> {
     return PopupMenuButton(
       initialValue: 1,
       onSelected: (item) async {
-        // that was tricky ... we have to smuggle a setState() behind the call ...
         switch (item) {
+          // that was tricky ... we have to smuggle a setState() behind the call ...
           case 1:
-            final value = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddFlashcardPage()),
-            );
-            setState(() {});
+            _add();
           case 2:
             deleteCurrentCard();
             ;
@@ -220,10 +218,15 @@ class _HomePageState extends State<HomePage> {
             _moveToFront();
           case 7:
             _test();
+
+          case 8:
+            _edit();
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
+        const PopupMenuItem(value: 8, child: Text('edit ...'), height: 24),
+
         const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
 
         const PopupMenuItem(value: 6, child: Text('un-delete'), height: 24),
@@ -354,8 +357,8 @@ class _HomePageState extends State<HomePage> {
   void _onSwipeLeftOrRight(DragEndDetails direction) {
     double? where = direction.primaryVelocity ?? 0.0;
     if (direction.primaryVelocity != null) {
-      if (where < 0.0) print(" left ?");
-      if (where > 0.0) print(" right ?");
+      if (where < 0.0) showPreviousCard();
+      if (where > 0.0) showNextCard();
     }
   }
 
@@ -368,14 +371,16 @@ class _HomePageState extends State<HomePage> {
   void _didKnow() {
     showNextCard();
     setState(() {
+      final SnackBar snackBar = SnackBar(content: Text(" you knew it "));
+      snackbarKey.currentState?.showSnackBar(snackBar);
     });
-
-    print ('surprise, he knew!');
   }
 
   void _didNotKnow() {
     qaList.moveCurrentToFront();
     setState(() {
+      final SnackBar snackBar = SnackBar(content: Text(" card moved to front "));
+      snackbarKey.currentState?.showSnackBar(snackBar);
     });
   }
 
@@ -385,8 +390,57 @@ class _HomePageState extends State<HomePage> {
 
   // just a helper method to be called from UI for quick tests
   void _test() {
-    getPath_1();
+    // getPath_1();
     getPath_2();
+  }
+
+  void _edit() async {
+    final value = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddFlashcardPage(edit: true)),
+    );
+    setState(() {
+      final SnackBar snackBar = SnackBar(content: Text(" edited "));
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    });
+  }
+
+  _createFAB(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        FloatingActionButton(
+          onPressed: () => _didKnow(),
+          heroTag: 'new it!',
+          mini: true,
+          child: const Icon(Icons.thumb_up_alt_outlined),
+        ),
+        const SizedBox(height: 16),
+        FloatingActionButton(
+          onPressed: () => _didNotKnow(),
+          heroTag: 'did not know',
+          foregroundColor: Theme.of(context).colorScheme.onSecondary,
+          mini: true,
+          child: const Icon(Icons.thumb_down),
+        ),
+        const SizedBox(height: 16),
+        FloatingActionButton(
+          onPressed: () => _add(),
+          heroTag: 'new Card',
+          foregroundColor: Theme.of(context).colorScheme.onSecondary,
+          mini: true,
+          child: const Text("+"),
+        ),
+      ],
+    );
+  }
+
+  void _add() async {
+    final value = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddFlashcardPage()),
+    );
+    setState(() {});
   }
 }
 
@@ -489,6 +543,7 @@ extension on List<Flashcard> {
     remove(fc); // loser did not know this
     insert(1,fc); // move to front, behind first card
     print (" moved card to front");
+    quickSave();
   }
 }
 
