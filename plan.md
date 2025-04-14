@@ -25,12 +25,13 @@ https://pub.dev/packages/graphviz/versions/0.0.10
 https://pub.dev/documentation/gesture_x_detector/latest/
 
 ## normal backlog
+    [ ] find "com.example.sample" and replace it with "priv.aos.flashcard"
     [ ] Check for scrollable Bottom Action Bar
-    [ ] Floating notification icon (up and down).
+    [ ] Floating notification icon (up and down)
     [ ] OPEN make a simple text field as for pasting in text and use it as import screen
     [ ] OPEN import the basic english word list
         - use the categories as starting blocks for new Ontologies
-        - make other simple lsits (German etc.)
+        - make other simple lists (German etc.)
         - upgrade the translator to do that - have the words marked ($, #, 
     [w] OPEN add boxes for short and long term memory
         - delete moves behind "$ Deleted"

@@ -1,19 +1,52 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
-import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'dart:io';
+import 'package:external_path/external_path.dart';
 
 import 'add_flashcard_page.dart';
 import 'flash_card.dart';
 import 'flash_card_widget.dart';
 import 'package:aos_fc/AbsFileSystem.dart';
-import 'flash_card_extension.dart';
+// import 'flash_card_extension.dart';
 
 // https://pub.dev/packages/simple_gesture_detector/example
 
 import 'package:device_info_plus/device_info_plus.dart';
+
+
+// # fooling around
+
+// # requires package
+
+// does not run on windows ... I had assumed it lists ~/Documents and ~/Downloads
+// Get storage directory paths
+Future<void> getPath_1() async {
+  var path = await ExternalPath.getExternalStorageDirectories() as List<String>;
+  print(path);  // [/storage/emulated/0, /storage/B3AE-4D28] - /storage/4F33-88C4]
+
+  for (var it in path) {
+    listDir(it);
+  }
+}
+
+// To get public storage directory path
+Future<void> getPath_2() async {
+  var path = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOAD);
+  print(path);  // /storage/emulated/0/Download
+  listDir(path);
+}
+
+//
+void listDir(String base) {
+  // on Android CWD is "/" - and that does not work
+  var dir = Directory(base);
+  for (var entity in dir.listSync(recursive: false, followLinks: false)) {
+    print(entity.path);
+  }
+}
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -106,8 +139,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 IconButton(
-                  // this button is there only during development
-                  // to run some "testing code" quickly.
                   tooltip: "prev Card",
                   icon: const Icon(Icons.chevron_left_outlined),
                   onPressed: () {
@@ -185,14 +216,24 @@ class _HomePageState extends State<HomePage> {
             ;
           case 4:
             ;
+          case 6:
+            _moveToFront();
+          case 7:
+            _test();
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
         const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
+
+        const PopupMenuItem(value: 6, child: Text('un-delete'), height: 24),
+
         const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
         const PopupMenuItem(value: 4, child: Text('(edit)'), height: 24),
         const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
+
+        const PopupMenuItem(value: 7, child: Text('_- TesT -_'), height: 24),
+
       ],
     );
   }
@@ -336,6 +377,16 @@ class _HomePageState extends State<HomePage> {
     qaList.moveCurrentToFront();
     setState(() {
     });
+  }
+
+  void _moveToFront() {
+    _didNotKnow();
+  }
+
+  // just a helper method to be called from UI for quick tests
+  void _test() {
+    getPath_1();
+    getPath_2();
   }
 }
 
