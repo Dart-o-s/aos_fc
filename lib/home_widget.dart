@@ -11,6 +11,10 @@ import 'flash_card_widget.dart';
 import 'AbsFileSystem.dart';
 import 'global.dart';
 
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 // import 'flash_card_extension.dart';
 // https://pub.dev/packages/simple_gesture_detector/example
 
@@ -191,6 +195,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> figureModel() async {
+    if (kIsWeb) return;
     if (!Platform.isAndroid) return;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -213,7 +218,7 @@ class _HomePageState extends State<HomePage> {
             deleteCardForever();
             ;
           case 4:
-            ;
+            _loadFromWebStore();
           case 6:
             _moveToFront();
           case 7:
@@ -232,7 +237,10 @@ class _HomePageState extends State<HomePage> {
         const PopupMenuItem(value: 6, child: Text('un-delete'), height: 24),
 
         const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
-        const PopupMenuItem(value: 4, child: Text('(edit)'), height: 24),
+
+        if (kIsWeb)
+          const PopupMenuItem(value: 4, child: Text('Load Web-Store'), height: 24),
+
         const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
 
         const PopupMenuItem(value: 7, child: Text('_- TesT -_'), height: 24),
@@ -258,6 +266,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void initCloseHandler(BuildContext context) {
+    if (kIsWeb) return;
     if (!handlerIsUp && Platform.isWindows) {
       handlerIsUp = true;
       FlutterWindowClose.setWindowShouldCloseHandler(() async {
@@ -371,8 +380,7 @@ class _HomePageState extends State<HomePage> {
   void _didKnow() {
     showNextCard();
     setState(() {
-      final SnackBar snackBar = SnackBar(content: Text(" you knew it "));
-      snackbarKey.currentState?.showSnackBar(snackBar);
+      _snacker(" you knew it !");
     });
   }
 
@@ -388,10 +396,30 @@ class _HomePageState extends State<HomePage> {
     _didNotKnow();
   }
 
+  Future<String> loadAsset() async {
+    return await rootBundle.loadString('assets/data/aos-thai.flsh');
+  }
+
   // just a helper method to be called from UI for quick tests
   void _test() {
     // getPath_1();
-    getPath_2();
+    // getPath_2();
+
+    var file = loadAsset();
+
+    file.then((value) {
+      List<String> lines = value.split("\n");
+      for (int i = 0; (i + 1) < lines.length; i += 2) {
+        var front = lines[i];
+        var back = lines[i + 1];
+        qaList.add(Flashcard(question: front, answer: back));
+      }
+    })
+        .catchError((error) => print(error));
+
+    setState(() {
+    _snacker("loded from Assets.");
+    });
   }
 
   void _edit() async {
@@ -419,7 +447,7 @@ class _HomePageState extends State<HomePage> {
         FloatingActionButton(
           onPressed: () => _didNotKnow(),
           heroTag: 'did not know',
-          foregroundColor: Theme.of(context).colorScheme.onSecondary,
+          // foregroundColor: Theme.of(context).colorScheme.onSecondary,
           mini: true,
           child: const Icon(Icons.thumb_down),
         ),
@@ -427,9 +455,9 @@ class _HomePageState extends State<HomePage> {
         FloatingActionButton(
           onPressed: () => _add(),
           heroTag: 'new Card',
-          foregroundColor: Theme.of(context).colorScheme.onSecondary,
+          // foregroundColor: Theme.of(context).colorScheme.onSecondary,
           mini: true,
-          child: const Text("+"),
+          child: const Icon(Icons.add),
         ),
       ],
     );
@@ -441,6 +469,20 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) => AddFlashcardPage()),
     );
     setState(() {});
+  }
+
+  void _loadFromWebStore() {
+    var fs = AbsFileSystem.forThisPlatform();
+    qaList = fs.load("aos-thai");
+    setState(() {
+      _snacker("loaded from browser web store");
+    });
+  }
+
+  // show a snack bar with a message
+  void _snacker(String message) {
+    final SnackBar snackBar = SnackBar(content: Text(message));
+    snackbarKey.currentState?.showSnackBar(snackBar);
   }
 }
 

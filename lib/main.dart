@@ -5,10 +5,15 @@ import 'package:aos_fc/AbsFileSystem.dart';
 import 'package:aos_fc/flash_card.dart';
 
 import 'global.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() {
+  // AOS TODO if it is web, don't load the file during startup ...
   AbsFileSystem fs = AbsFileSystem.forThisPlatform();
-  qaList = fs.load("aos-thai");
+  if (kIsWeb)
+    qaList = fs.initialStore("aos-thai");
+  else
+    qaList = fs.load("aos-thai");
   runApp(MyApp());
 }
 

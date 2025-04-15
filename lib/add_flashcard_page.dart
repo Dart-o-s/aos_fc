@@ -1,6 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'AbsFileSystem.dart';
 import 'flash_card.dart';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+/*
+import 'package:intent_ns/intent.dart' as fcIntent;
+import 'package:intent_ns/extra.dart';
+import 'package:intent_ns/typedExtra.dart';
+import 'package:intent_ns/action.dart' as fcAction;
+*/
 
 class AddFlashcardPage extends StatefulWidget {
   late bool edit;
@@ -82,9 +93,30 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
               onPressed: _addFlashcard, 
               child: edit ? Text("Edit Flashcard") : Text("Add Flashcard"),
             ),
+            /*
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _fetchTranslation,
+              child: Text("Fetch Translation"),
+            ),
+            */
           ],
         ),
       ),
     );
+  }
+
+  // https://stackoverflow.com/questions/19132441/google-translate-activity-not-working-anymore/20321335#20321335
+  // https://pub.dev/documentation/intent_ns/latest/
+  void _fetchTranslation() {
+    if (kIsWeb) return;
+    if (!Platform.isAndroid)
+      return;
+/*
+    var intent = fcIntent.Intent()
+      ..setAction(fcAction.Action.ACTION_TRANSLATE)
+      ..putExtra(Extra.EXTRA_TEXT, "I Love Computers")
+      ..startActivity().catchError((e) => print(e));
+  */
   }
 }

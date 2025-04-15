@@ -6,6 +6,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:aos_fc/flash_card.dart';
 import 'package:aos_fc/flash_card_extension.dart';
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 abstract class AbsFileSystem {
   String getBaseDirectory();
@@ -49,6 +55,7 @@ abstract class AbsFileSystem {
 
     List<Flashcard> store = <Flashcard>[];
     File inf = File(fullName);
+
 /*
     var ex1 = File("/storage").existsSync();
     var ex2 = File("/storage/emulated").existsSync();
@@ -71,12 +78,29 @@ abstract class AbsFileSystem {
       // we know store is empty, we handle it below
     }
     if (store.length == 0) {
+      // first try to load from assets
+/*      var file = loadAsset();
+
+      file.then((value) {
+        List<String> lines = value.split("\\n");
+        for (int i = 0; (i + 1) < lines.length; i += 2) {
+          var front = lines[i];
+          var back = lines[i + 1];
+          store.add(Flashcard(question: front, answer: back));
+        }
+        })
+        .catchError((error) => print(error));
+*/
       store.createInitialStack();
       store.fixMissingMetaCards();
     } else { // stack successfully loaded, but it might miss boxes or new chapters
       store.fixMissingMetaCards();
     }
     return store;
+  }
+
+  Future<String> loadAsset() async {
+    return await rootBundle.loadString('assets/data/aos-thai.flsh');
   }
 
     /*
@@ -97,9 +121,21 @@ abstract class AbsFileSystem {
   }
 
   factory AbsFileSystem.forThisPlatform() {
+    if (kIsWeb) return WebFileSystem();
     if (Platform.isAndroid) return AndroidFileSystem();
     if (Platform.isWindows) return WindowsFileSystem();
     return UseLessFileSystem(); // and crash
+  }
+
+  List<Flashcard> initialStore(String s) {
+    // TODO this is for web only ...
+    // but save to call in any circumstances
+    var res = <Flashcard>[];
+    var fc = Flashcard(question: "Select from the dot menu below, to load your words", answer: "on web, the previous file can not be simply loaded");
+
+    res.add(fc);
+
+    return res;
   }
 }
 
@@ -121,6 +157,81 @@ class UseLessFileSystem extends AbsFileSystem {
   List<Flashcard> load(String fileName) {
     // TODO: implement load
     throw UnimplementedError();
+  }
+}
+
+/// flutter run -d chrome --web-port 8877
+/// keep same port, to keep the data
+class WebFileSystem extends AbsFileSystem {
+  WebFileSystem()  {
+    WidgetsFlutterBinding.ensureInitialized();
+    initStorage();
+  }
+
+  @override
+  String getBaseDirectory() {
+    return "";
+  }
+
+  @override
+  String getFullPath(String fileName) {
+    if (!fileName.contains(".")) fileName += ".flsh";
+    return fileName;
+  }
+
+  @override
+  List<FileSystemEntity> getAllFiles(String suffix) {
+    return [];
+  }
+
+  @override
+  String getCWD() {
+    return "";
+  }
+
+  @override
+  Directory getCWDAsDir() {
+    return Directory("");
+  }
+
+  @override
+  List<Flashcard> load(String fileName) {
+    List<Flashcard> res = [];
+
+    String data = localStorage.getItem(fileName) ?? "";
+    if (data == "") {
+      res.createInitialStack();
+      res.fixMissingMetaCards();
+    } // AOS TODO split data up
+    return res;
+  }
+
+  @override
+  String save(String fileName, List<Flashcard> store, void Function(String p1) done) {
+
+    if (!localStorageIsInitialized()) {
+      print("error: LS not initialized");
+      return "error: LS not initialized";
+    }
+
+    StringBuffer result = StringBuffer();
+    for (var it in store) {
+      result.writeln(it.question);
+      result.writeln(it.answer);
+    }
+
+    var contents = result.toString();
+    localStorage.setItem(fileName, contents);
+
+    // see: https://stackoverflow.com/questions/13292744/why-isnt-localstorage-persisting-in-chrome
+    // retrieve it, as some Browsers do not persist keys that did not get used
+    load(fileName);
+
+    return fileName;
+  }
+
+  void initStorage() async {
+    await initLocalStorage();
   }
 }
 

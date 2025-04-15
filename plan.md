@@ -24,7 +24,9 @@
     [ ] OPEN known cards are not moved to higher boxes yet
 
     [ ] Memory like game based on this cards
-        - place a set of cards double with opposing sides 
+        - place a set of cards double with opposing sides
+
+    [ ] Figure how to load/write from assets
 
 ## probably usable in Storybook
 https://github.com/ChristopherA/iambic-mnemonic/blob/master/word-lists/README.md
@@ -36,6 +38,8 @@ https://pub.dev/packages/graphviz/versions/0.0.10
 https://pub.dev/documentation/gesture_x_detector/latest/
 
 ## normal backlog
+    [ ] OPEN intent_ns: ^2.0.0 fix it on github, after upgrading to high level Kotlin, it does not compiler\
+
     [X] DONE 2025-04-14 17:44 find "com.example.sample" and replace it with "priv.aos.aos_fc"
     [ ] Check for scrollable Bottom Action Bar
         - Is a custom bar, probably not worth it ATM for this app 
@@ -59,6 +63,7 @@ https://pub.dev/documentation/gesture_x_detector/latest/
         [✓] Windows
         [✅] Phone ✅ ✔ ✓ 🗹
         [1] change colour on Tablet - probably based on device name?
+
     [ ] OPEN put on "New Flash Card" a google translate widget
 
 ## after first release
@@ -93,7 +98,7 @@ https://pub.dev/documentation/gesture_x_detector/latest/
         - "$ Chapters" just where the user puts them
         Solved: we just put them where the user is browsing
 
-    [] make sure added cards contain no \n or \r
+    [] OPEN make sure added cards contain no \n or \r
         perhaps in load and store, just replace?
 
     [x] DONE 2025-03-27 22:08 add arrows to browse from box to box 
