@@ -15,8 +15,11 @@
         - at the moment replacing the "installed" app via debugger keeps it able to 
             manipulate its file on ~/Downloads
 
-    [ ] OPEN about page with build date and number of cards 
-    [ ] OPEN help text 
+    [X] DONE 2025-04-23 22:22 about page with build date and number of cards 
+    [X] DONE 2025-04-23 22:24 help text, included in About Page 
+
+    [ ] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
+    [ ] BUG OPEN left and right swipe swipe wrong.
 
     [ ] OPEN search ...
     [ ] OPEN "import a file" via copy paste, append it to the stack

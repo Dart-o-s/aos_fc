@@ -11,6 +11,7 @@ import 'flash_card.dart';
 import 'flash_card_widget.dart';
 import 'AbsFileSystem.dart';
 import 'global.dart';
+import 'about_and_help_page.dart';
 
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
@@ -61,10 +62,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool handlerIsUp = false;
-  double _touchX = 0.0, _touchY = 0.0;
+  double _touchX = 0.0,
+      _touchY = 0.0;
   bool _isMyTablet = false;
 
-  _HomePageState () {
+  _HomePageState() {
     figureModel();
   }
 
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: _createFAB(context),
         body: Column(
             mainAxisAlignment: /* MainAxisAlignment.start */
-                MainAxisAlignment.center,
+            MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Expanded(
@@ -122,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                                 side: CardSide.BACK,
                                 text: qaList[Flashcard.curIndexNum].answer,
                                 lightBC: _isMyTablet)
-                            ),
+                        ),
                       )))
             ]),
         bottomNavigationBar: BottomAppBar(
@@ -209,7 +211,7 @@ class _HomePageState extends State<HomePage> {
       initialValue: 1,
       onSelected: (item) async {
         switch (item) {
-          // that was tricky ... we have to smuggle a setState() behind the call ...
+        // that was tricky ... we have to smuggle a setState() behind the call ...
           case 1:
             _add();
           case 2:
@@ -230,7 +232,8 @@ class _HomePageState extends State<HomePage> {
             _test();
         }
       },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+      itemBuilder: (BuildContext context) =>
+      <PopupMenuEntry>[
         const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
         const PopupMenuItem(value: 8, child: Text('edit ...'), height: 24),
         const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
@@ -238,11 +241,15 @@ class _HomePageState extends State<HomePage> {
         const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
 
         if (kIsWeb)
-          const PopupMenuItem(value: 4, child: Text('Load Web-Store'), height: 24),
+          const PopupMenuItem(
+              value: 4, child: Text('Load Web-Store'), height: 24),
 
-        const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
-        const PopupMenuItem(value: 7, child: Text('Load From Assets ...'), height: 24),
-        const PopupMenuItem(value: 'TEST', child: Text('_- TEST -_'), height: 24),
+        const PopupMenuItem(
+            value: 5, child: Text('(new file ...)'), height: 24),
+        const PopupMenuItem(
+            value: 7, child: Text('Load From Assets ...'), height: 24),
+        const PopupMenuItem(
+            value: 'TEST', child: Text('_- TEST -_'), height: 24),
 
       ],
     );
@@ -321,7 +328,10 @@ class _HomePageState extends State<HomePage> {
    */
   void _onLongPress(BuildContext context) async {
     final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
+    Overlay
+        .of(context)
+        .context
+        .findRenderObject();
     final result = await showMenu(
         context: context,
         position: RelativeRect.fromRect(
@@ -331,8 +341,9 @@ class _HomePageState extends State<HomePage> {
         ),
         // position: RelativeRect.fromLTRB(10, 10, 40, 40),
         items: [
-          const PopupMenuItem(value: "title", child: Text('Just Demo!')),
-          const PopupMenuItem(value: "close", child: Text('(Import File ...)')),
+          const PopupMenuItem(value: "about", child: Text('About and Help')),
+          const PopupMenuItem(
+              value: "import", child: Text('Import Copy/Paste ...)')),
           const PopupMenuItem(
               value: "close", child: Text('(Blame Developer ...)')),
         ]);
@@ -340,20 +351,17 @@ class _HomePageState extends State<HomePage> {
     // setState(() { isPressed = false; }); // Handle menu item selection
 
     switch (result) {
-      case 'fav':
-        print("Added to favorites");
-        break;
-      case 'close':
-        print('Closed');
+      case 'about':
+        _aboutAndHelp(context);
+      case 'import':
+        _copyPasteImport(context);
         break;
     }
-    print(" ... long ... ");
   }
 
   void _onSwipeUpOrDown(DragEndDetails direction) {
     double? where = direction.primaryVelocity ?? 0.0;
     if (direction.primaryVelocity != null) {
-
       if ((where < 0.0))
         _didKnow();
 
@@ -386,7 +394,8 @@ class _HomePageState extends State<HomePage> {
   void _didNotKnow() {
     qaList.moveCurrentToFront();
     setState(() {
-      final SnackBar snackBar = SnackBar(content: Text(" card moved to front "));
+      final SnackBar snackBar = SnackBar(
+          content: Text(" card moved to front "));
       snackbarKey.currentState?.showSnackBar(snackBar);
     });
   }
@@ -406,15 +415,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadThaiFromAssets() async {
-
     if (await
-      confirm(context,
+    confirm(context,
         title: Text("loading from Assets",
-          style: TextStyle(fontWeight: FontWeight.bold)),
-        content: Text("This will replace your current Box of Cards. Do you want to continue?",
-          style: TextStyle(fontSize: 24) ))
-      ) {
-
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text(
+            "This will replace your current Box of Cards. Do you want to continue?",
+            style: TextStyle(fontSize: 24)))
+    ) {
       var file = loadAsset();
 
       file.then((value) {
@@ -494,6 +502,16 @@ class _HomePageState extends State<HomePage> {
   void _snacker(String message) {
     final SnackBar snackBar = SnackBar(content: Text(message));
     snackbarKey.currentState?.showSnackBar(snackBar);
+  }
+
+  void _copyPasteImport(BuildContext context) {}
+
+  void _aboutAndHelp(BuildContext context) async {
+    final value = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AboutAndHelpPage(title: "About & Help")),
+    );
+    setState(() {});
   }
 }
 
