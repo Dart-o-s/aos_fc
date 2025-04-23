@@ -284,10 +284,25 @@ extension on List<Flashcard> {
     return -1;
   }
 
+  // TODO move all "fix Stack" methods into this class
   void fixMissingMetaCards() {
-    if (findCardContaining("\$ Deleted") == -1)
-      this.add(Flashcard(question: "\$ Deleted", answer: "This box contains deleted cards. For later retrievel or perma death."));
-    // TODO more meta cards to follow -> "$ End-Marker"
+    // if no "$ End of File Marker", we add that first
+    var eof = findCardContaining("\$ End of File Marker");
+
+    if (eof == -1) {
+      add(Flashcard(
+        question: "\$ End of File Marker",
+        answer: "Just a Marker, so moving from box to box is more easy "));
+      eof = length - 1;
+    }
+
+    if (findCardContaining("\$ Deleted") == -1) {
+      var dell = Flashcard(
+          question: "\$ Deleted",
+          answer: "This box contains deleted cards. For later retrieve or perma death.");
+      insert(eof, dell);
+      eof = length - 1; // in case we add more markers, keep EoF updated
+    }
   }
 
   int findPreviousBox() {
@@ -309,7 +324,7 @@ extension on List<Flashcard> {
   }
 
   //// TODO
-  /// TODO hod did this end up in AbsFileSystem
+  /// TODO how did this end up in AbsFileSystem?
   // TODO
   int findNextBox() {
     // worst edge case: we are *at the end already* then we just jump to the first card

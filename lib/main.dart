@@ -47,5 +47,5 @@ class MyApp extends StatelessWidget {
   int get currentCardNum => Flashcard.curIndexNum;
   int get numCards => qaList.length;
 
-  String get aboutText => _itsAboutText.replaceFirst("{p1}", "${currentCardNum}/${numCards}");
+  String get aboutText => _itsAboutText.replaceFirst("{p1}", "${currentCardNum}/${numCards-1}");
 }

@@ -16,7 +16,7 @@ You can completely delete them later.
 ## special marked cards
 Cards with names like *"#1 Box One", "#2 ..."* etc. are markers for Boxes. With "long press" you get a menu to move a card to the next box. **Note:** *there is no space between the "#" and the number!*
 
-Other special name sfor cards start with a dollar, for example: "$ Deleted", "$ End of Stack" (an end marker). Feel free to add as many numbered boxes or markers as you want. A future upgrade will let you move the current card freely into boxes.
+Other special name sfor cards start with a dollar, for example: "$ Deleted", "$ End of File Marker" (an end marker). Feel free to add as many numbered boxes or markers as you want. A future upgrade will let you move the current card freely into boxes.
 
 ## navigation
 The *thumb down* symbol, moves a card to the first position in the box. As in: "you did not know it".

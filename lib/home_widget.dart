@@ -538,14 +538,21 @@ extension on List<Flashcard> {
 
   void fixMissingMetaCards() {
     if (findCardContaining("\$ Deleted") == -1) addDeletedMarker();
-    // TODO more meta cards to follow -> "$ End-Marker"
+    // TODO more meta cards to follow -> "$ End of File Marker"
   }
 
+  // we know there is no delete marker
   void addDeletedMarker() {
-    this.add(Flashcard(
+    var del = Flashcard(
         question: "\$ Deleted",
         answer:
-            "This box contains deleted cards. For later retrieval or perma death."));
+            "This box contains deleted cards. For later retrieval or perma death.");
+    var idx = findCardContaining("\$ End of File Marker");
+    if (idx == -1) { // no end of file marker, just add the delete marker
+      add(del);
+    } else {
+      insert(idx, del);
+    }
   }
 
   int findPreviousBox() {

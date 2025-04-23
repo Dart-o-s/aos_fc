@@ -18,19 +18,22 @@
     [X] DONE 2025-04-23 22:22 about page with build date and number of cards 
     [X] DONE 2025-04-23 22:24 help text, included in About Page 
 
-    [ ] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
+    [X] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
     [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
+    [ ] OPEN known cards are not moved to higher boxes yet
     [ ] OPEN search ...
     [ ] OPEN "import a file" via copy paste, append it to the stack
-
-    [ ] OPEN known cards are not moved to higher boxes yet
 
     [ ] OPEN import a file via copy/paste. Append or overwrite.
     [ ] OPEN About dialog with build date and time
 
-### delayed
+    [ ] LUXX the last literal used, should be in an helper variable "it" (or similar).
+        - better idea, there is always a helper "declared" and we set it manually where needed
+        - in theory, all "keywords" of a previous keyword message could be variables for reuse?
 
+### delayed
+    [ ] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.
     [ ] Clean up script for plan.md, move all DONE items to the end
     [ ] OPEN ask for FileSystem permissions
         [ ] OPEN select files from filesystem
