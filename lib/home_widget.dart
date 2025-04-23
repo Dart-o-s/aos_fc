@@ -373,8 +373,8 @@ class _HomePageState extends State<HomePage> {
   void _onSwipeLeftOrRight(DragEndDetails direction) {
     double? where = direction.primaryVelocity ?? 0.0;
     if (direction.primaryVelocity != null) {
-      if (where < 0.0) showPreviousCard();
-      if (where > 0.0) showNextCard();
+      if (where < 0.0) showNextCard();
+      if (where > 0.0) showPreviousCard();
     }
   }
 

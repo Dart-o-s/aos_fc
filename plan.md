@@ -19,7 +19,7 @@
     [X] DONE 2025-04-23 22:24 help text, included in About Page 
 
     [ ] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
-    [ ] BUG OPEN left and right swipe swipe wrong.
+    [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
     [ ] OPEN search ...
     [ ] OPEN "import a file" via copy paste, append it to the stack
