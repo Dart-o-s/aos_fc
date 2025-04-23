@@ -266,6 +266,10 @@ class WindowsFileSystem extends AbsFileSystem {
   }
 }
 
+int findNextBox() {
+  return qaList.findNextBox();
+}
+
 int findCardContaining(String it) {
   int cur = Flashcard.curIndexNum;
   int found = qaList.findCardContaining(it, from: cur);
@@ -335,6 +339,7 @@ extension on List<Flashcard> {
   //// TODO
   /// TODO how did this end up in AbsFileSystem?
   // TODO
+  // TODO Aos don't destroy the index!!
   int findNextBox() {
     // worst edge case: we are *at the end already* then we just jump to the first card
     if (Flashcard.curIndexNum == length - 1) {
@@ -356,7 +361,7 @@ extension on List<Flashcard> {
   void removeCurrent() {
     if (length == 1) return; // do not delete the last card
     var fc = this[Flashcard.curIndexNum];
-    remove(fc);
+    remove(fc); // Aos use removeAt
     if (Flashcard.curIndexNum > length - 1) Flashcard.curIndexNum = length -1;
   }
 

@@ -24,6 +24,7 @@ class _ImportPage extends State<ImportPage> {
       body: Column(children: <Widget>[
         Expanded(child: CodeEditor(
           // todo Aos text size
+          style: CodeEditorStyle(fontSize: 24),
           indicatorBuilder:
               (context, editingController, chunkController, notifier) {
             lec = editingController;

@@ -375,9 +375,10 @@ class _HomePageState extends State<HomePage> {
         ),
         // position: RelativeRect.fromLTRB(10, 10, 40, 40),
         items: [
-          const PopupMenuItem(value: "about", child: Text('About and Help')),
+          const PopupMenuItem(value: "pushUp", child: Text('push to next box')),
           const PopupMenuItem(
               value: "import", child: Text('Import Copy/Paste ...')),
+          const PopupMenuItem(value: "about", child: Text('About and Help')),
           const PopupMenuItem(
               value: "close", child: Text('(Blame Developer ...)')),
         ]);
@@ -385,6 +386,8 @@ class _HomePageState extends State<HomePage> {
     // setState(() { isPressed = false; }); // Handle menu item selection
 
     switch (result) {
+      case 'pushUp':
+        _pushToNextBox(context);
       case 'about':
         _aboutAndHelp(context);
       case 'import':
@@ -546,6 +549,27 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) => const AboutAndHelpPage(title: "About & Help")),
     );
     setState(() {});
+  }
+
+  void _pushToNextBox(BuildContext context) {
+    var rem = Flashcard.curIndexNum;
+    var fc = Flashcard.getCurrent();
+
+    // findNext() uses Flashcard.curIndexNum, stupid idea
+    var where = findNextBox();
+    var box = qaList[where];
+
+    if (where == 0) return;
+
+    qaList.remove(fc);
+    qaList.insert(where, fc);
+
+    Flashcard.curIndexNum = where;
+
+    setState(() {
+      _snacker(" ${fc.question} moved behind ${box.question}");
+    });
+
   }
 }
 

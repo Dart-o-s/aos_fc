@@ -1,4 +1,5 @@
 # we have a plan
+    1) Play Trumpets! Realease 0.9
 
 ## high prio items
     [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
@@ -26,8 +27,9 @@
     [X] DONE 2025-04-24 02:25 import a file via copy/paste. 
         - Append or overwrite?
         + I decided to insert after first card
+        Fixed font suze: style: CodeEditorStyle(fontSize: 24),
 
-    [ ] OPEN known cards are not moved to higher boxes yet
+    [X] OPEN known cards are not moved to higher boxes yet
 
     [ ] LUXX the last literal used, should be in an helper variable "it" (or similar).
         - better idea, there is always a helper "declared" and we set it manually where needed
