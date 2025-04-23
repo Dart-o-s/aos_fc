@@ -131,7 +131,9 @@ abstract class AbsFileSystem {
     // TODO this is for web only ...
     // but save to call in any circumstances
     var res = <Flashcard>[];
-    var fc = Flashcard(question: "Select from the dot menu below, to load your words", answer: "on web, the previous file can not be simply loaded");
+    var fc = Flashcard(
+        question: "Select from the dot menu below, to load your words",
+        answer: "on web, the previous file can not be simply loaded");
 
     res.add(fc);
 

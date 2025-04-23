@@ -32,6 +32,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "confirm_dialog",
+      "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/confirm_dialog-1.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "crypto",
       "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/crypto-3.0.6",
       "packageUri": "lib/",
@@ -452,7 +458,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2025-04-14T18:08:18.399747Z",
+  "generated": "2025-04-23T11:19:08.091791Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///C:/Users/angel/flutter/flutter_windows_3.27.1-stable/flutter",

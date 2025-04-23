@@ -1,6 +1,7 @@
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
 
 import 'dart:io';
@@ -222,28 +223,26 @@ class _HomePageState extends State<HomePage> {
           case 6:
             _moveToFront();
           case 7:
-            _test();
-
+            _loadThaiFromAssets();
           case 8:
             _edit();
+          case 'TEST': // easier to use Text if you want to randomly insert an new menu item
+            _test();
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
         const PopupMenuItem(value: 8, child: Text('edit ...'), height: 24),
-
         const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
-
         const PopupMenuItem(value: 6, child: Text('un-delete'), height: 24),
-
         const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
 
         if (kIsWeb)
           const PopupMenuItem(value: 4, child: Text('Load Web-Store'), height: 24),
 
         const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
-
-        const PopupMenuItem(value: 7, child: Text('_- TesT -_'), height: 24),
+        const PopupMenuItem(value: 7, child: Text('Load From Assets ...'), height: 24),
+        const PopupMenuItem(value: 'TEST', child: Text('_- TEST -_'), height: 24),
 
       ],
     );
@@ -396,30 +395,42 @@ class _HomePageState extends State<HomePage> {
     _didNotKnow();
   }
 
-  Future<String> loadAsset() async {
-    return await rootBundle.loadString('assets/data/aos-thai.flsh');
+  Future<String> loadAsset({String name = 'assets/data/aos-thai.flsh'}) async {
+    return await rootBundle.loadString(name);
   }
 
   // just a helper method to be called from UI for quick tests
   void _test() {
     // getPath_1();
     // getPath_2();
+  }
 
-    var file = loadAsset();
+  void _loadThaiFromAssets() async {
 
-    file.then((value) {
-      List<String> lines = value.split("\n");
-      for (int i = 0; (i + 1) < lines.length; i += 2) {
-        var front = lines[i];
-        var back = lines[i + 1];
-        qaList.add(Flashcard(question: front, answer: back));
-      }
-    })
-        .catchError((error) => print(error));
+    if (await
+      confirm(context,
+        title: Text("loading from Assets",
+          style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text("This will replace your current Box of Cards. Do you want to continue?",
+          style: TextStyle(fontSize: 24) ))
+      ) {
 
-    setState(() {
-    _snacker("loded from Assets.");
-    });
+      var file = loadAsset();
+
+      file.then((value) {
+        List<String> lines = value.split("\n");
+        for (int i = 0; (i + 1) < lines.length; i += 2) {
+          var front = lines[i];
+          var back = lines[i + 1];
+          qaList.add(Flashcard(question: front, answer: back));
+        }
+      })
+          .catchError((error) => print(error));
+
+      setState(() {
+        _snacker("Thai loaded from Assets.");
+      });
+    }
   }
 
   void _edit() async {

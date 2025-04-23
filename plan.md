@@ -4,10 +4,39 @@
     [ ] BUG Some methods got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
 
+    [X] DONE 2025-04-23 18:15 test if I can copy my assests into downloads (Android)
+            and modify them with an editor.
+        Drawback: my Orgro saves with struggles ... and messes up data.
+
+    [X] OPEN confirmation dialog, before we overwrite the Downloads
+
+    [X] DONE 2025-04-23 18:54 try to load from Downloads first, then load assets
+        - that was the default
+        - at the moment replacing the "installed" app via debugger keeps it able to 
+            manipulate its file on ~/Downloads
+
+    [ ] OPEN about page with build date and number of cards 
+    [ ] OPEN help text 
+
+    [ ] OPEN search ...
+    [ ] OPEN "import a file" via copy paste, append it to the stack
+
+    [ ] OPEN known cards are not moved to higher boxes yet
+
+    [ ] OPEN import a file via copy/paste. Append or overwrite.
+    [ ] OPEN About dialog with build date and time
+
+### delayed
+
+    [ ] Clean up script for plan.md, move all DONE items to the end
     [ ] OPEN ask for FileSystem permissions
         [ ] OPEN select files from filesystem
 
-    [ ] OPEN PWA / Web Storage
+    [O] OPEN PWA / Web Storage
+        does not work on Windows - stuff in the browser vanishes
+        the "desktop installed app" does not launch
+        [ ] OPEN lets try on Android as web page served from my laptop
+        [ ] OPEN if web-storage does not work, lets try indexDB
 
     [X] DONE 2025-04-14 17:27 "move to front" menu item
         Solved: use "thumb down" for that
@@ -20,13 +49,13 @@
     [X] DONE 2025-04-14 17:28 if Stack is empty, the first cards get added behind "$ Deleted", that is odd!!
         Not that odd: the bug happened when the "second last card" was selected/shown
 
-    [ ] OPEN 
-    [ ] OPEN known cards are not moved to higher boxes yet
-
     [ ] Memory like game based on this cards
         - place a set of cards double with opposing sides
 
-    [ ] Figure how to load/write from assets
+    [X] Figure how to load/write from assets
+        load is done, write is not possible, it seems
+
+    [ ] OPEN figure if you can write into your privte store and read from it
 
 ## probably usable in Storybook
 https://github.com/ChristopherA/iambic-mnemonic/blob/master/word-lists/README.md
