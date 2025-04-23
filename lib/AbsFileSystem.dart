@@ -266,6 +266,15 @@ class WindowsFileSystem extends AbsFileSystem {
   }
 }
 
+int findCardContaining(String it) {
+  int cur = Flashcard.curIndexNum;
+  int found = qaList.findCardContaining(it, from: cur);
+
+  if (found != -1) return found;
+
+  return qaList.findCardContaining(it);
+}
+
 extension on List<Flashcard> {
   void createInitialStack() {
     add(Flashcard(question: "Tab to flip Card. Do it now for short help.", answer: "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
@@ -275,8 +284,8 @@ extension on List<Flashcard> {
   // we check both back and front
   // TODO consider to switch to regexp
   // TODO make individual searches possible
-  int findCardContaining(String pattern) {
-    for (int res = 0; res < this.length; res++) {
+  int findCardContaining(String pattern, {int from = 0}) {
+    for (int res = from; res < this.length; res++) {
       final fc = this[res];
       if (fc.question.contains(pattern)) return res;
       if (fc.answer.contains(pattern)) return res;

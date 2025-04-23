@@ -1,8 +1,9 @@
 # we have a plan
 
 ## high prio items
-    [ ] BUG Some methods got moved into AbsFileSystem, but they belong to "the App"
+    [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
+            I believe I only need to refactor them out into its own file but give the extensions a name.
 
     [X] DONE 2025-04-23 18:15 test if I can copy my assests into downloads (Android)
             and modify them with an editor.
@@ -21,16 +22,17 @@
     [X] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
     [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
-    [ ] OPEN known cards are not moved to higher boxes yet
-    [ ] OPEN search ...
-    [ ] OPEN "import a file" via copy paste, append it to the stack
-
+    [X] DONE 2025-04-24 00:49 search ...
     [ ] OPEN import a file via copy/paste. Append or overwrite.
-    [ ] OPEN About dialog with build date and time
+    [ ] OPEN known cards are not moved to higher boxes yet
 
     [ ] LUXX the last literal used, should be in an helper variable "it" (or similar).
         - better idea, there is always a helper "declared" and we set it manually where needed
         - in theory, all "keywords" of a previous keyword message could be variables for reuse?
+    [ ] LUXX Parser break point in source code be able to have a token (on lexer level?) like BRK that is interpreted by the parser to break in a breakpoint. 
+    [ ] LUXX return named result.
+          int found = qaList.findCardContaining(it, from: cur);
+          ^^^^^^^^^ this could be a "name" variable provided by the function
 
 ### delayed
     [ ] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.
@@ -76,12 +78,13 @@ https://pub.dev/documentation/gesture_x_detector/latest/
     [ ] OPEN intent_ns: ^2.0.0 fix it on github, after upgrading to high level Kotlin, it does not compiler\
 
     [X] DONE 2025-04-14 17:44 find "com.example.sample" and replace it with "priv.aos.aos_fc"
-    [ ] Check for scrollable Bottom Action Bar
+    [_] Check for scrollable Bottom Action Bar
         - Is a custom bar, probably not worth it ATM for this app 
 
-    [ ] Floating notification icon (up and down)
-    [ ] OPEN make a simple text field as for pasting in text and use it as import screen
-    [ ] OPEN import the basic english word list
+    [X] DONE 2025-04-24 00:42 -long ago- Floating notification icon (up and down)
+        replaced by snackbar ...
+
+    [X] DONE 2025-04-24 00:41 -long ago - import the basic english word list
         - use the categories as starting blocks for new Ontologies
         - make other simple lists (German etc.)
         - upgrade the translator to do that - have the words marked ($, #)

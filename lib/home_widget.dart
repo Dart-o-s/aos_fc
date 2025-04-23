@@ -168,9 +168,18 @@ class _HomePageState extends State<HomePage> {
                   tooltip: "search ...",
                   icon: const Icon(Icons.search),
                   onPressed: () {
-                    setState(() {
-                      // search(context);
-                    });
+                    final _searchFieldController = TextEditingController();
+                    var term = _showTextInputDialog(context, _searchFieldController).then(
+                        (string) {
+                          setState(() {
+                            int idx = findCardContaining(_searchFieldController.text);
+                            if (idx == -1) {
+                              _snacker("not found!");
+                              return;
+                            }
+                            Flashcard.curIndexNum = idx;
+                          });
+                        });
                   },
                 ),
                 IconButton(
@@ -206,6 +215,30 @@ class _HomePageState extends State<HomePage> {
     _isMyTablet = "Q101" == androidInfo.model;
   }
 
+  Future<String?> _showTextInputDialog(BuildContext context, TextEditingController searchFieldController) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Search'),
+            content: TextField(
+              controller: searchFieldController,
+              decoration: const InputDecoration(hintText: "。。。"), // タスクの名称を入力してください
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text("キャンセル"),
+                onPressed: () => Navigator.pop(context),
+              ),
+              ElevatedButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.pop(context, searchFieldController.text),
+                // TODO Aos worst case we have to start the search here
+              ),
+            ],
+          );
+        });
+  }
   PopupMenuButton<dynamic> buildQuickMenu(BuildContext context) {
     return PopupMenuButton(
       initialValue: 1,
@@ -343,7 +376,7 @@ class _HomePageState extends State<HomePage> {
         items: [
           const PopupMenuItem(value: "about", child: Text('About and Help')),
           const PopupMenuItem(
-              value: "import", child: Text('Import Copy/Paste ...)')),
+              value: "import", child: Text('Import Copy/Paste ...')),
           const PopupMenuItem(
               value: "close", child: Text('(Blame Developer ...)')),
         ]);
