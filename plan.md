@@ -23,7 +23,10 @@
     [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
     [X] DONE 2025-04-24 00:49 search ...
-    [ ] OPEN import a file via copy/paste. Append or overwrite.
+    [X] DONE 2025-04-24 02:25 import a file via copy/paste. 
+        - Append or overwrite?
+        + I decided to insert after first card
+
     [ ] OPEN known cards are not moved to higher boxes yet
 
     [ ] LUXX the last literal used, should be in an helper variable "it" (or similar).
@@ -33,6 +36,9 @@
     [ ] LUXX return named result.
           int found = qaList.findCardContaining(it, from: cur);
           ^^^^^^^^^ this could be a "name" variable provided by the function
+    [ ] SB Look at this:
+        dependencies:
+            re_editor: ^0.0.3
 
 ### delayed
     [ ] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.

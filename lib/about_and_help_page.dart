@@ -16,31 +16,6 @@ class _AboutAndHelpPage extends State<AboutAndHelpPage> {
   Widget build(BuildContext context) {
     var markdown = gMain.aboutText;
 
-    var markdownO = """
-Here's a simple Go program that prints "Hello, world!" to the console😀:
-
-```go
-package main
-import "fmt"
-
-func main() {
-    fmt.Println("Hello, world!")
-}
-```
-
-Save the above code in a file with a `.go` extension, for example `hello.go`. Then, you can run the program by executing the following command in your terminal:
-
-```shell
-go run hello.go
-```
-
-The output will be:
-
-```
-Hello, world!
-```
-*Bold End*?
-""";
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,

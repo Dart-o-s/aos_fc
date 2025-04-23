@@ -218,6 +218,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "isolate_contactor",
+      "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/isolate_contactor-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "isolate_manager",
+      "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/isolate_manager-4.1.5+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "js",
       "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
@@ -350,6 +362,18 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "re_editor",
+      "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/re_editor-0.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "re_highlight",
+      "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/re_highlight-0.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "rest_api_client",
       "rootUri": "file:///C:/Users/angel/AppData/Local/Pub/Cache/hosted/pub.dev/rest_api_client-2.3.9",
       "packageUri": "lib/",
@@ -476,7 +500,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2025-04-23T13:23:20.973885Z",
+  "generated": "2025-04-23T18:08:22.488770Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///C:/Users/angel/flutter/flutter_windows_3.27.1-stable/flutter",

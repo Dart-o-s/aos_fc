@@ -1,4 +1,19 @@
 
+import 'AbsFileSystem.dart';
+
+void appendTextToQAList(String value, {bool insert = false}) {
+
+  int at = insert ? 1 : findCardContaining("\$ Deleted") - 1;
+
+  List<String> lines = value.split("\n");
+  for (int i = 0; (i + 1) < lines.length; i += 2) {
+    var front = lines[i];
+    var back = lines[i + 1];
+    qaList.insert(at, Flashcard(question: front, answer: back));
+  }
+
+}
+
 class Flashcard {
   // TODO sorry, refactoring relict. Was in home_widget
   // TODO we need a "storage" instead of the global qaList

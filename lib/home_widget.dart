@@ -12,6 +12,7 @@ import 'flash_card_widget.dart';
 import 'AbsFileSystem.dart';
 import 'global.dart';
 import 'about_and_help_page.dart';
+import 'import_page.dart';
 
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
@@ -459,14 +460,8 @@ class _HomePageState extends State<HomePage> {
       var file = loadAsset();
 
       file.then((value) {
-        List<String> lines = value.split("\n");
-        for (int i = 0; (i + 1) < lines.length; i += 2) {
-          var front = lines[i];
-          var back = lines[i + 1];
-          qaList.add(Flashcard(question: front, answer: back));
-        }
-      })
-          .catchError((error) => print(error));
+        appendTextToQAList(value);
+      }).catchError((error) => print(error));
 
       setState(() {
         _snacker("Thai loaded from Assets.");
@@ -537,7 +532,13 @@ class _HomePageState extends State<HomePage> {
     snackbarKey.currentState?.showSnackBar(snackBar);
   }
 
-  void _copyPasteImport(BuildContext context) {}
+  void _copyPasteImport(BuildContext context) async {
+    final value = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ImportPage(title: "Edit or Copy/Paste below")),
+    );
+    setState(() {});
+  }
 
   void _aboutAndHelp(BuildContext context) async {
     final value = await Navigator.push(
