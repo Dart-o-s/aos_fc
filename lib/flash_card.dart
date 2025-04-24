@@ -1,5 +1,7 @@
-
+import 'dart:math';
 import 'AbsFileSystem.dart';
+
+var random = Random();
 
 void appendTextToQAList(String value, {bool insert = false}) {
 
@@ -11,7 +13,6 @@ void appendTextToQAList(String value, {bool insert = false}) {
     var back = lines[i + 1];
     qaList.insert(at, Flashcard(question: front, answer: back));
   }
-
 }
 
 class Flashcard {
@@ -25,6 +26,20 @@ class Flashcard {
   Flashcard({required this.question, required this.answer});
 
   static Flashcard getCurrent() => qaList.elementAt(Flashcard.curIndexNum);
+
+  bool get isSpecial { return question.startsWith("#") || question.startsWith("\$"); }
+}
+
+Flashcard pickRandom() {
+   int idx = random.nextInt(qaList.length);
+   var fc = qaList[idx];
+   int tries = 10; // perhaps some smart user removed all cards except the "boxes" ... sigh
+   while (fc.isSpecial && tries-- > 0) {
+     idx = random.nextInt(qaList.length);
+     fc = qaList[idx];
+   }
+   Flashcard.curIndexNum = idx;
+   return fc;
 }
 
 List<Flashcard> qaList = [

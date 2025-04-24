@@ -31,13 +31,13 @@
 
     [X] OPEN known cards are not moved to higher boxes yet
 
-    [ ] LUXX the last literal used, should be in an helper variable "it" (or similar).
-        - better idea, there is always a helper "declared" and we set it manually where needed
-        - in theory, all "keywords" of a previous keyword message could be variables for reuse?
-    [ ] LUXX Parser break point in source code be able to have a token (on lexer level?) like BRK that is interpreted by the parser to break in a breakpoint. 
-    [ ] LUXX return named result.
-          int found = qaList.findCardContaining(it, from: cur);
-          ^^^^^^^^^ this could be a "name" variable provided by the function
+    [ ] OPEN Google translate integration
+
+    [ ] OPEN Simple Random Training
+        - just pick a random card
+        👎 moves to front, and picks another random one
+        👍 just picks a new one.
+
     [ ] SB Look at this:
         dependencies:
             re_editor: ^0.0.3

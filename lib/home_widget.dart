@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage> {
   double _touchX = 0.0,
       _touchY = 0.0;
   bool _isMyTablet = false;
+  bool _quizmode = false;
 
   _HomePageState() {
     figureModel();
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                         _onLongPress(context);
                       },
                       onHorizontalDragEnd: _onSwipeLeftOrRight,
-                      onVerticalDragEnd: _onSwipeUpOrDown,
+                      // onVerticalDragEnd: _onSwipeUpOrDown,
                       /* old SimpleGD
                    onVerticalSwipe: _onSwipeUpOrDown,
                    onHorizontalSwipe: _onSwipeLeftOrRight,
@@ -277,7 +278,7 @@ class _HomePageState extends State<HomePage> {
         if (kIsWeb)
           const PopupMenuItem(
               value: 4, child: Text('Load Web-Store'), height: 24),
-
+        const PopupMenuDivider(),
         const PopupMenuItem(
             value: 5, child: Text('(new file ...)'), height: 24),
         const PopupMenuItem(
@@ -374,18 +375,31 @@ class _HomePageState extends State<HomePage> {
               overlay.paintBounds.size.height),
         ),
         // position: RelativeRect.fromLTRB(10, 10, 40, 40),
-        items: [
+        items: <PopupMenuEntry>[
+          CheckedPopupMenuItem(
+            checked: _quizmode,
+            value: "quiz",
+            child: _quizmode ? const Text('Quiz Mode is ON') : const Text('Quiz Mode!'),
+          ),
+
           const PopupMenuItem(value: "pushUp", child: Text('push to next box')),
-          const PopupMenuItem(
-              value: "import", child: Text('Import Copy/Paste ...')),
+          const PopupMenuItem(value: "import", child: Text('Import Copy/Paste ...')),
           const PopupMenuItem(value: "about", child: Text('About and Help')),
-          const PopupMenuItem(
-              value: "close", child: Text('(Blame Developer ...)')),
+          const PopupMenuItem(value: "close", child: Text('(Blame Developer ...)')),
+
+          // const PopupMenuDivider(),
+
         ]);
 
     // setState(() { isPressed = false; }); // Handle menu item selection
 
     switch (result) {
+      case 'quiz':
+        _quizmode = ! _quizmode;
+        if (_quizmode) _pickRandom(context);
+        setState(() {
+          _snacker("Quiz mode " + (_quizmode ? "ON" : "OFF"));
+        });
       case 'pushUp':
         _pushToNextBox(context);
       case 'about':
@@ -422,7 +436,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _didKnow() {
-    showNextCard();
+    if (_quizmode)
+      _pickRandom(context);
+    else
+      showNextCard();
     setState(() {
       _snacker(" you knew it !");
     });
@@ -430,6 +447,10 @@ class _HomePageState extends State<HomePage> {
 
   void _didNotKnow() {
     qaList.moveCurrentToFront();
+
+    if (_quizmode)
+      _pickRandom(context);
+
     setState(() {
       final SnackBar snackBar = SnackBar(
           content: Text(" card moved to front "));
@@ -570,6 +591,13 @@ class _HomePageState extends State<HomePage> {
       _snacker(" ${fc.question} moved behind ${box.question}");
     });
 
+  }
+
+  void _pickRandom(BuildContext context) {
+    var fc = pickRandom();
+    setState(() {
+      // _snacker("Quiz mode " + (_quizmode ? "ON" : "OFF"));
+    });
   }
 }
 
