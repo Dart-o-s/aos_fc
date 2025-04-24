@@ -1,17 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:translator/translator.dart';
+
+import 'home_widget.dart';
 import 'AbsFileSystem.dart';
 import 'flash_card.dart';
+import 'global.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-
-/*
-import 'package:intent_ns/intent.dart' as fcIntent;
-import 'package:intent_ns/extra.dart';
-import 'package:intent_ns/typedExtra.dart';
-import 'package:intent_ns/action.dart' as fcAction;
-*/
 
 class AddFlashcardPage extends StatefulWidget {
   late bool edit;
@@ -22,12 +18,21 @@ class AddFlashcardPage extends StatefulWidget {
   }
 }
 
+final _from = TextEditingController(text:"en");
+final _to   = TextEditingController(text:"th");
+
 class _AddFlashcardPageState extends State<AddFlashcardPage> {
   final _questionController = TextEditingController();
   final _answerController   = TextEditingController();
   final bool edit;
 
   _AddFlashcardPageState(this.edit);
+
+  // show a snack bar with a message
+  void _snacker(String message) {
+    final SnackBar snackBar = SnackBar(content: Text(message));
+    snackbarKey.currentState?.showSnackBar(snackBar);
+  }
 
   void _addFlashcard() {
     if (edit) {
@@ -41,6 +46,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
           question: _questionController.text,
           answer: _answerController.text,
         );
+        // TODO that would be behind the end marker and makes no real sense
         if (pos == qaList.length) {
           qaList.add(flashcard);
           Flashcard.curIndexNum = qaList.length - 1;
@@ -54,10 +60,10 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
     _questionController.clear();
     _answerController.clear();
 
-    AbsFileSystem fs = AbsFileSystem.forThisPlatform();
-    fs.save("aos-thai", qaList, (String doNothing) { } );
+    quickSave();
+    _snacker("Card added");
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
   }
 
@@ -88,18 +94,36 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
                 labelText: 'Enter Answer',
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 25),
             ElevatedButton(
               onPressed: _addFlashcard, 
               child: edit ? Text("Edit Flashcard") : Text("Add Flashcard"),
             ),
-            /*
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _fetchTranslation,
-              child: Text("Fetch Translation"),
+            SizedBox(height: 25),
+            Row(
+              // not using this, as I try Spacers below
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text("from: "),
+                SizedBox(
+                  width: 20,
+                  child: TextField(controller: _from,)
+                ),
+                Spacer(),
+                Text("to: "),
+                SizedBox(
+                  width: 20,
+                  child: TextField(controller: _to,)
+                ),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: _fetchTranslation,
+                  child: Text("Fetch Translation"),
+                ),
+              ],
             ),
-            */
+            Spacer(),
+            Text("Add as many cards as you want. Please use the back button when finished."),
           ],
         ),
       ),
@@ -107,16 +131,22 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
   }
 
   // https://stackoverflow.com/questions/19132441/google-translate-activity-not-working-anymore/20321335#20321335
-  // https://pub.dev/documentation/intent_ns/latest/
+  // https://pub.dev/documentation/intent_ns/latest/ (old)
+  // https://pub.dev/packages/translator/example
   void _fetchTranslation() {
     if (kIsWeb) return;
-    if (!Platform.isAndroid)
-      return;
-/*
-    var intent = fcIntent.Intent()
-      ..setAction(fcAction.Action.ACTION_TRANSLATE)
-      ..putExtra(Extra.EXTRA_TEXT, "I Love Computers")
-      ..startActivity().catchError((e) => print(e));
-  */
+
+    final translator = GoogleTranslator();
+    // Using the Future API
+    translator
+        .translate(_questionController.text, from:_from.text, to:_to.text)
+        .then((result) {
+          _answerController.text = result.text;
+          setState(() {
+            // do nothing, just tell the UI to rebuild
+          });
+        }).catchError((onError) {
+          _snacker(onError.toString());
+    });
   }
 }
