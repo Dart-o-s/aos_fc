@@ -506,11 +506,9 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) => AddFlashcardPage(edit: true)),
     );
     setState(() {
-      final SnackBar snackBar = SnackBar(content: Text(" edited "));
-      snackbarKey.currentState?.showSnackBar(snackBar);
+      _snacker(" edited ");
     });
   }
-
   _createFAB(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -546,7 +544,9 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(builder: (context) => AddFlashcardPage()),
     );
-    setState(() {});
+    setState(() {
+      _snacker("Card added");
+    });
   }
 
   void _loadFromWebStore() {
@@ -643,6 +643,7 @@ extension on List<Flashcard> {
     var idx = findCardContaining("\$ End of File Marker");
     if (idx == -1) { // no end of file marker, just add the delete marker
       add(del);
+      // TODO add end of file marker
     } else {
       insert(idx, del);
     }

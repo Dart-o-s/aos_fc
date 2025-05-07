@@ -61,10 +61,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
     _answerController.clear();
 
     quickSave();
-    _snacker("Card added");
-
     // Navigator.pop(context);
-
   }
 
   @override

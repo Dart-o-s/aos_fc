@@ -10,7 +10,7 @@
             and modify them with an editor.
         Drawback: my Orgro saves with struggles ... and messes up data.
 
-    [X] OPEN confirmation dialog, before we overwrite the Downloads
+    [X] DONE 2025-05-07 11:11 (done long ago) confirmation dialog, before we overwrite the Downloads
 
     [X] DONE 2025-04-23 18:54 try to load from Downloads first, then load assets
         - that was the default
@@ -29,11 +29,11 @@
         + I decided to insert after first card
         Fixed font suze: style: CodeEditorStyle(fontSize: 24),
 
-    [X] OPEN known cards are not moved to higher boxes yet
+    [X] DONE 2025-05-07 11:11 known cards are not moved to higher boxes yet
 
-    [ ] OPEN Google translate integration
+    [X] DONE 2025-05-07 11:11 Google translate integration
 
-    [ ] OPEN Simple Random Training
+    [X] DONE 2025-05-07 11:11 Simple Random Training
         - just pick a random card
         👎 moves to front, and picks another random one
         👍 just picks a new one.
@@ -41,6 +41,14 @@
     [ ] SB Look at this:
         dependencies:
             re_editor: ^0.0.3
+
+    [X] DONE 2025-05-07 11:35 fix double snicker/snackbar about add and edit
+
+    [ ] OPEN give file system permissions
+        needed to copy assets to the work forlder
+
+    [ ] Code Generator - just write the menus and buttons, and generate a skelleton and backend for that
+        first throw, mapping direct to controllers, second throw, mapping it to an eventbus and controllers listen
 
 ### delayed
     [ ] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.
