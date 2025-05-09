@@ -48,6 +48,10 @@ dependencies:
   flutter_markdown: ^0.7.7
   re_editor: ^0.7.0
   translator: ^1.0.3+1
+  saf:
+    # When depending on this package from a real application you should use:
+    #   saf: ^x.y.z
+    path: ../saf
 
 dev_dependencies:
   flutter_test:

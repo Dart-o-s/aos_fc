@@ -45,10 +45,15 @@
     [X] DONE 2025-05-07 11:35 fix double snicker/snackbar about add and edit
 
     [ ] OPEN give file system permissions
-        needed to copy assets to the work forlder
+        needed to copy assets to the work folder
 
-    [ ] Code Generator - just write the menus and buttons, and generate a skelleton and backend for that
+    STB
+    [ ] OPEN Code Generator - just write the menus and buttons, and generate a skelleton and backend for that
         first throw, mapping direct to controllers, second throw, mapping it to an eventbus and controllers listen
+
+    [ ] OPEN put this in https://github.com/ivehement/saf
+
+    [ ] OPEN copy search from Modro/orgro
 
 ### delayed
     [ ] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.

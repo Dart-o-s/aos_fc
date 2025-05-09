@@ -6,6 +6,9 @@ import 'package:flutter_window_close/flutter_window_close.dart';
 
 import 'dart:io';
 
+import 'package:permission_handler/permission_handler.dart';
+import 'package:saf/saf.dart';
+
 import 'add_flashcard_page.dart';
 import 'flash_card.dart';
 import 'flash_card_widget.dart';
@@ -38,6 +41,8 @@ Future<void> getPath_1() async {
   }
 }
 
+const directory = "/storage/emulated/0/Documents";
+
 // To get public storage directory path
 Future<void> getPath_2() async {
   var path = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOAD);
@@ -67,6 +72,7 @@ class _HomePageState extends State<HomePage> {
       _touchY = 0.0;
   bool _isMyTablet = false;
   bool _quizmode = false;
+  late Saf saf;
 
   _HomePageState() {
     figureModel();
@@ -75,7 +81,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     initCloseHandler(context);
-
+    getStoragePermissions();
+    
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
@@ -605,6 +612,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       // _snacker("Quiz mode " + (_quizmode ? "ON" : "OFF"));
     });
+  }
+
+  void getStoragePermissions() async {
+    Permission.storage.request();
+    saf = Saf(directory);
+    await saf.getDirectoryPermission(isDynamic: true);
   }
 }
 
