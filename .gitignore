@@ -85,3 +85,5 @@ google-services.json
 /.dart_tool/package_config_subset
 /.flutter-plugins
 /.flutter-plugins-dependencies
+.dart_tool/
+android/app/build.gradle.old.kts
