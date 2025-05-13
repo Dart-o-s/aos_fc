@@ -1,1 +1,2 @@
-# FlashCards-Learning-App-in-Flutter
+# aos_fc
+simple flash card program
