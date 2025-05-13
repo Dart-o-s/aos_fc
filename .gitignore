@@ -83,3 +83,5 @@ google-services.json
 /.dart_tool/flutter_build/ad38c8fae8e40445df3d6cf267f386d2/program.dill
 /.dart_tool/package_config.json
 /.dart_tool/package_config_subset
+/.flutter-plugins
+/.flutter-plugins-dependencies
