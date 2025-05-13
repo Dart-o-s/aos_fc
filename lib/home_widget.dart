@@ -6,8 +6,8 @@ import 'package:flutter_window_close/flutter_window_close.dart';
 
 import 'dart:io';
 
-import 'package:permission_handler/permission_handler.dart';
-import 'package:saf/saf.dart';
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:saf/saf.dart';
 
 import 'add_flashcard_page.dart';
 import 'flash_card.dart';
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
       _touchY = 0.0;
   bool _isMyTablet = false;
   bool _quizmode = false;
-  late Saf saf;
+  // late Saf saf;
 
   _HomePageState() {
     figureModel();
@@ -615,9 +615,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getStoragePermissions() async {
-    Permission.storage.request();
+    /*  Permission.storage.request();
     saf = Saf(directory);
     await saf.getDirectoryPermission(isDynamic: true);
+   */
   }
 }
 
