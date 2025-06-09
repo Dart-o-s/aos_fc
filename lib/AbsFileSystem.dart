@@ -165,6 +165,8 @@ class UseLessFileSystem extends AbsFileSystem {
 /// flutter run -d chrome --web-port 8877
 /// keep same port, to keep the data
 class WebFileSystem extends AbsFileSystem {
+  bool localStorageIsInitialized=false;
+
   WebFileSystem()  {
     WidgetsFlutterBinding.ensureInitialized();
     initStorage();
@@ -211,10 +213,11 @@ class WebFileSystem extends AbsFileSystem {
   @override
   String save(String fileName, List<Flashcard> store, void Function(String p1) done) {
 
-    if (!localStorageIsInitialized()) {
+    /*if (!localStorageIsInitialized) {
       print("error: LS not initialized");
       return "error: LS not initialized";
     }
+    */
 
     StringBuffer result = StringBuffer();
     for (var it in store) {
@@ -234,6 +237,7 @@ class WebFileSystem extends AbsFileSystem {
 
   void initStorage() async {
     await initLocalStorage();
+    localStorageIsInitialized=true;
   }
 }
 

@@ -728,6 +728,7 @@ extension on List<Flashcard> {
     var fc = this[Flashcard.curIndexNum];
     remove(fc); // loser did not know this
     insert(1,fc); // move to front, behind first card
+    // AOS change to snacker bar
     print (" moved card to front");
     quickSave();
   }
@@ -735,5 +736,6 @@ extension on List<Flashcard> {
 
 void quickSave() {
   AbsFileSystem fs = AbsFileSystem.forThisPlatform();
+  // AOS TODO remove hard coded filename
   fs.save("aos-thai", qaList, (String doNothing) {});
 }

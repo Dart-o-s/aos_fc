@@ -2,6 +2,7 @@
     1) Play Trumpets! Realease 0.9
 
 ## high prio items
+    [ ] Initialize WebFileSystem only once.
     [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
             I believe I only need to refactor them out into its own file but give the extensions a name.
