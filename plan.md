@@ -2,6 +2,8 @@
     1) Play Trumpets! Realease 0.9
 
 ## high prio items
+    [ ] fix git access on the Mac, it uses an old account
+    [ ] integrate object box
     [ ] Initialize WebFileSystem only once.
     [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
