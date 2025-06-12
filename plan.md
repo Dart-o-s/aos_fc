@@ -194,3 +194,6 @@ https://walnutistanbul.medium.com/creating-a-scrollable-bottom-navigation-bar-in
 ## unplanned items 
     - stuff we made without thinking
     - but want to keep track off, as it was a "distraction"
+
+    [ ] BUG look for "print" and move it to the snack bar, especially "edit" is not "add"
+        edid/add is probably fixed ...

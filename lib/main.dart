@@ -5,14 +5,19 @@ import 'package:aos_fc/AbsFileSystem.dart';
 import 'package:aos_fc/flash_card.dart';
 
 import 'global.dart';
+import 'fc_objectbox.dart';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart' show rootBundle;
 
-var gMain = MyApp();
+final gMain = MyApp();
+late final AbsFileSystem fs;
+late FlashCardBox objectbox;
 
-void main() {
+Future<void> main() async {
   // AOS TODO if it is web, don't load the file during startup ...
   WidgetsFlutterBinding.ensureInitialized();
+  objectbox = await FlashCardBox.create();
 
   AbsFileSystem fs = AbsFileSystem.forThisPlatform();
   if (kIsWeb)
