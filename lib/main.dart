@@ -12,6 +12,8 @@ var gMain = MyApp();
 
 void main() {
   // AOS TODO if it is web, don't load the file during startup ...
+  WidgetsFlutterBinding.ensureInitialized();
+
   AbsFileSystem fs = AbsFileSystem.forThisPlatform();
   if (kIsWeb)
     qaList = fs.initialStore("aos-thai");

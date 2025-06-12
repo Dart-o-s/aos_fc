@@ -2,9 +2,10 @@
     1) Play Trumpets! Realease 0.9
 
 ## high prio items
-    [ ] fix git access on the Mac, it uses an old account
-    [ ] integrate object box
+    [ ] fix git access on the Mac, it uses an old account, now angelosphere, which is the same as Dart-o-s is in the repro, too. 5555
+    [O] integrate object box
     [ ] Initialize WebFileSystem only once.
+
     [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
             I believe I only need to refactor them out into its own file but give the extensions a name.
