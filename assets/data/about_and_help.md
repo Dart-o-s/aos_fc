@@ -1,9 +1,7 @@
 # Angelos Flash card App
 
 ## Release info
-Release: 0.9.2
-
-DONE:  
+Release: 0.9.3
 
 blame: angelo.schneider@gmail.com
 

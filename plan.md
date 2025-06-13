@@ -1,9 +1,28 @@
 # we have a plan
-    1) Play Trumpets! Realease 0.9
+    1) Play Trumpets! Realease 0.9.2
+    2) migrating to objectbox and revamping live cycle: 0.9.3
 
 ## high prio items
+    [ ] OPEN tag and push, r0.92
+
+### life cycle
+    [ ] OPEN on launch check if "objectbox database" is set up, otherwise
+        - copy assets to object box
+        - create catalog of existing decks
+        - set current deck to empty
+
+### Pick deck
+    [ ] OPEN if no current deck, open pick deck page, or
+        [ ] OPEN menu item to pick deck
+            - we do not have many decks, so perhaps this is best for now
+    [ ] OPEN store needs to track which deck is open
+
+### Abs File System
+    [ ] upgrade AbsFileSystem to deal with objectbox
+
+## older high prio items, postponed during transition to object box
+    [O] DONE 2025-06-12 22:11 integrate object box
     [ ] fix git access on the Mac, it uses an old account, now angelosphere, which is the same as Dart-o-s is in the repro, too. 5555
-    [O] integrate object box
     [ ] Initialize WebFileSystem only once.
 
     [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
@@ -156,7 +175,7 @@ https://pub.dev/documentation/gesture_x_detector/latest/
 
     [x] DONE 2025-03-28 00:42 change the add option to "insert" at current position
     
-    [X] DONE 2025-04-14 17:26 when inserting treat "# box" and "* chapter" special
+    [X] DONE 2025-04-14 17:26 when inserting treat "# box" and "$ chapter" special
         - I think for now, "# Chapters" could be just placed before "$ Deleted"
         - "$ Chapters" just where the user puts them
         Solved: we just put them where the user is browsing
@@ -167,7 +186,7 @@ https://pub.dev/documentation/gesture_x_detector/latest/
     [x] DONE 2025-03-27 22:08 add arrows to browse from box to box 
     [o] OPEN add menu? "longpress?" for "ok" "not ok", "delete" and
         ok/not ok is not good for longpress, duration is to long
-    [ ] OPEN "edit" is in the bottom menu
+    [X] DONE 2025-06-13 06:11 "edit" is in the bottom menu (done long ago)
 
     [x] DONE 2025-03-27 15:54 change size of window on Windows
         DONE 2025-03-27 22:08 change width of center widget, see below
