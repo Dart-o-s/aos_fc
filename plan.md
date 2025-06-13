@@ -3,7 +3,7 @@
     2) migrating to objectbox and revamping live cycle: 0.9.3
 
 ## high prio items
-    [ ] OPEN tag and push, r0.92
+    [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
 
 ### life cycle
     [ ] OPEN on launch check if "objectbox database" is set up, otherwise
