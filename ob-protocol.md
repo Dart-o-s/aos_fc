@@ -1,4 +1,8 @@
 # moving to object box
+    I wanted to write down what I did and what failed or worked as the C++ project does not build for me (does not build the objectbox.dll, something about my lack of understanding of how MS Studio is building)
+    The Dart example from github does not build either.
+
+    However integrating opbect box into this "toy project" worked flawlessly!
 
 ## protocol about what I am doing
 
@@ -11,6 +15,9 @@
         - objectbox.g.dart is not generated
         - the json model file is not generated
 
+    initializing the Box (only one entity) is fine
+    simple queries on a non ID attribute work fine
+
 ## Added to pubspec.yaml
     [x]  DONE 2025-06-12 20:07   
         - objectbox_generator: any
@@ -22,3 +29,8 @@
     [x] DONE 2025-06-12 21:00 just in case - do not know yet if I need it
         - objectbox_flutter_libs: any
         + was needed, it loads the relevant dll under windows
+
+## End DONE 2025-06-14 19:50
+    - Regarding object Box integration, it sdeems done!
+    - Runs on windows just fine. 
+    - Android up to testing, but I do not expect problems.

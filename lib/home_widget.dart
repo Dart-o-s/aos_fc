@@ -16,6 +16,7 @@ import 'AbsFileSystem.dart';
 import 'global.dart';
 import 'about_and_help_page.dart';
 import 'import_page.dart';
+import 'fc_objectbox.dart';
 
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
@@ -94,7 +95,8 @@ class _HomePageState extends State<HomePage> {
             shadowColor: Colors.green[700],
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)
-            )
+            ),
+          actions: initMenu(),
         ),
         floatingActionButton: _createFAB(context),
         body: Column(
@@ -181,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                     var term = _showTextInputDialog(context, _searchFieldController).then(
                         (string) {
                           setState(() {
-                            int idx = findCardContaining(_searchFieldController.text);
+                            int idx = findCardContaining(_searchFieldController.text.trim());
                             if (idx == -1) {
                               _snacker("not found!");
                               return;
@@ -387,12 +389,13 @@ class _HomePageState extends State<HomePage> {
             checked: _quizmode,
             value: "quiz",
             child: _quizmode ? const Text('Quiz Mode is ON') : const Text('Quiz Mode!'),
+            height: 24,
           ),
 
-          const PopupMenuItem(value: "pushUp", child: Text('push to next box')),
-          const PopupMenuItem(value: "import", child: Text('Import Copy/Paste ...')),
-          const PopupMenuItem(value: "about", child: Text('About and Help')),
-          const PopupMenuItem(value: "close", child: Text('(Blame Developer ...)')),
+          const PopupMenuItem(value: "pushUp", child: Text('push to next box'), height: 24),
+          const PopupMenuItem(value: "import", child: Text('Import Copy/Paste ...'), height: 24),
+          const PopupMenuItem(value: "about", child: Text('About and Help'), height: 24),
+          const PopupMenuItem(value: "close", child: Text('(Blame Developer ...)'), height: 24),
 
           // const PopupMenuDivider(),
 
@@ -612,6 +615,39 @@ class _HomePageState extends State<HomePage> {
     saf = Saf(directory);
     await saf.getDirectoryPermission(isDynamic: true);
    */
+  }
+
+  List<Widget> initMenu() {
+    return <Widget>[
+      PopupMenuButton<String>(
+        onSelected: _openDeck,
+        itemBuilder: (BuildContext context) {
+          List<String> files = listFiles();
+          return files.map((String choice) {
+            return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+                height: 24
+            );
+          }).toList();
+        },
+      ),
+    ];
+  }
+
+  void _openDeck(String fileName) {
+    if (fileName.isNotEmpty) {
+      FlashCardFile? fcf = objectbox.find(fileName);
+      if (fcf != null)
+        qaList = fcf.makeQAList();
+        setState(() {
+          _snacker("$fileName loaded");
+        });
+    }
+  }
+
+  List<String> listFiles() {
+    return objectbox.listFiles();
   }
 }
 

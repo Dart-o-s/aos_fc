@@ -136,7 +136,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
     final translator = GoogleTranslator();
     // Using the Future API
     translator
-        .translate(_questionController.text, from:_from.text, to:_to.text)
+        .translate(_questionController.text.trim(), from:_from.text, to:_to.text)
         .then((result) {
           _answerController.text = result.text;
           setState(() {

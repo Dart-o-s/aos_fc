@@ -5,9 +5,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 
+import 'flash_card.dart';
+
 import 'package:objectbox/objectbox.dart';
 import 'objectbox.g.dart'; // created by $ flutter pub run build_runner build, note: add this to pubspec.yaml - 'build_runner: ^2.4.9'
                            // or use: $ dart run build_runner build
+
+// initialized in main() - AoS check if it can be initialized here
+late FlashCardBox objectbox;
+
 @Entity()
 class FlashCardFile {
   @Id()
@@ -19,6 +25,19 @@ class FlashCardFile {
   String fileData = "";    // lines of text, separated by new-line, one line source language, next line target language
 
   FlashCardFile(this.id, this.name, this.description, this.fileData);
+
+  // create a list of questions and answers
+  List<Flashcard> makeQAList() {
+    List<Flashcard> store = <Flashcard>[];
+    var text = fileData.split("\n");
+
+    for (int i = 0; (i + 1) < text.length; i += 2) {
+      var front = text[i];
+      var back = text[i + 1];
+      store.add(Flashcard(question: front, answer: back));
+    }
+    return store;
+  }
 }
 
 /**
@@ -31,8 +50,11 @@ class FlashCardBox {
   /// A Box of FlashCardFile's
   late final Box<FlashCardFile> _fcBox;
 
+  static FlashCardFile? _current = null;
   bool _catalogLoaded = false;
   List<String> _catalogText = [];
+
+  static FlashCardFile get current => _current ?? FlashCardFile(0, "empty", "nothing inside", "");
 
   FlashCardBox._create(this._store) {
     _fcBox = Box<FlashCardFile>(_store);
@@ -95,11 +117,13 @@ class FlashCardBox {
       query.close();
        */
 
+      /*
       final query = _fcBox.query().build();
       List<String> names = query.property(FlashCardFile_.name).find();
       query.close();
 
-      // print (names);
+      print (names);
+      */
 
       /*
       rootBundle.loadString("assets/data/about_and_help.md")
@@ -121,5 +145,33 @@ class FlashCardBox {
     // return all entities matching the query
     List<FlashCardFile> fcfs = query.find();
     return fcfs.isNotEmpty;
+  }
+
+  /**
+   * some query examples:
+      final qBuilder = _fcBox.query(FlashCardFile_.name.endsWith(name));
+
+      // return all entities matching the query
+      List<FlashCardFile> joes = query.find();
+
+      // return only the first result or null if none
+      FlashCardFile joe = query.findFirst();
+
+      // return the only result or null if none, throw if more than one result
+      FlashCardFile joe = query.findUnique();
+   */
+  FlashCardFile? find(String name) {
+    final query = _fcBox.query(FlashCardFile_.name.endsWith(name)).build();
+    // return all entities matching the query
+    List<FlashCardFile> fcfs = query.find();
+    if (fcfs.isNotEmpty) return fcfs[0];
+    else null;
+  }
+
+  List<String> listFiles() {
+    final query = _fcBox.query().build();
+    List<String> names = query.property(FlashCardFile_.name).find();
+    query.close();
+    return names;
   }
 }

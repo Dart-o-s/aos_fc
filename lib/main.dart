@@ -8,32 +8,34 @@ import 'global.dart';
 import 'fc_objectbox.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart'   show rootBundle;
 
-final gMain = MyApp();
+final gMain = FlashCardApp();
 late final AbsFileSystem fs;
-late FlashCardBox objectbox;
 
 Future<void> main() async {
-  // AOS TODO if it is web, don't load the file during startup ...
   WidgetsFlutterBinding.ensureInitialized();
-  objectbox = await FlashCardBox.create();
 
-  AbsFileSystem fs = AbsFileSystem.forThisPlatform();
+  fs = AbsFileSystem.forThisPlatform();
   if (kIsWeb)
     qaList = fs.initialStore("aos-thai");
-  else
-    qaList = fs.load("aos-thai");
+  else {
+    objectbox = await FlashCardBox.create();
+    FlashCardFile? fcf = objectbox.find("800words-en-th.flsh");
+    if (fcf != null)
+      qaList = fcf.makeQAList();
+  }
+
   runApp(gMain);
 }
 
-class MyApp extends StatelessWidget {
+class FlashCardApp extends StatelessWidget {
   @override
   late String _itsAboutText;
   bool aboutLoaded = false;
 
   Widget build(BuildContext context) {
-    // AOS move into ctor?
+    // AOS move into the menu handler, load on demand
     if (!aboutLoaded) {
       rootBundle.loadString("assets/data/about_and_help.md")
         .then((s) {
@@ -43,13 +45,13 @@ class MyApp extends StatelessWidget {
     }
 
     return MaterialApp(
-        scaffoldMessengerKey: snackbarKey, // <= this
+        scaffoldMessengerKey: snackbarKey, // <= this is needed for reuse in the _snacker-Method
         debugShowCheckedModeBanner: false,
         title: "Aos' Flashcard App",
         home: HomePage());
   }
 
-  MyApp() {
+  FlashCardApp() {
   }
 
   int get currentCardNum => Flashcard.curIndexNum;

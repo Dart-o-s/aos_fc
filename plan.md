@@ -5,30 +5,53 @@
 ## high prio items
     [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
 
+### The Assets do not have "meta cards"
+    We have to add the meta cards when loading from the boxes, or before storing to the box
+    [ ] OPEN when loading assets, add meta cards
+
 ### life cycle
-    [ ] DONE 2025-06-14 19:11 on launch check if "objectbox database" is set up, otherwise
+    [x] DONE 2025-06-14 19:11 on launch check if "objectbox database" is set up, otherwise
         - copy assets to object box
     
     [ ] OPEN select initial deck for learning
+        [o] OPEN as this is a hobby project - I just open my thai page for now
         [-] create catalog of existing decks, OBSOLET we can list them from the boxes
-        - set current deck to empty
 
-### Pick deck
-    [ ] OPEN if no current deck, open pick deck page, or
-        [ ] OPEN menu item to pick deck
-            - we do not have many decks, so perhaps this is best for now
-    [ ] OPEN store needs to track which deck is open
+### New Deck
+    [ ] use "Import" Editor, for import and creating new Decks, add a menu or button to use file picker
+        - perhaps ajust title
+        - load a demplate? Or have a clear button?
+
+### Pick Deck 
+    [X] OPEN menu item to pick deck, list from box
+            - we do not have many decks, so perhaps a menu is best for now
+            - fix the filenames when importing into the boxes
+
+    [ ] OPEN store needs to track which deck is open, for next session
+
+### Export and Import/Merge via downloads
+    [ ] OPEN import a file with file picker and import (default from Downloads) into current store/box
+    [ ] OPEN export a file (probably via file picker) to Downloads
 
 ### Abs File System
+    [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
+        [ ] move them to flash_card.dart ... that should be good enough
+    
     [o] upgrade AbsFileSystem to deal with objectbox
         - do we need that? Actually object box most likely completely replaces AbsFS
 
+### Can we run a object box server locally, to fool around with the web version of this app
+    - inprinciple we need a firebase set up or similar for the web version
+    - for testing and development a local version is probably more cute, as we work often offline
+
 ## older high prio items, postponed during transition to object box
+    [X] DONE 2025-06-14 19:45 trim the input field in the search box.
+        Android auto completion adds a trailing space ...
+
     [O] DONE 2025-06-12 22:11 integrate object box
     [ ] fix git access on the Mac, it uses an old account, now angelosphere, which is the same as Dart-o-s is in the repro, too. 5555
     [ ] Initialize WebFileSystem only once.
 
-    [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
         [?] I think I duplicated it to there, because the import did not work
             I believe I only need to refactor them out into its own file but give the extensions a name.
 
@@ -64,7 +87,7 @@
         👎 moves to front, and picks another random one
         👍 just picks a new one.
 
-    [ ] SB Look at this:
+    [ ] STB Look at this:
         dependencies:
             re_editor: ^0.0.3
 
