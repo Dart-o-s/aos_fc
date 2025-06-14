@@ -100,7 +100,7 @@ abstract class AbsFileSystem {
   }
 
   Future<String> loadAsset() async {
-    return await rootBundle.loadString('assets/data/aos-thai.flsh');
+    return await rootBundle.loadString('assets/data/800words-th.flsh');
   }
 
     /*

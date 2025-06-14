@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
   bool aboutLoaded = false;
 
   Widget build(BuildContext context) {
+    // AOS move into ctor?
     if (!aboutLoaded) {
       rootBundle.loadString("assets/data/about_and_help.md")
         .then((s) {

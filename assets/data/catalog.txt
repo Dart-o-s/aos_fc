@@ -1,6 +1,6 @@
-800words-en-de.txt
-800words-en-es.txt
-800words-en-fr.txt
-800words-en-it.txt
-800words-en-jap.txt
-aos-thai.flsh
+800words-en-de.flsh
+800words-en-es.flsh
+800words-en-fr.flsh
+800words-en-it.flsh
+800words-en-jap.flsh
+800words-th.flsh

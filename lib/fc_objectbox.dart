@@ -3,6 +3,7 @@
 // introduce objectbox, and add a name and a description to the class
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 
 import 'package:objectbox/objectbox.dart';
 import 'objectbox.g.dart'; // created by $ flutter pub run build_runner build, note: add this to pubspec.yaml - 'build_runner: ^2.4.9'
@@ -10,30 +11,35 @@ import 'objectbox.g.dart'; // created by $ flutter pub run build_runner build, n
 @Entity()
 class FlashCardFile {
   @Id()
-  int id = -1;
+  int id = 0;
 
   String name = "";        // serves as file name, or some descriptive name like "English - Japanese"
   String description = ""; // short description
 
-  String fileData = "";    // lines of text, separated by new-line, one line source language next line target language
+  String fileData = "";    // lines of text, separated by new-line, one line source language, next line target language
 
   FlashCardFile(this.id, this.name, this.description, this.fileData);
-
 }
 
+/**
+ * Holds FlashCardFiles
+ */
 class FlashCardBox {
-  /// The Store of this app.
+  /// The Store of this app
   late final Store _store;
 
-  /// A Box of notes.
+  /// A Box of FlashCardFile's
   late final Box<FlashCardFile> _fcBox;
+
+  bool _catalogLoaded = false;
+  List<String> _catalogText = [];
 
   FlashCardBox._create(this._store) {
     _fcBox = Box<FlashCardFile>(_store);
 
-    // Add some demo data if the box is empty.
+    // copy the flash card desk from assets to the box
     if (_fcBox.isEmpty()) {
-      // copyAssets();
+      copyAssets();
     }
   }
 
@@ -55,5 +61,30 @@ class FlashCardBox {
         directory: res = p.join((await getApplicationDocumentsDirectory()).path, "flashcard"),
         macosApplicationGroup: "flashcard.demo");
     return FlashCardBox._create(store);
+  }
+
+  /**
+   * How to load asset names
+   * see: https://stackoverflow.com/questions/56544200/flutter-how-to-get-a-list-of-names-of-all-images-in-assets-directory
+   * A3tera's answer
+   */
+  void copyAssets() async {
+    if (!_catalogLoaded) {
+      final assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+      _catalogText = assetManifest.listAssets().where(
+              (string) => string.startsWith("assets/data/") && string.endsWith(".flsh")
+        ).toList();
+
+      _catalogLoaded = true;
+
+      /*
+      rootBundle.loadString("assets/data/about_and_help.md")
+          .then((s) {
+          })
+          .catchError((err) {
+            print ("could not load catalog from assets");
+      });
+       */
+    }
   }
 }

@@ -469,15 +469,8 @@ class _HomePageState extends State<HomePage> {
     _didNotKnow();
   }
 
-  Future<String> loadAsset({String name = 'assets/data/aos-thai.flsh'}) async {
+  Future<String> loadAsset({String name = 'assets/data/800words-th.flsh'}) async {
     return await rootBundle.loadString(name);
-
-    /*
-    final radicalsFile = File('assets/data/kanji_level_$i.json');
-    final radicals = jsonDecode(radicalsFile.readAsStringSync()) as List;
-    See:
-    https://github.com/krille-chan/fun-with-kanji
-     */
   }
 
   // just a helper method to be called from UI for quick tests

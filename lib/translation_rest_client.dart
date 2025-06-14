@@ -10,7 +10,7 @@ import 'translate_line_by_line.dart';
 
 var url = Uri.http('localhost:5000', '/translate');
 var inputfile = "C:\\Users\\angel\\AndroidStudioProjects\\FlashCards-Learning-App-in-Flutter\\data\\800words.txt";
-var outputfile = "C:\\Users\\angel\\AndroidStudioProjects\\FlashCards-Learning-App-in-Flutter\\data\\800words-en-it.txt";
+var outputfile = "C:\\Users\\angel\\AndroidStudioProjects\\FlashCards-Learning-App-in-Flutter\\data\\800words-en-it.flsh";
 
 // for now the Translation processor uses the globals here
 class TranslationProcessor implements LineProcessor {
@@ -91,32 +91,4 @@ void main(List<String> arguments) async {
   });
 
   return;
-
-  var url =
-  Uri.http('localhost:5000', '/translate');
-
-  String question = "something";
-  var body = """
-{"q":"${question}","source":"en","target":"th","format":"text","alternatives":3}
-  """;
-  var headers = <String,String>{"Content-Type" : "application/json"};
-
-  // Await the http get response, then decode the json-formatted response.
-  var response = await http.post(url, headers: headers, body: body);
-  //var x = <String>["a", "b"];
-
-  if (response.statusCode == 200) {
-    var jsonResponse =
-    convert.jsonDecode(response.body) as Map<String, dynamic>;
-    var alternatives = jsonResponse['alternatives'];
-    print('Alternatives: ${alternatives.length}.');
-    for (var x in alternatives)
-      print ("A: $x");
-
-    var translation = jsonResponse['translatedText'];
-    print('TranslatedText: $translation.');
-
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-  }
 }
