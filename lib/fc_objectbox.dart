@@ -77,9 +77,8 @@ class FlashCardBox {
 
     // Future<Store> openStore() {...} is defined in the generated objectbox.g.dart
 
-    String res = "";  // on my Android slate this is: /data/user/0/priv.aos.aos_fc/app_flutter/flashcard
     final store = await openStore(
-        directory: res = p.join((await getApplicationDocumentsDirectory()).path, "flashcard"),
+        directory: p.join((await getApplicationDocumentsDirectory()).path, "flashcard"),
         macosApplicationGroup: "flashcard.demo");
     return FlashCardBox._create(store);
   }
@@ -192,5 +191,20 @@ Just a marker for moving between boxes more easy.
     List<String> names = query.property(FlashCardFile_.name).find();
     query.close();
     return names;
+  }
+
+  FlashCardFile? findAndSetCurrent(String fileName) {
+    var file = find(fileName);
+
+    if (file != null)
+      _current = file;
+
+    return file;
+  }
+
+  void quickSave() {
+    if (_current != null) {
+      _fcBox.put(_current!);
+    }
   }
 }

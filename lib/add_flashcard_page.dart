@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
+import 'fc_objectbox.dart';
 import 'home_widget.dart';
 import 'AbsFileSystem.dart';
 import 'flash_card.dart';
@@ -60,7 +61,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
     _questionController.clear();
     _answerController.clear();
 
-    quickSave();
+    objectbox.quickSave();
     // Navigator.pop(context);
   }
 

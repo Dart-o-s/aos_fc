@@ -1,6 +1,6 @@
-import 'package:aos_fc/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
+import 'fc_objectbox.dart';
 import 'flash_card.dart';
 
 class ImportPage extends StatefulWidget {
@@ -42,7 +42,7 @@ class _ImportPage extends State<ImportPage> {
         )),
         ElevatedButton(onPressed: () {
           appendTextToQAList(lec.text, insert: true);
-          quickSave();
+          objectbox.quickSave();
         }, child: Text("import"))
       ]),
     );

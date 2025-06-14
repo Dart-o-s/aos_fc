@@ -5,6 +5,8 @@
 ## high prio items
     [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
 
+    [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
+
 ### The Assets do not have "meta cards"
     We have to add the meta cards when loading from the boxes, or before storing to the box
     [X] DONE 2025-06-15 01:04 when loading assets, add meta cards
@@ -13,12 +15,15 @@
     [x] DONE 2025-06-14 19:11 on launch check if "objectbox database" is set up, otherwise
         - copy assets to object box
     
-    [o] OPEN select initial deck for learning
-        [o] OPEN as this is a hobby project - I just open my thai page for now
+    [O] OPEN select initial deck for learning
+        [O] OPEN as this is a hobby project - I just open my thai page for now
         [-] create catalog of existing decks, OBSOLET we can list them from the boxes
 
+### Menu to move Card to Chapters
+    [X] DONE 2025-06-15 02:51 as the title says
+
 ### Menu to Jump to Chapters
-    [ ] OPEN as the title says
+    [ ] OPEN move the current "move card" ActionBar Menu into longpress?
 
 ### New Deck
     [ ] use "Import" Editor, for import and creating new Decks, add a menu or button to use file picker
@@ -26,7 +31,7 @@
         - load a demplate? Or have a clear button?
 
 ### Pick Deck 
-    [X] OPEN menu item to pick deck, list from box
+    [X] DONE 2025-06-15 01:16 menu item to pick deck, list from box
             - we do not have many decks, so perhaps a menu is best for now
             - fix the filenames when importing into the boxes
 

@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)
             ),
-          actions: initMenu(),
+          actions: initActions(),
         ),
         floatingActionButton: _createFAB(context),
         body: Column(
@@ -109,6 +109,9 @@ class _HomePageState extends State<HomePage> {
                       onTapDown: _onTapTest,
                       //  <-- check simple GestureDetector
                       onLongPress: () {
+                        _onLongPress(context);
+                      },
+                      onSecondaryTap: () {
                         _onLongPress(context);
                       },
                       onHorizontalDragEnd: _onSwipeLeftOrRight,
@@ -174,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),*/
-                buildQuickMenu(context),
+                buildBottomMenu(context),
                 IconButton(
                   tooltip: "search ...",
                   icon: const Icon(Icons.search),
@@ -250,7 +253,7 @@ class _HomePageState extends State<HomePage> {
           );
         });
   }
-  PopupMenuButton<dynamic> buildQuickMenu(BuildContext context) {
+  PopupMenuButton<dynamic> buildBottomMenu(BuildContext context) {
     return PopupMenuButton(
       initialValue: 1,
       onSelected: (item) async {
@@ -485,7 +488,7 @@ class _HomePageState extends State<HomePage> {
   void _loadThaiFromAssets() async {
     if (await
     confirm(context,
-        title: Text("loading from Assets",
+        title: Text("loading Thai from Assets",
             style: TextStyle(fontWeight: FontWeight.bold)),
         content: Text(
             "This will replace your current Box of Cards. Do you want to continue?",
@@ -518,7 +521,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         FloatingActionButton(
           onPressed: () => _didKnow(),
-          heroTag: 'new it!',
+          heroTag: 'knew it!',
           mini: true,
           child: const Icon(Icons.thumb_up_alt_outlined),
         ),
@@ -583,7 +586,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _pushToNextBox(BuildContext context) {
-    var rem = Flashcard.curIndexNum;
     var fc = Flashcard.getCurrent();
 
     // findNext() uses Flashcard.curIndexNum, stupid idea
@@ -617,10 +619,25 @@ class _HomePageState extends State<HomePage> {
    */
   }
 
-  List<Widget> initMenu() {
+  List<Widget> initActions() {
     return <Widget>[
-      PopupMenuButton<String>(
-        onSelected: _openDeck,
+    PopupMenuButton<String>(
+    icon: Icon(Icons.library_books),
+    onSelected: (String val) { setState(() {
+        _moveCardToBox(val);
+      });
+    } ,
+    itemBuilder: (BuildContext context) {
+      List<String> boxes = listAllBoxes();
+      return boxes.map((String choice) {
+        return PopupMenuItem<String>(
+            value: choice,
+            child: Text(choice),
+            height: 24
+        );
+        }).toList();
+    }),
+    PopupMenuButton<String>(
         itemBuilder: (BuildContext context) {
           List<String> files = listFiles();
           return files.map((String choice) {
@@ -630,14 +647,13 @@ class _HomePageState extends State<HomePage> {
                 height: 24
             );
           }).toList();
-        },
-      ),
+        }),
     ];
   }
 
   void _openDeck(String fileName) {
     if (fileName.isNotEmpty) {
-      FlashCardFile? fcf = objectbox.find(fileName);
+      FlashCardFile? fcf = objectbox.findAndSetCurrent(fileName);
       if (fcf != null)
         qaList = fcf.makeQAList();
         setState(() {
@@ -648,6 +664,23 @@ class _HomePageState extends State<HomePage> {
 
   List<String> listFiles() {
     return objectbox.listFiles();
+  }
+
+  void _moveCardToBox(String val) {
+    var boxidx = qaList.findExact(val);
+    if (boxidx == -1) return;
+
+    var cardIdx = Flashcard.curIndexNum;
+    var fc = Flashcard.getCurrent();
+
+    if (boxidx > cardIdx) {
+      qaList.removeAt(cardIdx);  // box is not at boxidx-1
+      qaList.insert(boxidx, fc); // insert at old box id, that is one behind the box
+    } else { // box is in front of the card
+      qaList.removeAt(cardIdx);
+      qaList.insert(boxidx + 1, fc);
+    }
+    objectbox.quickSave();
   }
 }
 
@@ -674,7 +707,6 @@ extension on List<Flashcard> {
 
   void fixMissingMetaCards() {
     if (findCardContaining("\$ Deleted") == -1) addDeletedMarker();
-    // TODO more meta cards to follow -> "$ End of File Marker"
   }
 
   // we know there is no delete marker
@@ -692,79 +724,22 @@ extension on List<Flashcard> {
     }
   }
 
-  int findPreviousBox() {
-    // worst edge case: we are *at the beginning already* then we just jump to the first card
-    if (Flashcard.curIndexNum == 0) {
-      Flashcard.curIndexNum = length - 1;
-      return Flashcard.curIndexNum;
-    }
-    // not at begin, we can decrease by one (in case we are on a "Chapter" we do not want to stick here)
-    Flashcard.curIndexNum--;
-    while (Flashcard.curIndexNum >= 0) {
-      var fc = this[Flashcard.curIndexNum];
-      if (fc.question.startsWith("#") || fc.question.startsWith("\$"))
-        return Flashcard.curIndexNum;
-
-      --Flashcard.curIndexNum;
-    }
-    return Flashcard.curIndexNum = 0;
-  }
-
-  int findNextBox() {
-    // worst edge case: we are *at the end already* then we just jump to the first card
-    if (Flashcard.curIndexNum == length - 1) {
-      Flashcard.curIndexNum = 0;
-      return Flashcard.curIndexNum;
-    }
-    // not at end, we can increase by one (in case we are on a "Chapter" we do not want to stick here)
-    ++Flashcard.curIndexNum;
-    while (Flashcard.curIndexNum <= this.length - 1) {
-      var fc = this[Flashcard.curIndexNum];
-      if (fc.question.startsWith("#") || fc.question.startsWith("\$"))
-        return Flashcard.curIndexNum;
-
-      ++Flashcard.curIndexNum;
-    }
-    return Flashcard.curIndexNum = this.length - 1;
-  }
-
-  // remove permanently
-  // TODO check if it is behind "$ Deleted"
-  void removeCurrent() {
-    if (length == 1) return; // do not delete the last card
-    var fc = this[Flashcard.curIndexNum];
-    remove(fc);
-    if (Flashcard.curIndexNum > length - 1) Flashcard.curIndexNum = length - 1;
-    quickSave();
-  }
-
-  // move the current card behind the "$ Deleted" marker card
-  void deleteCurrentCard() {
-    var del = findCardContaining("\$ Delete");
-    var fc = this[Flashcard.curIndexNum];
-    if (del == -1) {
-      remove(fc);
-      addDeletedMarker();
-      add(fc);
-    } else {
-      remove(fc);
-      insert(del, fc); // del is the old position of the del marker
-    }
-    quickSave();
-  }
-
   void moveCurrentToFront() {
     var fc = this[Flashcard.curIndexNum];
     remove(fc); // loser did not know this
     insert(1,fc); // move to front, behind first card
-    // AOS change to snacker bar
-    print (" moved card to front");
-    quickSave();
+
+    _snacker(" moved card to front");
+    objectbox.quickSave();
   }
 }
 
+// show a snack bar with a message
+void _snacker(String message) {
+  final SnackBar snackBar = SnackBar(content: Text(message));
+  snackbarKey.currentState?.showSnackBar(snackBar);
+}
+
 void quickSave() {
-  AbsFileSystem fs = AbsFileSystem.forThisPlatform();
-  // AOS TODO remove hard coded filename
-  fs.save("aos-thai", qaList, (String doNothing) {});
+  objectbox.quickSave();
 }
