@@ -77,6 +77,30 @@ class FlashCardBox {
 
       _catalogLoaded = true;
 
+      for (var name in _catalogText) {
+        var fileData = await rootBundle.loadString(name);
+
+        if (!inBox(name)) {
+          FlashCardFile fcf = FlashCardFile(
+              0, name, "$name, loaded from assets", fileData);
+          var id = _fcBox.put(fcf);
+        } else {
+          print ("$name already boxed!");
+        }
+      }
+
+      /* example
+      Query<User> query = userBox.query(User_.firstName.equals('Joe')).build();
+      List<User> joes = query.find();
+      query.close();
+       */
+
+      final query = _fcBox.query().build();
+      List<String> names = query.property(FlashCardFile_.name).find();
+      query.close();
+
+      // print (names);
+
       /*
       rootBundle.loadString("assets/data/about_and_help.md")
           .then((s) {
@@ -86,5 +110,16 @@ class FlashCardBox {
       });
        */
     }
+  }
+
+  /**
+   * check if a certain named FlashCardFile exists
+   */
+  bool inBox(String name) {
+    final qBuilder = _fcBox.query(FlashCardFile_.name.equals(name));
+    final query = qBuilder.build();
+    // return all entities matching the query
+    List<FlashCardFile> fcfs = query.find();
+    return fcfs.isNotEmpty;
   }
 }

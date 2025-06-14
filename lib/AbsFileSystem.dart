@@ -112,6 +112,7 @@ abstract class AbsFileSystem {
     for (var entity in dir.listSync(recursive: false, followLinks: false)) {
       if (entity.path.endsWith(suffix) ||
           entity.path.endsWith('.txt') ||
+          entity.path.endsWith('.flsh') ||
           entity.path.endsWith('.text')) {
         res.add(entity);
         // print(entity.path);

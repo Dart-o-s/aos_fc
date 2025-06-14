@@ -6,9 +6,11 @@
     [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
 
 ### life cycle
-    [ ] OPEN on launch check if "objectbox database" is set up, otherwise
+    [ ] DONE 2025-06-14 19:11 on launch check if "objectbox database" is set up, otherwise
         - copy assets to object box
-        - create catalog of existing decks
+    
+    [ ] OPEN select initial deck for learning
+        [-] create catalog of existing decks, OBSOLET we can list them from the boxes
         - set current deck to empty
 
 ### Pick deck
@@ -18,7 +20,8 @@
     [ ] OPEN store needs to track which deck is open
 
 ### Abs File System
-    [ ] upgrade AbsFileSystem to deal with objectbox
+    [o] upgrade AbsFileSystem to deal with objectbox
+        - do we need that? Actually object box most likely completely replaces AbsFS
 
 ## older high prio items, postponed during transition to object box
     [O] DONE 2025-06-12 22:11 integrate object box
