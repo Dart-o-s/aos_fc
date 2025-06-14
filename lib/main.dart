@@ -17,16 +17,26 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   fs = AbsFileSystem.forThisPlatform();
-  if (kIsWeb)
+  if (kIsWeb) {
     qaList = fs.initialStore("aos-thai");
-  else {
-    objectbox = await FlashCardBox.create();
-    FlashCardFile? fcf = objectbox.find("800words-en-th.flsh");
-    if (fcf != null)
-      qaList = fcf.makeQAList();
-  }
+    runApp(gMain);
+  } else {
+    await FlashCardBox.create()
+    .then( (value) {
+      objectbox = value;
+      FlashCardFile? fcf = objectbox.find("800words-en-th.flsh");
 
-  runApp(gMain);
+      if (fcf != null)
+        qaList = fcf.makeQAList();
+
+      runApp(gMain);
+
+    })
+    .catchError((e) {
+      // ignore the error.
+      print (e); /// should not happen
+    });
+  }
 }
 
 class FlashCardApp extends StatelessWidget {

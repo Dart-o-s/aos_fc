@@ -7,15 +7,18 @@
 
 ### The Assets do not have "meta cards"
     We have to add the meta cards when loading from the boxes, or before storing to the box
-    [ ] OPEN when loading assets, add meta cards
+    [X] DONE 2025-06-15 01:04 when loading assets, add meta cards
 
 ### life cycle
     [x] DONE 2025-06-14 19:11 on launch check if "objectbox database" is set up, otherwise
         - copy assets to object box
     
-    [ ] OPEN select initial deck for learning
+    [o] OPEN select initial deck for learning
         [o] OPEN as this is a hobby project - I just open my thai page for now
         [-] create catalog of existing decks, OBSOLET we can list them from the boxes
+
+### Menu to Jump to Chapters
+    [ ] OPEN as the title says
 
 ### New Deck
     [ ] use "Import" Editor, for import and creating new Decks, add a menu or button to use file picker

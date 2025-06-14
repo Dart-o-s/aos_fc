@@ -52,14 +52,13 @@ class FlashCardBox {
 
   static FlashCardFile? _current = null;
   bool _catalogLoaded = false;
-  List<String> _catalogText = [];
 
   static FlashCardFile get current => _current ?? FlashCardFile(0, "empty", "nothing inside", "");
 
   FlashCardBox._create(this._store) {
     _fcBox = Box<FlashCardFile>(_store);
 
-    // copy the flash card desk from assets to the box
+    // copy the flash card decks from assets to the box
     if (_fcBox.isEmpty()) {
       copyAssets();
     }
@@ -93,18 +92,18 @@ class FlashCardBox {
   void copyAssets() async {
     if (!_catalogLoaded) {
       final assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
-      _catalogText = assetManifest.listAssets().where(
+      final catalogText = assetManifest.listAssets().where(
               (string) => string.startsWith("assets/data/") && string.endsWith(".flsh")
         ).toList();
 
       _catalogLoaded = true;
 
-      for (var name in _catalogText) {
+      for (var name in catalogText) {
         var fileData = await rootBundle.loadString(name);
+        var deckName = name.split("/").last;
 
         if (!inBox(name)) {
-          FlashCardFile fcf = FlashCardFile(
-              0, name, "$name, loaded from assets", fileData);
+          FlashCardFile fcf = createFlashCardFileWithMetaCards(deckName, fileData);
           var id = _fcBox.put(fcf);
         } else {
           print ("$name already boxed!");
@@ -134,6 +133,26 @@ class FlashCardBox {
       });
        */
     }
+  }
+
+  FlashCardFile createFlashCardFileWithMetaCards(String name, String fileData) {
+    String header = """
+Welcome to ${name}. Tap to flip the card.
+A card like "#1 'some text'" creates a box. A card like "\$ 'Chapter Name'" is a chapter.     
+""";
+
+    String footer = """
+\$ Deleted
+This box contains deleted cards. Undelete them, or delete them permanently from here.    
+\$ End of File Marker
+Just a marker for moving between boxes more easy.    
+""";
+    var end = "\n";
+    if (fileData.endsWith("\n"))
+      end = "";
+
+    return FlashCardFile(
+            0, name, "$name, loaded from assets", header + fileData + end + footer);
   }
 
   /**
