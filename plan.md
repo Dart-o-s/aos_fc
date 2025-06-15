@@ -19,7 +19,6 @@
     
     [O] OPEN select initial deck for learning
         [O] OPEN as this is a hobby project - I just open my thai page for now
-        [-] create catalog of existing decks, OBSOLET we can list them from the boxes
 
 ### Menu to move Card to Chapters
     [X] DONE 2025-06-15 02:51 as the title says

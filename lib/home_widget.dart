@@ -598,10 +598,10 @@ class _HomePageState extends State<HomePage> {
     // findNext() uses Flashcard.curIndexNum, stupid idea
     var where = findNextBox();
     var box = qaList[where];
-
+    // AOS check 0/-1
     if (where == 0) return;
 
-    qaList.remove(fc);
+    qaList.remove(fc); // use remove at
     qaList.insert(where, fc);
 
     Flashcard.curIndexNum = where;
@@ -647,6 +647,7 @@ class _HomePageState extends State<HomePage> {
     }),
     PopupMenuButton<String>(
         tooltip: "load Deck",
+        onSelected: _openDeck,
         itemBuilder: (BuildContext context) {
           List<String> files = listFiles();
           return files.map((String choice) {
