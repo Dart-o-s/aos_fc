@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
+import 'package:file_picker/file_picker.dart';
+
 import 'fc_objectbox.dart';
 import 'flash_card.dart';
 
@@ -13,9 +17,10 @@ class ImportPage extends StatefulWidget {
 }
 
 class _ImportPage extends State<ImportPage> {
+  late CodeLineEditingController lec;
+
   @override
   Widget build(BuildContext context) {
-    late CodeLineEditingController lec;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -40,11 +45,39 @@ class _ImportPage extends State<ImportPage> {
             );
           },
         )),
-        ElevatedButton(onPressed: () {
-          appendTextToQAList(lec.text, insert: true);
-          objectbox.quickSave();
-        }, child: Text("import"))
+        Row(
+          children: [
+            ElevatedButton(onPressed: () {
+              _loadFile();
+            }, child: Text("import file ...")),
+            ElevatedButton(onPressed: () {
+              appendTextToQAList(lec.text, insert: true);
+              objectbox.quickSave();
+            }, child: Text("add to Deck"))
+          ]
+        )
       ]),
     );
+  }
+
+  Future<void> _loadFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      try {
+        File file = File(result.files.single.path!);
+        var text = file.readAsLinesSync();
+        var end = lec.text.endsWith("\n") ? "" : "\n";
+        if (lec.text.isEmpty)
+          lec.text = text.join("\n");
+        else
+          lec.text += end + text.join("\n");
+      } on Exception catch (x) {
+        print("autsch!"+x.toString());
+        // do nothing for now
+    }
+    } else {
+      // User canceled the picker
+    }
   }
 }

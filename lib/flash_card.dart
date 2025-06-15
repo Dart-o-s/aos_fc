@@ -11,8 +11,12 @@ void appendTextToQAList(String value, {bool insert = false}) {
   List<String> lines = value.split("\n");
   for (int i = 0; (i + 1) < lines.length; i += 2) {
     var front = lines[i];
+
+    if (front.startsWith("#") || front.startsWith("\$"))
+      continue; // skip special cards
+
     var back = lines[i + 1];
-    qaList.insert(at, Flashcard(question: front, answer: back));
+    qaList.insert(at++, Flashcard(question: front, answer: back));
   }
 }
 

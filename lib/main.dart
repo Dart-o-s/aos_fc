@@ -24,7 +24,7 @@ Future<void> main() async {
     await FlashCardBox.create()
     .then( (value) {
       objectbox = value;
-      FlashCardFile? fcf = objectbox.find("800words-en-th.flsh");
+      FlashCardFile? fcf = objectbox.findAndSetCurrent("800words-en-th.flsh");
 
       if (fcf != null)
         qaList = fcf.makeQAList();

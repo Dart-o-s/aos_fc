@@ -19,4 +19,6 @@
     flutter run -d web-server --web-port 53314 --web-hostname 0.0.0.0
 
 ## Links
-    https://www.alt-codes.net/ unicodes for checkmars and any other fancy thing 
+    https://www.alt-codes.net/ unicodes for checkmars and any other fancy thing
+    https://pub.dev/packages/file_picker
+    https://docs.flutter.dev/cookbook/persistence/reading-writing-files

@@ -1,4 +1,5 @@
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -111,6 +112,7 @@ class _HomePageState extends State<HomePage> {
                       onLongPress: () {
                         _onLongPress(context);
                       },
+                      onSecondaryTapDown: _onTapTest,
                       onSecondaryTap: () {
                         _onLongPress(context);
                       },
@@ -396,8 +398,9 @@ class _HomePageState extends State<HomePage> {
           ),
 
           const PopupMenuItem(value: "pushUp", child: Text('push to next box'), height: 24),
+          const PopupMenuItem(value: "export", child: Text('Export ...'), height: 24),
           const PopupMenuItem(value: "import", child: Text('Import Copy/Paste ...'), height: 24),
-          const PopupMenuItem(value: "about", child: Text('About and Help'), height: 24),
+          const PopupMenuItem(value: "about", child: Text('About and Help ...'), height: 24),
           const PopupMenuItem(value: "close", child: Text('(Blame Developer ...)'), height: 24),
 
           // const PopupMenuDivider(),
@@ -419,6 +422,9 @@ class _HomePageState extends State<HomePage> {
         _aboutAndHelp(context);
       case 'import':
         _copyPasteImport(context);
+        break;
+      case 'export':
+        _exportDeck(context);
         break;
     }
   }
@@ -445,7 +451,7 @@ class _HomePageState extends State<HomePage> {
   void _onTapTest(TapDownDetails details) {
     _touchX = details.globalPosition.dx;
     _touchY = details.globalPosition.dy;
-    print(" Touch on: $_touchX, $_touchY");
+    // print(" Touch on: $_touchX, $_touchY");
   }
 
   void _didKnow() {
@@ -453,6 +459,7 @@ class _HomePageState extends State<HomePage> {
       _pickRandom(context);
     else
       showNextCard();
+
     setState(() {
       _snacker(" you knew it !");
     });
@@ -622,6 +629,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> initActions() {
     return <Widget>[
     PopupMenuButton<String>(
+    tooltip: "move to Box",
     icon: Icon(Icons.library_books),
     onSelected: (String val) { setState(() {
         _moveCardToBox(val);
@@ -638,6 +646,7 @@ class _HomePageState extends State<HomePage> {
         }).toList();
     }),
     PopupMenuButton<String>(
+        tooltip: "load Deck",
         itemBuilder: (BuildContext context) {
           List<String> files = listFiles();
           return files.map((String choice) {
@@ -681,6 +690,18 @@ class _HomePageState extends State<HomePage> {
       qaList.insert(boxidx + 1, fc);
     }
     objectbox.quickSave();
+  }
+
+  void _exportDeck(BuildContext context) async {
+    String? fileName = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: FlashCardBox.current.name
+    );
+
+    if (fileName != null) {
+      var outputFile = File(fileName);
+      outputFile.writeAsString(FlashCardBox.current.fileData);
+    }
   }
 }
 

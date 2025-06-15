@@ -4,6 +4,8 @@
 
 ## high prio items
     [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
+    [ ] OPEN does quickSave save the Flashcards or only the FlashCardFile?
+        - I guess there is a conversion error
 
     [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
 
@@ -25,10 +27,17 @@
 ### Menu to Jump to Chapters
     [ ] OPEN move the current "move card" ActionBar Menu into longpress?
 
+### Rework the bottom bar three dot menu "..."
+    [ ] OPEN move "About" into the "..." menu
+    [ ] OPEN move tricky things into the long tap menu
+
 ### New Deck
-    [ ] use "Import" Editor, for import and creating new Decks, add a menu or button to use file picker
-        - perhaps ajust title
-        - load a demplate? Or have a clear button?
+    [X] DONE 2025-06-15 04:29 use "Import" Editor, for import 
+        [X] add a menu or button to use file picker
+        - perhaps adjust title
+    [ ] OPEN creating new Decks?
+        - load a template? Or have a clear button?
+    [ ] OPEN edit current Deck in Editor
 
 ### Pick Deck 
     [X] DONE 2025-06-15 01:16 menu item to pick deck, list from box
@@ -38,15 +47,19 @@
     [ ] OPEN store needs to track which deck is open, for next session
 
 ### Export and Import/Merge via downloads
-    [ ] OPEN import a file with file picker and import (default from Downloads) into current store/box
+    [X] DONE 2025-06-15 04:43 import a file with file picker and import into current store/box
+        [ ] OPEN set default from Downloads
     [ ] OPEN export a file (probably via file picker) to Downloads
 
 ### Abs File System
-    [ ] BUG Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
-        [ ] move them to flash_card.dart ... that should be good enough
+    [X] DONE 2025-06-15 04:45 Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
+        [X] move them to flash_card.dart ... that should be good enough
     
-    [o] upgrade AbsFileSystem to deal with objectbox
+    [o] OPEN upgrade AbsFileSystem to deal with objectbox
         - do we need that? Actually object box most likely completely replaces AbsFS
+    
+### Special Cards / Meta Cards
+    [ ] OPEN put the card names into an enum
 
 ### Can we run a object box server locally, to fool around with the web version of this app
     - inprinciple we need a firebase set up or similar for the web version

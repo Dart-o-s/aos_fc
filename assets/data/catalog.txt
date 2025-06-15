@@ -1,6 +1,0 @@
-800words-en-de.flsh
-800words-en-es.flsh
-800words-en-fr.flsh
-800words-en-it.flsh
-800words-en-jap.flsh
-800words-th.flsh
