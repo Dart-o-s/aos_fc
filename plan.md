@@ -4,8 +4,9 @@
 
 ## high prio items
     [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
-    [ ] OPEN does quickSave save the Flashcards or only the FlashCardFile?
+    [X] DONE 2025-06-15 22:11 does quickSave save the Flashcards or only the FlashCardFile?
         - I guess there is a conversion error
+        - was indeed a bug, is fixed
 
     [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
 
@@ -20,20 +21,34 @@
     [x] DONE 2025-06-14 19:11 on launch check if "objectbox database" is set up, otherwise
         - copy assets to object box
     
-    [O] OPEN select initial deck for learning
-        [O] OPEN as this is a hobby project - I just open my thai page for now
+    [O] POSTPONED select initial deck for learning
+        [O] POSTPONED as this is a hobby project - I just open my thai page for now
 
 ### Menu to move Card to Chapters
     [X] DONE 2025-06-15 02:51 as the title says
+    [-] REJECTED move the current "move card" ActionBar Menu into longpress?
+        - keep it as it is
 
 ### Menu to Jump to Chapters
-    [ ] OPEN move the current "move card" ActionBar Menu into longpress?
+    [ ] POSTPONED - we have << and >> - that should be enough for now
 
 ### Rework the bottom bar three dot menu "..."
-    [ ] OPEN move "About" into the "..." menu
-    [ ] OPEN move tricky things into the long tap menu
+    [X] DONE 2025-06-15 23:09 move "About" into the "..." menu
+    [X] DONE 2025-06-15 23:09 move tricky things into the long tap menu
+    - move    
+        1 Quiz mode
+        1 About & Help (And fix the text)
+        1 Push to next Box
 
-### New Deck
+    - move other way
+        1 new file
+        1 load from assets
+        1 test
+
+    [=] OPEN checkbox icon
+        - the other CheckBoxItem is of wrong type
+
+### New Deck and edit Deck
     [X] DONE 2025-06-15 04:29 use "Import" Editor, for import 
         [X] add a menu or button to use file picker
         - perhaps adjust title
@@ -50,8 +65,7 @@
 
 ### Export and Import/Merge via downloads
     [X] DONE 2025-06-15 04:43 import a file with file picker and import into current store/box
-        [ ] OPEN set default from Downloads
-    [ ] OPEN export a file (probably via file picker) to Downloads
+    [X] DONE 2025-06-15 22:12 export a file (probably via file picker) to Downloads
 
 ### Abs File System
     [X] DONE 2025-06-15 04:45 Some methods (extensions to List<Flashcard>) got moved into AbsFileSystem, but they belong to "the App"
@@ -66,6 +80,13 @@
 ### Can we run a object box server locally, to fool around with the web version of this app
     - inprinciple we need a firebase set up or similar for the web version
     - for testing and development a local version is probably more cute, as we work often offline
+
+### "hidden improvements"
+    - not sure where to hide them. Probably use a "marker card" as a switch to activate a hidden menu
+    [ ] OPEN sort cards
+        - usefull if one loads a second deck, as all the current decks have the same base english vocabulary
+    [ ] OPEN merge cards, after sorting. 
+        - put the back side text on one card, delete the second card
 
 ## older high prio items, postponed during transition to object box
     [X] DONE 2025-06-14 19:45 trim the input field in the search box.
@@ -119,7 +140,7 @@
     [ ] OPEN give file system permissions
         needed to copy assets to the work folder
 
-    STB
+##  STB
     [ ] OPEN Code Generator - just write the menus and buttons, and generate a skelleton and backend for that
         first throw, mapping direct to controllers, second throw, mapping it to an eventbus and controllers listen
 
@@ -128,10 +149,12 @@
     [ ] OPEN copy search from Modro/orgro
 
 ### delayed
-    [ ] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.
+    [O] clean up the stayed around methods working on the FlashCard List, e.g. fix $ Delete etc.
     [ ] Clean up script for plan.md, move all DONE items to the end
-    [ ] OPEN ask for FileSystem permissions
-        [ ] OPEN select files from filesystem
+    [=] POSTPONED ask for FileSystem permissions
+        - this stuff is a real mess, no worDONE 2025-06-15 22:16king documentation or simple example to find
+        [X] OPEN select files from filesystem
+        - DONE since now
 
     [O] OPEN PWA / Web Storage
         does not work on Windows - stuff in the browser vanishes
@@ -156,7 +179,8 @@
     [X] Figure how to load/write from assets
         load is done, write is not possible, it seems
 
-    [ ] OPEN figure if you can write into your privte store and read from it
+    [X] DONE 2025-06-15 22:11 figure if you can write into your private store and read from it
+        - can be done, see how objectbox does it
 
 ## probably usable in Storybook
 https://github.com/ChristopherA/iambic-mnemonic/blob/master/word-lists/README.md

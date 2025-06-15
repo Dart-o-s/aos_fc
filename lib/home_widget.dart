@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)
             ),
-          actions: initActions(),
+          actions: _initActionMenus(),
         ),
         floatingActionButton: _createFAB(context),
         body: Column(
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),*/
-                buildBottomMenu(context),
+                _initBottomMenu(context),
                 IconButton(
                   tooltip: "search ...",
                   icon: const Icon(Icons.search),
@@ -259,7 +259,8 @@ class _HomePageState extends State<HomePage> {
           );
         });
   }
-  PopupMenuButton<dynamic> buildBottomMenu(BuildContext context) {
+
+  PopupMenuButton<dynamic> _initBottomMenu(BuildContext context) {
     return PopupMenuButton(
       initialValue: 1,
       onSelected: (item) async {
@@ -269,40 +270,33 @@ class _HomePageState extends State<HomePage> {
             _add();
           case 2:
             deleteCurrentCard();
-            ;
           case 3:
             deleteCardForever();
-            ;
-          case 4:
-            _loadFromWebStore();
           case 6:
             _moveToFront();
-          case 7:
-            _loadThaiFromAssets();
           case 8:
             _edit();
-          case 'TEST': // easier to use Text if you want to randomly insert an new menu item
-            _test();
+          case 'pushUp':
+            _pushToNextBox(context);
+          case 'about':
+            _aboutAndHelp(context);
         }
       },
       itemBuilder: (BuildContext context) =>
       <PopupMenuEntry>[
-        const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
-        const PopupMenuItem(value: 8, child: Text('edit ...'), height: 24),
-        const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
+        CheckedPopupMenuItem(
+          checked: _quizmode, value: "quiz", child: _quizmode ? const Text('Quiz Mode is ON') : const Text('Quiz Mode!'), height: 24,
+        ),
+
         const PopupMenuItem(value: 6, child: Text('un-delete'), height: 24),
         const PopupMenuItem(value: 3, child: Text('delete perma'), height: 24),
-
-        if (kIsWeb)
-          const PopupMenuItem(
-              value: 4, child: Text('Load Web-Store'), height: 24),
         const PopupMenuDivider(),
-        const PopupMenuItem(
-            value: 5, child: Text('(new file ...)'), height: 24),
-        const PopupMenuItem(
-            value: 7, child: Text('Load From Assets ...'), height: 24),
-        const PopupMenuItem(
-            value: 'TEST', child: Text('_- TEST -_'), height: 24),
+        const PopupMenuItem(value: "about", child: Text('About and Help ...'), height: 24),
+        const PopupMenuItem(value: "pushUp", child: Text('push to next box'), height: 24),
+        const PopupMenuDivider(),
+        const PopupMenuItem(value: 2, child: Text('delete'), height: 24),
+        const PopupMenuItem(value: 1, child: Text('add ...'), height: 24),
+        const PopupMenuItem(value: 8, child: Text('edit ...'), height: 24),
 
       ],
     );
@@ -380,11 +374,7 @@ class _HomePageState extends State<HomePage> {
   }
    */
   void _onLongPress(BuildContext context) async {
-    final RenderObject? overlay =
-    Overlay
-        .of(context)
-        .context
-        .findRenderObject();
+    final RenderObject? overlay = Overlay.of(context).context.findRenderObject();
     final result = await showMenu(
         context: context,
         position: RelativeRect.fromRect(
@@ -392,21 +382,26 @@ class _HomePageState extends State<HomePage> {
           Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
               overlay.paintBounds.size.height),
         ),
-        // position: RelativeRect.fromLTRB(10, 10, 40, 40),
         items: <PopupMenuEntry>[
-          CheckedPopupMenuItem(
-            checked: _quizmode,
-            value: "quiz",
-            child: _quizmode ? const Text('Quiz Mode is ON') : const Text('Quiz Mode!'),
-            height: 24,
-          ),
-
-          const PopupMenuItem(value: "pushUp", child: Text('push to next box'), height: 24),
-          const PopupMenuItem(value: "export", child: Text('Export ...'), height: 24),
+        /* CheckboxMenuButton(
+        value: _quizmode,
+        onChanged: (bool value) {
+          _quizmode = !_quizmode;
+        },
+        child: _quizmode ? const Text('Quiz Mode is ON') : const Text('Quiz Mode!'),
+        ),*/
+          // const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
           const PopupMenuItem(value: "import", child: Text('Import Copy/Paste ...'), height: 24),
-          const PopupMenuItem(value: "about", child: Text('About and Help ...'), height: 24),
-          const PopupMenuItem(value: "close", child: Text('(Blame Developer ...)'), height: 24),
-
+          const PopupMenuItem(value: "export", child: Text('Export ...'), height: 24),
+          const PopupMenuItem(value: "blame", child: Text('(Blame Developer ...)'), height: 24),
+          if (kIsWeb)
+            const PopupMenuItem(
+                value: 4, child: Text('Load Web-Store'), height: 24),
+          const PopupMenuDivider(),
+          const PopupMenuItem(
+              value: 7, child: Text('Load From Assets ...'), height: 24),
+          const PopupMenuItem(
+              value: 'TEST', child: Text('_- TEST -_'), height: 24),
           // const PopupMenuDivider(),
 
         ]);
@@ -414,16 +409,12 @@ class _HomePageState extends State<HomePage> {
     // setState(() { isPressed = false; }); // Handle menu item selection
 
     switch (result) {
-      case 'quiz':
-        _quizmode = ! _quizmode;
-        if (_quizmode) _pickRandom(context);
-        setState(() {
-          _snacker("Quiz mode " + (_quizmode ? "ON" : "OFF"));
-        });
-      case 'pushUp':
-        _pushToNextBox(context);
-      case 'about':
-        _aboutAndHelp(context);
+      case 'TEST': // easier to use Text if you want to randomly insert an new menu item
+        _test();
+      case 7:
+        _loadThaiFromAssets();
+      case 4:
+        _loadFromWebStore();
       case 'import':
         _copyPasteImport(context);
         break;
@@ -630,7 +621,7 @@ class _HomePageState extends State<HomePage> {
    */
   }
 
-  List<Widget> initActions() {
+  List<Widget> _initActionMenus() {
     return <Widget>[
     PopupMenuButton<String>(
     tooltip: "move to Box",
@@ -688,7 +679,7 @@ class _HomePageState extends State<HomePage> {
     var fc = Flashcard.getCurrent();
 
     if (boxidx > cardIdx) {
-      gQAList.removeAt(cardIdx);  // box is not at boxidx-1
+      gQAList.removeAt(cardIdx);  // box is now at boxidx-1
       gQAList.insert(boxidx, fc); // insert at old box id, that is one behind the box
     } else { // box is in front of the card
       gQAList.removeAt(cardIdx);
