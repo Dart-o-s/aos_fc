@@ -2,7 +2,14 @@ import 'dart:math';
 import 'AbsFileSystem.dart';
 import 'fc_objectbox.dart';
 
-var random = Random();
+var _random = Random();
+typedef FlashCards = List<Flashcard>;
+
+FlashCards gQAList = [
+  Flashcard(
+      question: "If you see this, tap the three dot icon in the app bar",
+      answer: "load a deck from the three dot icon menu")
+];
 
 void appendTextToQAList(String value, {bool insert = false}) {
 
@@ -16,13 +23,15 @@ void appendTextToQAList(String value, {bool insert = false}) {
       continue; // skip special cards
 
     var back = lines[i + 1];
-    qaList.insert(at++, Flashcard(question: front, answer: back));
+    gQAList.insert(at++, Flashcard(question: front, answer: back));
   }
 }
 
 class Flashcard {
   // TODO sorry, refactoring relict. Was in home_widget
   // TODO we need a "storage" instead of the global qaList
+  // AoS since we moved to objectbox, we have to marry
+  // this old stuff into the new FlashCardFile - and then burn everything, haha
   static int curIndexNum = 0;
 
   String question;
@@ -30,32 +39,35 @@ class Flashcard {
 
   Flashcard({required this.question, required this.answer});
 
-  static Flashcard getCurrent() => qaList.elementAt(Flashcard.curIndexNum);
+  static Flashcard getCurrent() => gQAList.elementAt(Flashcard.curIndexNum);
 
   bool get isSpecial { return question.startsWith("#") || question.startsWith("\$"); }
 }
 
+StringBuffer asStringBuffer(FlashCards store) {
+  StringBuffer result = StringBuffer();
+  for (var it in store) {
+    result.writeln(it.question);
+    result.writeln(it.answer);
+  }
+  return result;
+}
+
 Flashcard pickRandom() {
-   int idx = random.nextInt(qaList.length);
-   var fc = qaList[idx];
+   int idx = _random.nextInt(gQAList.length);
+   var fc = gQAList[idx];
    int tries = 10; // perhaps some smart user removed all cards except the "boxes" ... sigh
    while (fc.isSpecial && tries-- > 0) {
-     idx = random.nextInt(qaList.length);
-     fc = qaList[idx];
+     idx = _random.nextInt(gQAList.length);
+     fc = gQAList[idx];
    }
    Flashcard.curIndexNum = idx;
    return fc;
 }
 
-List<Flashcard> qaList = [
-  Flashcard(
-      question: "If you see this, tap the three dot icon in the app bar",
-      answer: "load a deck from the three dot icon menu")
-];
-
 List<String> listAllBoxes() {
   var res = <String>[];
-  qaList.forEach((fc) {
+  gQAList.forEach((fc) {
     if (fc.question.startsWith("#") || fc.question.startsWith("\$"))
       res.add(fc.question);
   });
@@ -204,7 +216,7 @@ extension FCExtras on List<Flashcard> {
       remove(fc);
       insert(del, fc); // del is the old position of the del marker
     }
-    objectbox.quickSave();
+    gFlashCardBox.quickSave();
   }
 
   void removeCurrent() {
@@ -212,12 +224,12 @@ extension FCExtras on List<Flashcard> {
     var fc = this[Flashcard.curIndexNum];
     remove(fc); // Aos use removeAt
     if (Flashcard.curIndexNum > length - 1) Flashcard.curIndexNum = length -1;
-    objectbox.quickSave();
+    gFlashCardBox.quickSave();
   }
 
   int findExact(String question) {
-    for (int i = 0; i < qaList.length; i++) {
-      if (qaList[i].question == question) {
+    for (int i = 0; i < gQAList.length; i++) {
+      if (gQAList[i].question == question) {
         return i;
       }
     }

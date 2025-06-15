@@ -9,6 +9,9 @@
 
     [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
 
+### Refactorings around the old class Flashcard and the aqList
+    [ ] OPEN - should have done this at the start of the project, haunted me since months
+
 ### The Assets do not have "meta cards"
     We have to add the meta cards when loading from the boxes, or before storing to the box
     [X] DONE 2025-06-15 01:04 when loading assets, add meta cards

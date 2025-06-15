@@ -37,7 +37,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
 
   void _addFlashcard() {
     if (edit) {
-      var fc = qaList.elementAt(Flashcard.curIndexNum);
+      var fc = gQAList.elementAt(Flashcard.curIndexNum);
       fc.question = _questionController.text;
       fc.answer = _answerController.text;
     } else if (_questionController.text.isNotEmpty && _answerController.text.isNotEmpty) {
@@ -48,11 +48,11 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
           answer: _answerController.text,
         );
         // TODO that would be behind the end marker and makes no real sense
-        if (pos == qaList.length) {
-          qaList.add(flashcard);
-          Flashcard.curIndexNum = qaList.length - 1;
+        if (pos == gQAList.length) {
+          gQAList.add(flashcard);
+          Flashcard.curIndexNum = gQAList.length - 1;
         } else {
-          qaList.insert(pos, flashcard);
+          gQAList.insert(pos, flashcard);
           Flashcard.curIndexNum++;
         }
       });
@@ -61,7 +61,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
     _questionController.clear();
     _answerController.clear();
 
-    objectbox.quickSave();
+    gFlashCardBox.quickSave();
     // Navigator.pop(context);
   }
 

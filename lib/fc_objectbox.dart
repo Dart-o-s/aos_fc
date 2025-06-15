@@ -12,7 +12,7 @@ import 'objectbox.g.dart'; // created by $ flutter pub run build_runner build, n
                            // or use: $ dart run build_runner build
 
 // initialized in main() - AoS check if it can be initialized here
-late FlashCardBox objectbox;
+late FlashCardBox gFlashCardBox;
 
 @Entity()
 class FlashCardFile {
@@ -27,8 +27,8 @@ class FlashCardFile {
   FlashCardFile(this.id, this.name, this.description, this.fileData);
 
   // create a list of questions and answers
-  List<Flashcard> makeQAList() {
-    List<Flashcard> store = <Flashcard>[];
+  FlashCards makeQAList() {
+    FlashCards store = <Flashcard>[];
     var text = fileData.split("\n");
 
     for (int i = 0; (i + 1) < text.length; i += 2) {
@@ -204,6 +204,8 @@ Just a marker for moving between boxes more easy.
 
   void quickSave() {
     if (_current != null) {
+      var data = asStringBuffer(gQAList);
+      _current!.fileData = data.toString();
       _fcBox.put(_current!);
     }
   }

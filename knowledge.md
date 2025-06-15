@@ -22,3 +22,9 @@
     https://www.alt-codes.net/ unicodes for checkmars and any other fancy thing
     https://pub.dev/packages/file_picker
     https://docs.flutter.dev/cookbook/persistence/reading-writing-files
+
+### Search delegate, partial search and completion
+    https://medium.com/stackademic/flutter-searchbar-an-ultimate-guide-011a8ae0aa9a
+
+### acessing storage
+    https://stackoverflow.com/questions/51565897/saving-files-in-android-for-beginners-internal-external-storage

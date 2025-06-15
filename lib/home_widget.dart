@@ -1,14 +1,15 @@
 
 import 'package:file_picker/file_picker.dart';
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
 
 import 'dart:io';
+import 'dart:convert';
 
-// import 'package:permission_handler/permission_handler.dart';
-// import 'package:saf/saf.dart';
+import 'ku/str_2_uint8.dart';
 
 import 'add_flashcard_page.dart';
 import 'flash_card.dart';
@@ -21,7 +22,7 @@ import 'fc_objectbox.dart';
 
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 
 // import 'flash_card_extension.dart';
 // https://pub.dev/packages/simple_gesture_detector/example
@@ -71,7 +72,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool handlerIsUp = false;
   double _touchX = 0.0,
-      _touchY = 0.0;
+         _touchY = 0.0;
   bool _isMyTablet = false;
   bool _quizmode = false;
   // late Saf saf;
@@ -88,8 +89,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
-            centerTitle: false,
+          actionsIconTheme: IconThemeData(color: Colors.white /* , size: 36 */),
+          centerTitle: false,
             title: Text("AoS FC", style: TextStyle(fontSize: 25)),
+            titleTextStyle: TextStyle(
+                color: Colors.white
+            ),
             backgroundColor: Colors.lightGreen[900],
             toolbarHeight: 40,
             elevation: 5,
@@ -133,12 +138,12 @@ class _HomePageState extends State<HomePage> {
                             direction: FlipDirection.HORIZONTAL,
                             front: FlashCardWidget(
                                 side: CardSide.FRONT,
-                                text: qaList[Flashcard.curIndexNum].question,
+                                text: gQAList[Flashcard.curIndexNum].question,
                                 lightBC: _isMyTablet
                             ),
                             back: FlashCardWidget(
                                 side: CardSide.BACK,
-                                text: qaList[Flashcard.curIndexNum].answer,
+                                text: gQAList[Flashcard.curIndexNum].answer,
                                 lightBC: _isMyTablet)
                         ),
                       )))
@@ -249,7 +254,6 @@ class _HomePageState extends State<HomePage> {
               ElevatedButton(
                 child: const Text('OK'),
                 onPressed: () => Navigator.pop(context, searchFieldController.text),
-                // TODO Aos worst case we have to start the search here
               ),
             ],
           );
@@ -306,7 +310,7 @@ class _HomePageState extends State<HomePage> {
 
   void showNextCard() {
     setState(() {
-      Flashcard.curIndexNum = (Flashcard.curIndexNum + 1 < qaList.length)
+      Flashcard.curIndexNum = (Flashcard.curIndexNum + 1 < gQAList.length)
           ? Flashcard.curIndexNum + 1
           : 0;
     });
@@ -316,7 +320,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       Flashcard.curIndexNum = (Flashcard.curIndexNum - 1 >= 0)
           ? Flashcard.curIndexNum - 1
-          : qaList.length - 1;
+          : gQAList.length - 1;
     });
   }
 
@@ -345,25 +349,25 @@ class _HomePageState extends State<HomePage> {
 
   void showPreviousBox() {
     setState(() {
-      qaList.findPreviousBox();
+      gQAList.findPreviousBox();
     });
   }
 
   void showNextBox() {
     setState(() {
-      qaList.findNextBox();
+      gQAList.findNextBox();
     });
   }
 
   void deleteCurrentCard() {
     setState(() {
-      qaList.deleteCurrentCard();
+      gQAList.deleteCurrentCard();
     });
   }
 
   void deleteCardForever() {
     setState(() {
-      qaList.removeCurrent();
+      gQAList.removeCurrent();
     });
   }
 
@@ -466,7 +470,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _didNotKnow() {
-    qaList.moveCurrentToFront();
+    gQAList.moveCurrentToFront();
 
     if (_quizmode)
       _pickRandom(context);
@@ -564,7 +568,7 @@ class _HomePageState extends State<HomePage> {
 
   void _loadFromWebStore() {
     var fs = AbsFileSystem.forThisPlatform();
-    qaList = fs.load("aos-thai");
+    gQAList = fs.load("aos-thai");
     setState(() {
       _snacker("loaded from browser web store");
     });
@@ -597,12 +601,12 @@ class _HomePageState extends State<HomePage> {
 
     // findNext() uses Flashcard.curIndexNum, stupid idea
     var where = findNextBox();
-    var box = qaList[where];
+    var box = gQAList[where];
     // AOS check 0/-1
     if (where == 0) return;
 
-    qaList.remove(fc); // use remove at
-    qaList.insert(where, fc);
+    gQAList.remove(fc); // use remove at
+    gQAList.insert(where, fc);
 
     Flashcard.curIndexNum = where;
 
@@ -663,9 +667,9 @@ class _HomePageState extends State<HomePage> {
 
   void _openDeck(String fileName) {
     if (fileName.isNotEmpty) {
-      FlashCardFile? fcf = objectbox.findAndSetCurrent(fileName);
+      FlashCardFile? fcf = gFlashCardBox.findAndSetCurrent(fileName);
       if (fcf != null)
-        qaList = fcf.makeQAList();
+        gQAList = fcf.makeQAList();
         setState(() {
           _snacker("$fileName loaded");
         });
@@ -673,35 +677,42 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<String> listFiles() {
-    return objectbox.listFiles();
+    return gFlashCardBox.listFiles();
   }
 
   void _moveCardToBox(String val) {
-    var boxidx = qaList.findExact(val);
+    var boxidx = gQAList.findExact(val);
     if (boxidx == -1) return;
 
     var cardIdx = Flashcard.curIndexNum;
     var fc = Flashcard.getCurrent();
 
     if (boxidx > cardIdx) {
-      qaList.removeAt(cardIdx);  // box is not at boxidx-1
-      qaList.insert(boxidx, fc); // insert at old box id, that is one behind the box
+      gQAList.removeAt(cardIdx);  // box is not at boxidx-1
+      gQAList.insert(boxidx, fc); // insert at old box id, that is one behind the box
     } else { // box is in front of the card
-      qaList.removeAt(cardIdx);
-      qaList.insert(boxidx + 1, fc);
+      gQAList.removeAt(cardIdx);
+      gQAList.insert(boxidx + 1, fc);
     }
-    objectbox.quickSave();
+    gFlashCardBox.quickSave();
   }
 
   void _exportDeck(BuildContext context) async {
+    // see: https://stackoverflow.com/questions/51613234/convert-a-string-of-uint8list-to-a-unit8list
+    final utf8Encoder = utf8.encoder;
+    var uint8Data = utf8Encoder.convert(FlashCardBox.current.fileData);
+
+    // AoS serious problem. That "save dialog" in Android has no cancel button.
     String? fileName = await FilePicker.platform.saveFile(
       dialogTitle: 'Please select an output file:',
-      fileName: FlashCardBox.current.name
+      fileName: FlashCardBox.current.name,
+      bytes: uint8Data // iOS and Android only allow to drop the file directly
     );
 
-    if (fileName != null) {
+    if (fileName != null && !Platform.isIOS && !Platform.isAndroid) {
       var outputFile = File(fileName);
-      outputFile.writeAsString(FlashCardBox.current.fileData);
+      outputFile.writeAsString(FlashCardBox.current.fileData, flush:true);
+      print ("Filename: $fileName");
     }
   }
 }
@@ -752,7 +763,7 @@ extension on List<Flashcard> {
     insert(1,fc); // move to front, behind first card
 
     _snacker(" moved card to front");
-    objectbox.quickSave();
+    gFlashCardBox.quickSave();
   }
 }
 
@@ -763,5 +774,5 @@ void _snacker(String message) {
 }
 
 void quickSave() {
-  objectbox.quickSave();
+  gFlashCardBox.quickSave();
 }

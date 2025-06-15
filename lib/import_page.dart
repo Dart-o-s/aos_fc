@@ -52,7 +52,7 @@ class _ImportPage extends State<ImportPage> {
             }, child: Text("import file ...")),
             ElevatedButton(onPressed: () {
               appendTextToQAList(lec.text, insert: true);
-              objectbox.quickSave();
+              gFlashCardBox.quickSave();
             }, child: Text("add to Deck"))
           ]
         )

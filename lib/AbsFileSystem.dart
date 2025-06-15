@@ -24,7 +24,7 @@ abstract class AbsFileSystem {
   Directory getCWDAsDir() { return Directory.current; }
 
   // https://www.geeksforgeeks.org/how-to-save-the-file-in-phone-storage-in-flutter/
-  String save(String fileName, List<Flashcard>  store, void Function(String) done) {
+  String save(String fileName, FlashCards  store, void Function(String) done) {
 
     try {
       StringBuffer result = StringBuffer();
@@ -50,10 +50,10 @@ abstract class AbsFileSystem {
     }
   }
 
-  List<Flashcard> load(String fileName) {
+  FlashCards load(String fileName) {
     String fullName = getFullPath(fileName);
 
-    List<Flashcard> store = <Flashcard>[];
+    FlashCards store = <Flashcard>[];
     File inf = File(fullName);
 
 /*
@@ -115,7 +115,7 @@ abstract class AbsFileSystem {
     return UseLessFileSystem(); // and crash
   }
 
-  List<Flashcard> initialStore(String s) {
+  FlashCards initialStore(String s) {
     // TODO this is for web only ...
     // but save to call in any circumstances
     var res = <Flashcard>[];
@@ -144,7 +144,7 @@ class UseLessFileSystem extends AbsFileSystem {
   }
 
   @override
-  List<Flashcard> load(String fileName) {
+  FlashCards load(String fileName) {
     // TODO: implement load
     throw UnimplementedError();
   }
@@ -187,8 +187,8 @@ class WebFileSystem extends AbsFileSystem {
   }
 
   @override
-  List<Flashcard> load(String fileName) {
-    List<Flashcard> res = [];
+  FlashCards load(String fileName) {
+    FlashCards res = [];
 
     String data = localStorage.getItem(fileName) ?? "";
     if (data == "") {
@@ -199,7 +199,7 @@ class WebFileSystem extends AbsFileSystem {
   }
 
   @override
-  String save(String fileName, List<Flashcard> store, void Function(String p1) done) {
+  String save(String fileName, FlashCards store, void Function(String p1) done) {
 
     /*if (!localStorageIsInitialized) {
       print("error: LS not initialized");
@@ -259,14 +259,14 @@ class WindowsFileSystem extends AbsFileSystem {
 }
 
 int findNextBox() {
-  return qaList.findNextBox();
+  return gQAList.findNextBox();
 }
 
 int findCardContaining(String it) {
   int cur = Flashcard.curIndexNum;
-  int found = qaList.findCardContaining(it, from: cur);
+  int found = gQAList.findCardContaining(it, from: cur);
 
   if (found != -1) return found;
 
-  return qaList.findCardContaining(it);
+  return gQAList.findCardContaining(it);
 }

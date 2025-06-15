@@ -18,16 +18,16 @@ Future<void> main() async {
 
   fs = AbsFileSystem.forThisPlatform();
   if (kIsWeb) {
-    qaList = fs.initialStore("aos-thai");
+    gQAList = fs.initialStore("aos-thai");
     runApp(gMain);
   } else {
     await FlashCardBox.create()
     .then( (value) {
-      objectbox = value;
-      FlashCardFile? fcf = objectbox.findAndSetCurrent("800words-en-th.flsh");
+      gFlashCardBox = value;
+      FlashCardFile? fcf = gFlashCardBox.findAndSetCurrent("800words-en-th.flsh");
 
       if (fcf != null)
-        qaList = fcf.makeQAList();
+        gQAList = fcf.makeQAList();
 
       runApp(gMain);
 
@@ -65,7 +65,7 @@ class FlashCardApp extends StatelessWidget {
   }
 
   int get currentCardNum => Flashcard.curIndexNum;
-  int get numCards => qaList.length;
+  int get numCards => gQAList.length;
 
   String get aboutText => _itsAboutText.replaceFirst("{p1}", "${currentCardNum}/${numCards-1}");
 }
