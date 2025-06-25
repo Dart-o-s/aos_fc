@@ -114,7 +114,7 @@
     [X] DONE 2025-04-23 22:24 help text, included in About Page 
 
     [X] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
-        TODO: confusing, is this fixed without timestamp, or not ... 
+        OPEN TODO: confusing, is this fixed without timestamp, or not ... 
 
     [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
