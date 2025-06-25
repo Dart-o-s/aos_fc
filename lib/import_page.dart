@@ -47,13 +47,27 @@ class _ImportPage extends State<ImportPage> {
         )),
         Row(
           children: [
-            ElevatedButton(onPressed: () {
-              _loadFile();
-            }, child: Text("import file ...")),
-            ElevatedButton(onPressed: () {
-              appendTextToQAList(lec.text, insert: true);
-              gFlashCardBox.quickSave();
-            }, child: Text("add to Deck"))
+            ElevatedButton(
+              onPressed: () {
+                _loadFile();
+              },
+              child: Text("import file ...")
+            ),
+            ElevatedButton(
+              onPressed: () {
+                appendTextToQAList(lec.text, insert: true);
+                gFlashCardBox.quickSave();
+              },
+              child: Text("add to Deck")
+            ),
+            // TODO AoS: option to remove duplicates in the editor first
+            ElevatedButton(
+                onPressed: () {
+                  _mergeTextIntoQAList(lec.text, insert: true);
+                  gFlashCardBox.quickSave();
+                },
+                child: Text("merge into")
+            ),
           ]
         )
       ]),
@@ -68,16 +82,36 @@ class _ImportPage extends State<ImportPage> {
         File file = File(result.files.single.path!);
         var text = file.readAsLinesSync();
         var end = lec.text.endsWith("\n") ? "" : "\n";
-        if (lec.text.isEmpty)
+        if (lec.text.isEmpty) // put into Edit Controller
           lec.text = text.join("\n");
-        else
+        else // append to the controller, make sure to have an \n as separator
           lec.text += end + text.join("\n");
       } on Exception catch (x) {
-        print("autsch!"+x.toString());
+        print("autsch! "+x.toString());
         // do nothing for now
     }
     } else {
       // User canceled the picker
     }
+  }
+
+  // we only insert cards, where the front side does not exist in the store
+  // Aos TODO: we do not merge same front sides, if the back sides are different
+  void _mergeTextIntoQAList(String text, {required bool insert}) {
+    int at = 1;
+    List<String> lines = text.split("\n");
+    for (int i = 0; (i + 1) < lines.length; i += 2) {
+      var front = lines[i];
+
+      if (front.startsWith("#") || front.startsWith("\$"))
+        continue; // skip special cards
+
+      var pos = gQAList.findCardWithFront(front);
+      if (pos == -1) {
+        var back = lines[i + 1];
+        gQAList.insert(at++, Flashcard(question: front, answer: back));
+      }
+    }
+
   }
 }

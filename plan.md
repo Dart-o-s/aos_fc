@@ -1,6 +1,6 @@
 # we have a plan
-    1) Play Trumpets! Realease 0.9.2
-    2) migrating to objectbox and revamping live cycle: 0.9.3
+    1) Play Trumpets! Realease 0.9.4
+    2) DONE migrating to objectbox and revamping live cycle: 0.9.3
 
 ## high prio items
     [X] DONE 2025-06-13 07:54 tag and push, r0.9.3
@@ -10,7 +10,7 @@
 
     [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
 
-### Refactorings around the old class Flashcard and the aqList
+### Refactorings around the old class Flashcard and the qaList
     [ ] OPEN - should have done this at the start of the project, haunted me since months
 
 ### The Assets do not have "meta cards"
@@ -75,7 +75,7 @@
         - do we need that? Actually object box most likely completely replaces AbsFS
     
 ### Special Cards / Meta Cards
-    [ ] OPEN put the card names into an enum
+    [ ] OPEN put the card names ("$ Deleted" etc.) into an enum
 
 ### Can we run a object box server locally, to fool around with the web version of this app
     - inprinciple we need a firebase set up or similar for the web version
@@ -114,13 +114,15 @@
     [X] DONE 2025-04-23 22:24 help text, included in About Page 
 
     [X] BUG OPEN if there is no "$ Deleted " marker, inserting one and deleting the card mix their positions
+        TODO: confusing, is this fixed without timestamp, or not ... 
+
     [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
     [X] DONE 2025-04-24 00:49 search ...
     [X] DONE 2025-04-24 02:25 import a file via copy/paste. 
         - Append or overwrite?
         + I decided to insert after first card
-        Fixed font suze: style: CodeEditorStyle(fontSize: 24),
+        Fixed font size: style: CodeEditorStyle(fontSize: 24),
 
     [X] DONE 2025-05-07 11:11 known cards are not moved to higher boxes yet
 
@@ -143,9 +145,6 @@
 ##  STB
     [ ] OPEN Code Generator - just write the menus and buttons, and generate a skelleton and backend for that
         first throw, mapping direct to controllers, second throw, mapping it to an eventbus and controllers listen
-
-    [ ] OPEN put this in https://github.com/ivehement/saf
-
     [ ] OPEN copy search from Modro/orgro
 
 ### delayed
@@ -217,16 +216,18 @@ https://pub.dev/documentation/gesture_x_detector/latest/
         [✓] Tablet
         [✓] Windows
         [✅] Phone ✅ ✔ ✓ 🗹
-        [1] change colour on Tablet - probably based on device name?
+        [✔] DONE 2025-06-25 11:11 change colour on Tablet - probably based on device name?
 
-    [ ] OPEN put on "New Flash Card" a google translate widget
+    [x] DONE 2025-06-26 11:11 (really long ago) put on "New Flash Card" a google translate widget
 
 ## after first release
-    [ ] OPEN figure how the files view on the tablet works, as orgro uses it as "save" dialog!
-    [ ] OPEN share button via mail
-    [ ] OPEN import
-        - without merge
-        - with merge
+    [ ] DONE 2025-06-25 11:11 figure how the files view on the tablet works, as orgro uses it as "save" dialog!
+    [ ] OPEN share button via mail - a real share button?
+
+    [ ] DONE 2025-06-25 23:58 import
+        - DONE 2025-06-25 11:11 (done last release) without merge
+        - DONE 2025-06-25 23:58 with merge
+
     [ ] mini MD parser - for settings / resp. use "Properties class" 
         # header
         [] checkbox
@@ -234,7 +235,7 @@ https://pub.dev/documentation/gesture_x_detector/latest/
 
     [_] OPEN script to copy/merge the windows data file into Assets of the project. So it is in Git.
         - and can be distributed together with the App
-        - the App should unpack the Asset to ~/Download
+        - the App should unpack the Asset to ~/Download -- kind of obsolet since we use objectbox
 
     [X] DONE 2025-03-28 15:26 after refactoring, creating a new Card does not directly move to it
         HINT: use await for Navigator.push() and put a setState() behind it.

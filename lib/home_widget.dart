@@ -381,15 +381,8 @@ class _HomePageState extends State<HomePage> {
               overlay.paintBounds.size.height),
         ),
         items: <PopupMenuEntry>[
-        /* CheckboxMenuButton(
-        value: _quizmode,
-        onChanged: (bool value) {
-          _quizmode = !_quizmode;
-        },
-        child: _quizmode ? const Text('Quiz Mode is ON') : const Text('Quiz Mode!'),
-        ),*/
           // const PopupMenuItem(value: 5, child: Text('(new file ...)'), height: 24),
-          const PopupMenuItem(value: "import", child: Text('Import Copy/Paste ...'), height: 24),
+          const PopupMenuItem(value: "import", child: Text('Import or Copy/Paste ...'), height: 24),
           const PopupMenuItem(value: "export", child: Text('Export ...'), height: 24),
           const PopupMenuItem(value: "blame", child: Text('(Blame Developer ...)'), height: 24),
           if (kIsWeb)
@@ -400,11 +393,7 @@ class _HomePageState extends State<HomePage> {
               value: 7, child: Text('Load From Assets ...'), height: 24),
           const PopupMenuItem(
               value: 'TEST', child: Text('_- TEST -_'), height: 24),
-          // const PopupMenuDivider(),
-
         ]);
-
-    // setState(() { isPressed = false; }); // Handle menu item selection
 
     switch (result) {
       case 'TEST': // easier to use Text if you want to randomly insert an new menu item

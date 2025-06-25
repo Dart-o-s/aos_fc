@@ -79,10 +79,24 @@ extension FCExtras on List<Flashcard> {
     add(Flashcard(question: "Tab to flip Card. Do it now for short help.", answer: "Swipe left or right for next card. Up for not known. A card like '#1', creates a 'box', like '\$Title, creates a chapter"));
   }
 
+  // TODO AoS - we need a set, to make this efficient
+  int findCardWithFront(String front) {
+   int res = -1;
+   int pos = 0;
+
+   for (var fc in gQAList) {
+     if (fc.question == front)
+       return pos;
+     pos ++; // not found yet
+   }
+
+   return res;
+  }
+
   // for now this is a simple "contains test"
   // we check both back and front
   // TODO consider to switch to regexp
-  // TODO make individual searches possible
+  // TODO make individual searches possible (either Q or A, not both)
   int findCardContaining(String pattern, {int from = 0}) {
     for (int res = from; res < this.length; res++) {
       final fc = this[res];
