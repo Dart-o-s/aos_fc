@@ -77,6 +77,7 @@ class FlashCardBox {
 
     // Future<Store> openStore() {...} is defined in the generated objectbox.g.dart
 
+    // AoS see how to get the "root" directory for your app, here!
     final store = await openStore(
         directory: p.join((await getApplicationDocumentsDirectory()).path, "flashcard"),
         macosApplicationGroup: "flashcard.demo");

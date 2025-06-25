@@ -1,0 +1,47 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:409958654003307544",
+      "lastPropertyId": "4:5068692527176941495",
+      "name": "FlashCardFile",
+      "properties": [
+        {
+          "id": "1:972358148999100904",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4434424315772289674",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:1767567429293900637",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "4:5068692527176941495",
+          "name": "fileData",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:409958654003307544",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

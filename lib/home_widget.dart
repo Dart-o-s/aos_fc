@@ -9,8 +9,6 @@ import 'package:flutter_window_close/flutter_window_close.dart';
 import 'dart:io';
 import 'dart:convert';
 
-import 'ku/str_2_uint8.dart';
-
 import 'add_flashcard_page.dart';
 import 'flash_card.dart';
 import 'flash_card_widget.dart';
