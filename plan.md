@@ -119,6 +119,8 @@
     [X] FIXED 2025-04-23 22:38 left and right swipe swipe wrong.
 
     [X] DONE 2025-04-24 00:49 search ...
+        [X] trim the search term, autocomplition of the "keyboard" adds a space
+
     [X] DONE 2025-04-24 02:25 import a file via copy/paste. 
         - Append or overwrite?
         + I decided to insert after first card

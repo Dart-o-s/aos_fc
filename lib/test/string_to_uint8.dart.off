@@ -1,3 +1,7 @@
+// this does not work as expected.
+// I keep it for later examination
+// it is not longer needed as there
+// is an utf8 encoder/decoder library
 
 import 'dart:typed_data';
 

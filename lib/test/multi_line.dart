@@ -7,8 +7,11 @@ Does it expand?
 ${it}
 """;
 
-var y = """ <<< $x (is here a #lf? >>> """;
+var y = """ <<< $x (is here a #lf before 'Does'? >>> """;
 
 main () {
   print(y);
 }
+
+// a) no extra linefeed
+// b) yes string interpolation works in multi line strings
