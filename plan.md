@@ -10,6 +10,9 @@
 
     [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
 
+    [Y] OPEN add an intent to receive text shares - note: also fixing // By Gemini - fixing incompatible kotlin and java versions during build
+        Work in progress, handlers installed
+
 ### Refactorings around the old class Flashcard and the qaList
     [ ] OPEN - should have done this at the start of the project, haunted me since months
 

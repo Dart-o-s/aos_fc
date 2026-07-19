@@ -24,14 +24,27 @@ if (flutterVersionName == null) {
 }
 
 android {
+    // suggested by gemini
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // suggested by gemini
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
     namespace = "priv.aos.aos_fc"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    /* old before GEmini help
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    */
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
