@@ -45,12 +45,13 @@ Future<void> main() async {
 
 class FlashCardApp extends StatefulWidget {
   @override
-  State<FlashCardApp> createState() => _FlashCardAppState();
+  late _FlashCardAppState state;
+  State<FlashCardApp> createState() => state = _FlashCardAppState();
 
   FlashCardApp() {
   }
 
-  String get aboutText =>  "TODO: Something wring here. By Aos Enkimaru -aka- Angelo Schneider. Error: About Text not loaded.";
+  String get aboutText =>  state.aboutText;
 
 }
 
@@ -72,7 +73,9 @@ class _FlashCardAppState extends State<FlashCardApp> {
         .then((s) {
           _itsAboutText = s;
           aboutLoaded = true; })
-        .catchError((err) {});
+        .catchError((err) {
+          _itsAboutText = "Error loading About text. Blame angelo.schneider@satori-kan.academy";
+      });
     }
 
     return MaterialApp(

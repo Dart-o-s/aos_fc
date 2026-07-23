@@ -12,6 +12,8 @@
 
     [Y] OPEN add an intent to receive text shares - note: also fixing // By Gemini - fixing incompatible kotlin and java versions during build
         Work in progress, handlers installed
+    [ ] BUG if you add a new card while current card is flipped, the new card has mixed up back- and front side!
+    [ ] OPEN - check and fix about text regarding boxes
 
 ### Refactorings around the old class Flashcard and the qaList
     [ ] OPEN - should have done this at the start of the project, haunted me since months
