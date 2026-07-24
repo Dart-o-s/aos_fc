@@ -42,6 +42,7 @@
 
 ### Menu to Jump to Chapters
     [ ] POSTPONED - we have << and >> - that should be enough for now
+    [ ] Menu is there, see PRIO I, but is buggy.
 
 ### Rework the bottom bar three dot menu "..."
     [X] DONE 2025-06-15 23:09 move "About" into the "..." menu
