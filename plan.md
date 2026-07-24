@@ -8,12 +8,18 @@
         - I guess there is a conversion error
         - was indeed a bug, is fixed
 
-    [Y] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
+    [X] DONE 2025-06-15 03:24 after moving all extensions to list<FlashCard>, check for quicksave();
 
-    [Y] OPEN add an intent to receive text shares - note: also fixing // By Gemini - fixing incompatible kotlin and java versions during build
-        Work in progress, handlers installed
-    [ ] BUG if you add a new card while current card is flipped, the new card has mixed up back- and front side!
-    [ ] OPEN - check and fix about text regarding boxes
+    [X] OPEN add an intent to receive text shares - note: also fixing 
+        - fixing incompatible kotlin and java versions during build  // By Gemini
+
+    [flase report] DONE 2026-07-24 12:00 - if you add a new card while current card is flipped, the new card has mixed up back- and front side!
+    [false report] DONE 2026-07-24 11:42 - check and fix about text regarding boxes
+
+    [X] DONE 2026-07-24 13:08 create card from shared text.
+
+    [ ] BUG Picking a chapter from the top menue jumps not to the correct place
+    [ ] OPEN Share back to email etc. Not urgent - as we can export already as file
 
 ### Refactorings around the old class Flashcard and the qaList
     [ ] OPEN - should have done this at the start of the project, haunted me since months

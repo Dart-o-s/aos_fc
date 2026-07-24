@@ -42,6 +42,7 @@ class _AddFlashcardPageState extends State<AddFlashcardPage> {
       fc.answer = _answerController.text;
     } else if (_questionController.text.isNotEmpty && _answerController.text.isNotEmpty) {
       setState(() {
+        // AoS extract to somewhere, as we need the same when we get text shared
         int pos = Flashcard.curIndexNum + 1; // add behind current
         var flashcard = Flashcard(
           question: _questionController.text,

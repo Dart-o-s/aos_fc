@@ -120,6 +120,7 @@ class _FlashCardAppState extends State<FlashCardApp> {
         setState(() {
           // The actual plain text string is stored inside the 'path' property
           _sharedText = file.path;
+          _createCard(_sharedText);
         });
         debugPrint("Received shared text/url successfully: $_sharedText");
         _snacker(_sharedText);
@@ -138,6 +139,37 @@ class _FlashCardAppState extends State<FlashCardApp> {
   void _snacker(String message) {
     final SnackBar snackBar = SnackBar(content: Text(message));
     snackbarKey.currentState?.showSnackBar(snackBar);
+  }
+
+  void _createCard(String sharedText) {
+    int colon = sharedText.indexOf(":");
+
+    if (colon != -1) { // remove initial part, like "PT: "
+      sharedText = sharedText.substring(colon + 1, sharedText.length).trim();
+    }
+
+    int minus = sharedText.indexOf("-");
+    if (minus == -1) {
+      _snacker("A shared text needs to be in format: '[TOKEN: ] front - back]");
+      return;
+    }
+
+    List<String> res = sharedText.split("-");
+
+    var flashcard = Flashcard(
+      question: res[1],
+      answer: res[0]
+    );
+
+    // TODO that would be behind the end marker and makes no real sense
+    int pos = Flashcard.curIndexNum + 1; // add behind current
+    if (pos == gQAList.length) {
+      gQAList.add(flashcard);
+      Flashcard.curIndexNum = gQAList.length - 1;
+    } else {
+      gQAList.insert(pos, flashcard);
+      Flashcard.curIndexNum++;
+    }
   }
 
 }
